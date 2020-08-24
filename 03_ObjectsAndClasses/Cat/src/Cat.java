@@ -22,6 +22,8 @@ public class Cat {
 //        minWeight = 1000.0;
 //        maxWeight = 9000.0;
         isAlive = true;
+        int num = (int) ( Math.random() * 8 );
+        color = Color.values()[num];
         count++;
 
     }
@@ -31,6 +33,8 @@ public class Cat {
         this.originWeight = weight;
         this.isAlive = true;
         count++;
+        int num = (int) ( Math.random() * 8 );
+        this.color = Color.values()[num];
 
     }
 

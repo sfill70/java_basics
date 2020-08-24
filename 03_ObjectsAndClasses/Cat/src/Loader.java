@@ -49,6 +49,9 @@ public class Loader {
 
 
         System.out.println(cat.getStatus());
+        System.out.println(Color.values()[2]);
+        int a = (int) ( Math.random() * 8 );
+        System.out.println(a);
     }
 
     private static Cat getKitten(){

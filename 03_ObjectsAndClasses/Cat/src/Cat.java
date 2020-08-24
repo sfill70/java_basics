@@ -5,6 +5,7 @@ public class Cat {
     public static final double MAX_WEIGHT = 9000.0;
     private double originWeight;
     private double weight;
+    private Color color;
 
 //    private double minWeight;
 //    private double maxWeight;
@@ -31,6 +32,14 @@ public class Cat {
         this.isAlive = true;
         count++;
 
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public void meow() {

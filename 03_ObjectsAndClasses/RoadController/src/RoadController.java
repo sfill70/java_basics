@@ -13,6 +13,54 @@ public class RoadController
     private static int cargoCarPrice = 250; // RUB
     private static int vehicleAdditionalPrice = 200; // RUB
 
+    public static double getPassengerCarMaxWeight() {
+        return passengerCarMaxWeight;
+    }
+
+    public static void setPassengerCarMaxWeight(double passengerCarMaxWeight) {
+        RoadController.passengerCarMaxWeight = passengerCarMaxWeight;
+    }
+
+    public static int getPassengerCarMaxHeight() {
+        return passengerCarMaxHeight;
+    }
+
+    public static void setPassengerCarMaxHeight(int passengerCarMaxHeight) {
+        RoadController.passengerCarMaxHeight = passengerCarMaxHeight;
+    }
+
+    public static int getControllerMaxHeight() {
+        return controllerMaxHeight;
+    }
+
+    public static void setControllerMaxHeight(int controllerMaxHeight) {
+        RoadController.controllerMaxHeight = controllerMaxHeight;
+    }
+
+    public static int getPassengerCarPrice() {
+        return passengerCarPrice;
+    }
+
+    public static void setPassengerCarPrice(int passengerCarPrice) {
+        RoadController.passengerCarPrice = passengerCarPrice;
+    }
+
+    public static int getCargoCarPrice() {
+        return cargoCarPrice;
+    }
+
+    public static void setCargoCarPrice(int cargoCarPrice) {
+        RoadController.cargoCarPrice = cargoCarPrice;
+    }
+
+    public static int getVehicleAdditionalPrice() {
+        return vehicleAdditionalPrice;
+    }
+
+    public static void setVehicleAdditionalPrice(int vehicleAdditionalPrice) {
+        RoadController.vehicleAdditionalPrice = vehicleAdditionalPrice;
+    }
+
     public static void main(String[] args)
     {
         System.out.println("Сколько автомобилей сгенерировать?");

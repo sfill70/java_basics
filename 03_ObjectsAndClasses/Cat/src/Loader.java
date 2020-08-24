@@ -46,6 +46,28 @@ public class Loader {
         System.out.println("Вес котенка0: " + kitten0.getWeight());
         System.out.println("Сейчас живо: " + Cat.getCount());
 
+        // Проверка конструктора копирования
+        Cat cat3 = new Cat(cats[1]);
+        System.out.println(cat3.getColor() + " : " + cats[1].getColor());
+        System.out.println(cat3.equals(cats[1]));
+        System.out.println("Сейчас живо: " + Cat.getCount());
+
+        // Проверка методa copyCat
+        Cat cat2 = Cat.copyCat(cats[1]);
+        System.out.println(cat2.equals(cats[1]));
+        System.out.println(cat2.getOriginWeight() + " ; " + cats[1].getOriginWeight());
+
+        // Проверка методов clone
+        Cat cat1 = null;
+        try {
+            cat1 = (Cat) cats[1].clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        assert cat1 != null;
+        System.out.println(cat1.getColor() + " : " + cats[1].getColor());
+        System.out.println(cat1.equals(cats[1]));
+        System.out.println("Сейчас живо: " + Cat.getCount());
 
 
 
@@ -53,7 +75,7 @@ public class Loader {
 
     }
 
-    private static Cat getKitten(){
+    private static Cat getKitten() {
         return new Cat(1100.0);
     }
 }

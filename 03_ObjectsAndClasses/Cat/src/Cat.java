@@ -38,12 +38,45 @@ public class Cat implements Cloneable{
 
     }
 
+    public Cat (Cat other){
+        this.weight = other.getWeight();
+        this.originWeight = other.getOriginWeight();
+        this.isAlive = other.isAlive();
+        this.color = other.getColor();
+        this.countFeed = other.getCountFeed();
+        count++;
+    }
+
     public Color getColor() {
         return color;
     }
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public double getOriginWeight() {
+        return originWeight;
+    }
+
+    public void setOriginWeight(double originWeight) {
+        this.originWeight = originWeight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public void setCountFeed(double countFeed) {
+        this.countFeed = countFeed;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
     }
 
     public void meow() {
@@ -125,7 +158,18 @@ public class Cat implements Cloneable{
         }
     }
 
-//    public Cat clone() throws CloneNotSupportedException{
-//        return (Cat) super.clone();
-//    }
+    public static Cat copyCat(Cat catOther){
+        Cat cat = new Cat();
+        cat.setAlive(catOther.isAlive());
+        cat.setWeight(catOther.getWeight());
+        cat.setColor(catOther.getColor());
+        cat.setCountFeed(catOther.getCountFeed());
+        cat.setOriginWeight(catOther.getOriginWeight());
+        return cat;
+    }
+
+
+    public Cat clone() throws CloneNotSupportedException{
+        return (Cat) super.clone();
+    }
 }

@@ -1,5 +1,5 @@
 
-public class Cat {
+public class Cat implements Cloneable{
     public static final int COUNT_EYES = 2;
     public static final double MIN_WEIGHT = 1000.0;
     public static final double MAX_WEIGHT = 9000.0;
@@ -22,7 +22,7 @@ public class Cat {
 //        minWeight = 1000.0;
 //        maxWeight = 9000.0;
         isAlive = true;
-        int num = (int) ( Math.random() * 8 );
+        int num = (int) ( Math.random() * 7 );
         color = Color.values()[num];
         count++;
 
@@ -33,7 +33,7 @@ public class Cat {
         this.originWeight = weight;
         this.isAlive = true;
         count++;
-        int num = (int) ( Math.random() * 8 );
+        int num = (int) ( Math.random() * 7 );
         this.color = Color.values()[num];
 
     }
@@ -124,4 +124,8 @@ public class Cat {
             return "Playing";
         }
     }
+
+//    public Cat clone() throws CloneNotSupportedException{
+//        return (Cat) super.clone();
+//    }
 }

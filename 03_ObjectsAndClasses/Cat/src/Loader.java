@@ -39,7 +39,19 @@ public class Loader {
         cats[5].pee();
         System.out.println(cats[5].getWeight());
 
+        Cat kitten0 = getKitten();
+        Cat kitten1 = getKitten();
+        Cat kitten2 = getKitten();
+
+        System.out.println("Вес котенка0: " + kitten0.getWeight());
+        System.out.println("Сейчас живо: " + Cat.getCount());
+
+
 
         System.out.println(cat.getStatus());
+    }
+
+    private static Cat getKitten(){
+        return new Cat(1100.0);
     }
 }

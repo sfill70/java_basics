@@ -25,6 +25,14 @@ public class Cat {
 
     }
 
+    public Cat(double weight){
+        this.weight = weight;
+        this.originWeight = weight;
+        this.isAlive = true;
+        count++;
+
+    }
+
     public void meow() {
         if (isAlive) {
             weight = weight - 1;

@@ -1,5 +1,5 @@
 
-public class Cat implements Cloneable{
+public class Cat implements Cloneable {
     public static final int COUNT_EYES = 2;
     public static final double MIN_WEIGHT = 1000.0;
     public static final double MAX_WEIGHT = 9000.0;
@@ -22,29 +22,25 @@ public class Cat implements Cloneable{
 //        minWeight = 1000.0;
 //        maxWeight = 9000.0;
         isAlive = true;
-        int num = (int) ( Math.random() * 7 );
+        int num = (int) (Math.random() * Color.values().length);
         color = Color.values()[num];
         count++;
 
     }
 
-    public Cat(double weight){
+    public Cat(double weight) {
+        this();
         this.weight = weight;
-        this.originWeight = weight;
-        this.isAlive = true;
-        count++;
-        int num = (int) ( Math.random() * 7 );
-        this.color = Color.values()[num];
+        originWeight = weight;
 
     }
 
-    public Cat (Cat other){
+    public Cat(Cat other) {
         this.weight = other.getWeight();
         this.originWeight = other.getOriginWeight();
         this.isAlive = other.isAlive();
         this.color = other.getColor();
         this.countFeed = other.getCountFeed();
-        count++;
     }
 
     public Color getColor() {
@@ -80,51 +76,49 @@ public class Cat implements Cloneable{
     }
 
     public void meow() {
-        if (isAlive) {
-            weight = weight - 1;
-        System.out.println("Meow");
-            checkIsAlive();
-        }
-        else {
+        if (!isAlive) {
             System.out.println("The cat dead");
+            return;
         }
+        weight = weight - 1;
+        System.out.println("Meow");
+        checkIsAlive();
     }
 
 
     public void feed(Double amount) {
-        if (isAlive) {
-            weight = weight + amount;
-            countFeed = countFeed + amount;
-            checkIsAlive();
-        }
-        else {
+        if (!isAlive) {
             System.out.println("The cat dead");
+            return;
         }
+        weight = weight + amount;
+        countFeed = countFeed + amount;
+        checkIsAlive();
+
+
     }
 
     public void pee() {
-        //Кошку жалко ).
-        if (isAlive) {
-            if (weight > weight - 50.0) {
-                weight = weight - 50.0;
-                System.out.println("Хозяин убери лоток");
-            } else {
-                System.out.println("Меня надо больше кормить");
-            }
-        }
-        else {
+        if (!isAlive) {
             System.out.println("The cat dead");
+            return;
+        }
+        //Кошку жалко ).
+        if (weight > weight - 50.0) {
+            weight = weight - 50.0;
+            System.out.println("Хозяин убери лоток");
+        } else {
+            System.out.println("Меня надо больше кормить");
         }
     }
 
     public void drink(Double amount) {
-        if (isAlive) {
-            weight = weight + amount;
-            checkIsAlive();
-        }
-        else {
+        if (!isAlive) {
             System.out.println("The cat dead");
+            return;
         }
+        weight = weight + amount;
+        checkIsAlive();
     }
 
     public Double getWeight() {
@@ -158,7 +152,7 @@ public class Cat implements Cloneable{
         }
     }
 
-    public static Cat copyCat(Cat catOther){
+    public static Cat copyCat(Cat catOther) {
         Cat cat = new Cat();
         cat.setAlive(catOther.isAlive());
         cat.setWeight(catOther.getWeight());
@@ -169,7 +163,7 @@ public class Cat implements Cloneable{
     }
 
 
-    public Cat clone() throws CloneNotSupportedException{
+    public Cat clone() throws CloneNotSupportedException {
         return (Cat) super.clone();
     }
 }

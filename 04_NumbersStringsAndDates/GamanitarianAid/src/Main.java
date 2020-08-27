@@ -35,7 +35,7 @@ public class Main {
                 System.out.println("\t\t\t" + "Ящик " + i);
                 if (i % 27 == 0) {
                     countContainer++;
-                    if (isNewCar && tmpcountContainer == countContainer){
+                    if (isNewCar && tmpcountContainer == countContainer) {
                         System.out.println("Грузовик " + countCar);
                         isNewCar = false;
                     }
@@ -50,6 +50,37 @@ public class Main {
             System.out.println("Необходимо: ");
             System.out.println("Контейнеров: " + countContainer);
             System.out.println("Грузовиков: " + countCar);
+
+//           Вариант 2
+
+            int count = 0;
+            int countCon = 0;
+            int countTrack = 0;
+            boolean isWork = true;
+
+            while (isWork) {
+                countTrack++;
+                System.out.println("Грузовик " + countTrack);
+                for (int j = 0; j < 12; j++) {
+                    if (!isWork) {
+                        break;
+                    }
+                    countCon++;
+                    System.out.println("\t" + "Контейнер" + countCon);
+                    for (int i = 0; i < 27; i++) {
+                        count++;
+                        System.out.println("\t\t\t" + "Ящик " + count);
+                        if (count >= countBox) {
+                            isWork = false;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            System.out.println("Необходимо: ");
+            System.out.println("Контейнеров: " + countCon);
+            System.out.println("Грузовиков: " + countTrack);
 
         }
     }

@@ -1,5 +1,6 @@
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.regex.Pattern;
 
 public class Main {
     public static void main(String[] args) {
@@ -33,6 +34,12 @@ public class Main {
 
         System.out.println(BigDecimal.valueOf(Double.MAX_VALUE));
         System.out.println(BigInteger.valueOf(Long.MAX_VALUE));
+
+//        Pattern pattern = Pattern.compile("<.*?>" , Pattern.CASE_INSENSITIVE);
+//        String s = "<hbtwrhb>tw4hbtw4 <HBT> 4hgw4h4w w4hw4h4wh <hbtwc>wechdt   svcwvcwe<1242532>";
+//        System.out.println(s);
+//        s = s.replaceAll(String.valueOf(pattern),"!!");
+//        System.out.println(s);
 
 
     }

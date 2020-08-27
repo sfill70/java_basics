@@ -100,9 +100,9 @@ fabric.properties
 ### JetBrains Patch ###
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
-# *.iml
+ *.iml
 # modules.xml
-# .idea/misc.xml
+ .idea/misc.xml
 # *.ipr
 
 # Sonarlint plugin
@@ -170,6 +170,7 @@ buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
 .flattened-pom.xml
+.idea
 
 ### Windows ###
 # Windows thumbnail cache files

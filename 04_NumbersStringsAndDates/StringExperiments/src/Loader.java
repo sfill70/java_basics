@@ -1,7 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+
 
 public class Loader {
     public static void main(String[] args) {
@@ -17,29 +18,53 @@ public class Loader {
 
 //        lesson 4.4.2
         String text = "Вася заработал 5000 рублей, Петя - 7563 рубля, а Маша - 30000 рублей";
-        String[] words = text.trim().split("\\s+");
+        StringBuilder resultBuilder = new StringBuilder();
+        String target = "1234567890";
+        char[] chars = text.toCharArray();
         int sum = 0;
-        for (String word : words
-        ) {
-            try {
-                sum += Integer.parseInt(word);
-            } catch (NumberFormatException e) {
+        char ch;
+        for (int i = 0; i < chars.length; i++) {
+            ch = chars[i];
+            if (target.contains(Character.toString(ch))) {
+                resultBuilder.append(ch);
+                if (i == chars.length - 1) {
+                    sum += Integer.parseInt(resultBuilder.toString());
+                }
+            } else if (resultBuilder.length() != 0) {
+                sum += Integer.parseInt(resultBuilder.toString());
+                resultBuilder.setLength(0);
             }
         }
+        System.out.println("Общий зароботок: " + sum);
         System.out.println(text);
-        System.out.println("Общий заробеток: " + sum);
+        System.out.println((int) ' ');
+
 
 //        lesson 4.4.3
         System.out.println("Введите данные в формате - Фамилия Имя Отчество");
         String fio = "";
+        ArrayList<String> fullName = new ArrayList<>();
         try (BufferedReader reader = (new BufferedReader(new InputStreamReader(System.in)))) {
             fio = reader.readLine();
-        } catch (NumberFormatException | IOException e) {
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        String[] fullName = fio.trim().split("\\s+");
-        if (fullName.length == 3) {
+        char[] chars1 = fio.toCharArray();
+        for (int i = 0; i < chars1.length; i++) {
+            ch = chars1[i];
+            if (ch != 32) {
+                resultBuilder.append(ch);
+                if (i == chars1.length - 1) {
+                    fullName.add(resultBuilder.toString());
+                }
+            } else if (resultBuilder.length() != 0) {
+                fullName.add(resultBuilder.toString());
+                resultBuilder.setLength(0);
+            }
+        }
+        if (fullName.size() == 3) {
             System.out.printf("Фамилия: " + "%s" + System.lineSeparator() + "Имя: " + "%s" + System.lineSeparator()
-                    + "Отчество: " + "%s" + System.lineSeparator(), fullName[0], fullName[1], fullName[2]);
+                    + "Отчество: " + "%s" + System.lineSeparator(), fullName.get(0), fullName.get(1), fullName.get(2));
         } else {
             System.out.println("Неверный формат");
         }
@@ -56,9 +81,9 @@ public class Loader {
         String safe2 = searchAndReplaceDiamonds2("Номер кредитной карты <4008 1234 5678> 8912", "***");
         System.out.println(safe2);
 
-        String s = "<hbt<<wrhb>tw4hbtw4 <HBT> 4hgw4h4w <> w4hw4h4wh <hbtwc>>wechdt   svcwvcwe<1242532>mm<udkm";
+        String s = "<hbt<<wrhb>tw4hbtw4 <HBT> 4hgw4h4w <> w4hw4h4wh <hbtwc>>wechdt   svcwvcwe<1242532>mm<udkm>>>";
         System.out.println(s);
-        System.out.println(searchAndReplaceDiamonds(s,"!!!"));
+        System.out.println(searchAndReplaceDiamonds(s, "!!!"));
         System.out.println(searchAndReplaceDiamonds2(s, "!!!"));
 
     }
@@ -70,24 +95,23 @@ public class Loader {
 
     //    Есть мнение, что RegEx это плохо
     static String searchAndReplaceDiamonds2(String text, String placeholder) {
-        text = text.trim().replaceAll("<+", "<").replaceAll(">+", ">");
         StringBuilder result = new StringBuilder();
         int count = -1;
-        boolean isGood = true;
+        boolean canAdd = true;
         char ch;
         for (int i = 0; i < text.length(); i++) {
             ch = text.charAt(i);
-            if (isGood && ch != 60) {
+            if (canAdd && ch != 60) {
                 result.append(ch);
             } else if (ch == 60) {
                 count = i;
-                isGood = false;
-            } else if (ch == 62) {
+                canAdd = false;
+            } else if ((ch == 62 && i + 1 < text.length() && text.charAt(i + 1) != 62) || (ch == 62 && i == text.length() - 1)) {
                 result.append(placeholder);
-                isGood = true;
+                canAdd = true;
             }
         }
-        if (!isGood) {
+        if (!canAdd) {
             result.append(text.substring(count));
         }
         return result.toString();

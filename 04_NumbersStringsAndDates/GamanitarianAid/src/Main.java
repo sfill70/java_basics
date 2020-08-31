@@ -25,9 +25,29 @@ public class Main {
                 break;
             }
 
+            int containers = 0;
+            int trucks = 0;
+
+            for (int i = 1; i <= countBox; i++) {
+                if ((i - 1) % (TRACK_CAPACITY * CONTAINER_CAPACITY) == 0) {
+                    System.out.println("Грузовик " + ++trucks); // ++ в начале, сначала прибавляет 1, потом использует значение
+                }
+
+                if ((i - 1) % CONTAINER_CAPACITY == 0) {
+                    System.out.println("\t" + "Контейнер" + ++containers);
+                }
+
+                System.out.println("\t\t\t" + "Ящик " + i);
+            }
+
+            System.out.println("Вариант 0");
+            System.out.println("Необходимо: ");
+            System.out.println("Контейнеров: " + containers);
+            System.out.println("Грузовиков: " + trucks);
+            System.out.println();
+
             int countContainer = 0;
             int countCar = 0;
-            int tmpCountContainer = 0;
 
             for (int i = 1; i <= countBox; i++) {
                 if (i == 1) {
@@ -42,6 +62,7 @@ public class Main {
                     if (countContainer % TRACK_CAPACITY == 1) {
                         countCar++;
                         System.out.println("Грузовик " + countCar);
+                        System.out.println("UHP " + (i  / CONTAINER_CAPACITY / TRACK_CAPACITY +1) );
                     }
                     System.out.println("\t" + "Контейнер" + countContainer);
                 }

@@ -75,8 +75,8 @@ public class Loader {
         String safe = searchAndReplaceDiamonds("Номер кредитной карты <4008 1234 5678> 8912", "***");
         System.out.println(safe);
 
-        String safe1 = searchAndReplaceDiamonds("Номер кредитной карты <4008 1234 5678>>> 8912", "***");
-        System.out.println(safe);
+        String safe1 = searchAndReplaceDiamonds2("Номер кредитной карты <4008 1234 5678>>> 8912", "***");
+        System.out.println(safe1);
 
         String safe2 = searchAndReplaceDiamonds2("Номер кредитной карты <4008 1234 5678> 8912", "***");
         System.out.println(safe2);

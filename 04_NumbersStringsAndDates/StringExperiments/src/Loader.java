@@ -29,6 +29,7 @@ public class Loader {
                 resultBuilder.append(ch);
                 if (i == chars.length - 1) {
                     sum += Integer.parseInt(resultBuilder.toString());
+                    resultBuilder.setLength(0);
                 }
             } else if (resultBuilder.length() != 0) {
                 sum += Integer.parseInt(resultBuilder.toString());
@@ -56,6 +57,7 @@ public class Loader {
                 resultBuilder.append(ch);
                 if (i == chars1.length - 1) {
                     fullName.add(resultBuilder.toString());
+                    resultBuilder.setLength(0);
                 }
             } else if (resultBuilder.length() != 0) {
                 fullName.add(resultBuilder.toString());

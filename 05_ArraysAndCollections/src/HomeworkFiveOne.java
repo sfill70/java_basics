@@ -29,7 +29,7 @@ public class HomeworkFiveOne {
         //        Homework 5.1.2
         Random rand = new Random();
         float temperature;
-        float[] temperatures = new float[30];
+        float[] temperatures = new float[NUMBER_OF_PATIENTS];
         float averageTemperature = 0;
         int countHealthy = 0;
         for (int j = 0; j < NUMBER_OF_PATIENTS; j++) {

@@ -1,4 +1,3 @@
-import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -35,7 +34,6 @@ public class HomeworkFiveOne {
         int countHealthy = 0;
         for (int j = 0; j < NUMBER_OF_PATIENTS; j++) {
             temperature = round(MINIMUM_PATIENT_TEMPERATURE + rand.nextFloat() * (MAXIMUM_PATIENT_TEMPERATURE - MINIMUM_PATIENT_TEMPERATURE), 1);
-//            System.out.println(round(fl,1));
             averageTemperature += temperature;
             if (temperature >= MINIMUM_TEMPERATURE_HEALTHY_PATIENTS && temperature <= MAXIMUM_TEMPERATURE_HEALTHY_PATIENTS) {
                 countHealthy++;

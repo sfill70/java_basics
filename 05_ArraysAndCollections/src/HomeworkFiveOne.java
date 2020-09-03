@@ -3,11 +3,11 @@ import java.util.Random;
 
 public class HomeworkFiveOne {
 
-    static int NUMBER_OF_PATIENTS = 30;
-    static float MAXIMUM_PATIENT_TEMPERATURE = (float) 40.0;
-    static float MINIMUM_PATIENT_TEMPERATURE = (float) 32.0;
-    static float MAXIMUM_TEMPERATURE_HEALTHY_PATIENTS = (float) 36.9;
-    static float MINIMUM_TEMPERATURE_HEALTHY_PATIENTS = (float) 36.2;
+    final static int NUMBER_OF_PATIENTS = 30;
+    final static float MAXIMUM_PATIENT_TEMPERATURE = (float) 40.0;
+    final static float MINIMUM_PATIENT_TEMPERATURE = (float) 32.0;
+    final static float MAXIMUM_TEMPERATURE_HEALTHY_PATIENTS = (float) 36.9;
+    final static float MINIMUM_TEMPERATURE_HEALTHY_PATIENTS = (float) 36.2;
 
     public static void main(String[] args) {
 
@@ -28,13 +28,12 @@ public class HomeworkFiveOne {
 
         //        Homework 5.1.2
         Random rand = new Random();
-        float temperature;
         float[] temperatures = new float[NUMBER_OF_PATIENTS];
-        float averageTemperature = 0;
+        float sumTemperature = 0;
         int countHealthy = 0;
         for (int j = 0; j < NUMBER_OF_PATIENTS; j++) {
-            temperature = round(MINIMUM_PATIENT_TEMPERATURE + rand.nextFloat() * (MAXIMUM_PATIENT_TEMPERATURE - MINIMUM_PATIENT_TEMPERATURE), 1);
-            averageTemperature += temperature;
+            float temperature = round(MINIMUM_PATIENT_TEMPERATURE + rand.nextFloat() * (MAXIMUM_PATIENT_TEMPERATURE - MINIMUM_PATIENT_TEMPERATURE), 1);
+            sumTemperature += temperature;
             if (temperature >= MINIMUM_TEMPERATURE_HEALTHY_PATIENTS && temperature <= MAXIMUM_TEMPERATURE_HEALTHY_PATIENTS) {
                 countHealthy++;
             }
@@ -42,8 +41,8 @@ public class HomeworkFiveOne {
         }
 
         System.out.println("Homework 5.1.2");
-        System.out.println("Температуры пациентов - " + Arrays.toString(temperatures).replaceAll("\\[", "").replaceAll("]", ""));
-        System.out.println("Средняя температура - " + round(averageTemperature / temperatures.length, 2));
+        System.out.println("Температуры пациентов - " + Arrays.toString(temperatures).replaceAll("[\\[\\]]", ""));
+        System.out.println("Средняя температура - " + round(sumTemperature / temperatures.length, 2));
         System.out.println("Количество здоровых пациетов - " + countHealthy);
 
         //        Homework 5.1.3

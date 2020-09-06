@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 
 public class HomeworkFiveOne {
 
@@ -63,6 +64,9 @@ public class HomeworkFiveOne {
             n++;
             System.out.println();
         }
+        System.out.println("Homework 5.1.3 bonus");
+        printCross();
+
     }
 
     private static float round(float number, int scale) {
@@ -73,6 +77,25 @@ public class HomeworkFiveOne {
         return (float) (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) / pow;
     }
 
+    private static void printCross() {
+        System.out.println("Введите размер креста:");
+        int cross2Size = new Scanner(System.in).nextInt();
+
+        System.out.println("Какой маркер использовать???");
+        String symbol = new Scanner(System.in).nextLine();
+
+        StringBuilder crossStr = new StringBuilder();
+
+        for (int i = 0; i < cross2Size; i++) {
+            for (int j = 0; j < cross2Size; j++) {
+                crossStr
+                        .append(i + j == cross2Size - 1 || i == j
+                                ? symbol : " ".repeat(symbol.length()));
+            }
+            crossStr.append("\n");
+        }
+        System.out.println(crossStr.toString());
+    }
 
 }
 

@@ -1,11 +1,13 @@
 import java.util.HashSet;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class SetEmail {
 
     // Я не помню почему я написал странное A-Za-z0-9 но наверно были причины, поэтому оставлю
-    private static final String REG_CHECK_EMAIL = "([\\w._+-]+[@][A-Za-z0-9._+-]+[.][a-z]{1,6})";
+    private static final String REG_CHECK_EMAIL = "(add\\s+[\\w._+-]+[@][A-Za-z0-9._+-]+[.][a-z]{1,6})";
     private HashSet<String> setEmail = new HashSet<>();
+    public static final Pattern dataAdd = Pattern.compile(REG_CHECK_EMAIL, Pattern.CASE_INSENSITIVE);
 
     private void viewSetEmail() {
         if (setEmail.size() == 0) {
@@ -20,6 +22,7 @@ public class SetEmail {
 
     private void addSetEmail(String data) {
         setEmail.add(data);
+        System.out.println("E-mail добавлен");
     }
 
     private void processingCommands(String data) {
@@ -32,14 +35,11 @@ public class SetEmail {
             return;
         } else if (command.equalsIgnoreCase("list")) {
             viewSetEmail();
-        } else if (command.equalsIgnoreCase("add")) {
-            if (data.trim().substring(data.indexOf(" ")+1).matches(REG_CHECK_EMAIL)) {
-                addSetEmail(data.trim().substring(data.indexOf(" ")));
-            } else {
-                System.out.println("Неверный формат E-mail");
+        } else if (dataAdd.matcher(data).matches()) {
+             addSetEmail(data.substring(data.indexOf(" ") + 1));
             }
-        } else {
-            System.out.println("Неверная команда");
+         else {
+            System.out.println("Неверная команда или невергый формат E-mail");
         }
     }
 

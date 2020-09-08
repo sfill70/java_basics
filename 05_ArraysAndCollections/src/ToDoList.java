@@ -2,9 +2,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ToDoList {
-    public static final String REG_CHECK_DATA = "(\\s+)(\\d+)(\\s+)(.+)";
-    public static final String REG_CHECK_DATA_ADD = "\\s+.+";
-    public static final String REG_CHECK_DATA_DEL = "\\s+\\d+";
+    public static final String REG_CHECK_DATA_ADD = "ADD|add\\s+.+";
+    public static final String REG_CHECK_DATA_FULL = "(ADD|add)(\\s+)(\\d+)(\\s+)(.+)";
+    public static final String REG_CHECK_DATA_EDIT = "EDIT|edit\\s+\\d+\\s+.+";
+    public static final String REG_CHECK_DATA_DEL = "DELETE|delete\\s+\\d+";
 
 
     static ArrayList<String> toDoList = new ArrayList<>();
@@ -73,26 +74,16 @@ public class ToDoList {
             return;
         } else if (command.equalsIgnoreCase("list")) {
             viewToDoList();
-        } else if (command.equalsIgnoreCase("add")) {
-            if (data.trim().substring(data.indexOf(" ")).matches(REG_CHECK_DATA)) {
+        } else if (data.matches(REG_CHECK_DATA_ADD)) {
+            if (data.matches(REG_CHECK_DATA_FULL)) {
                 addToDoList(splitData(data, 3));
-            } else if (data.trim().substring(data.indexOf(" ")).matches(REG_CHECK_DATA_ADD)) {
+            } else {
                 addToDoList(splitData(data, 2));
-            } else {
-                System.out.println("Неверный формат команды ADD");
             }
-        } else if (command.equalsIgnoreCase("edit")) {
-            if (data.trim().substring(data.indexOf(" ")).matches(REG_CHECK_DATA)) {
-                editToDoList(splitData(data, 3));
-            } else {
-                System.out.println("Неверный формат команды EDIT");
-            }
-        } else if (command.equalsIgnoreCase("delete")) {
-            if (data.trim().substring(data.indexOf(" ")).matches(REG_CHECK_DATA_DEL)) {
-                deleteToDoList(splitData(data, 2));
-            } else {
-                System.out.println("Неверный формат команды DELETE");
-            }
+        } else if (data.matches(REG_CHECK_DATA_EDIT)) {
+            editToDoList(splitData(data, 3));
+        } else if (data.matches(REG_CHECK_DATA_DEL)) {
+            deleteToDoList(splitData(data, 2));
         } else {
             System.out.println("Неверная команда");
         }

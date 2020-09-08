@@ -1,12 +1,19 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Pattern;
+
+import static java.util.regex.Pattern.matches;
 
 public class ToDoList {
-    public static final String REG_CHECK_DATA_ADD = "ADD|add\\s+.+";
-    public static final String REG_CHECK_DATA_FULL = "(ADD|add)(\\s+)(\\d+)(\\s+)(.+)";
+    public static final String REG_CHECK_DATA_ADD = "add\\s+.+";
+    public static final String REG_CHECK_DATA_FULL = "(add)(\\s+)(\\d+)(\\s+)(.+)";
     public static final String REG_CHECK_DATA_EDIT = "EDIT|edit\\s+\\d+\\s+.+";
     public static final String REG_CHECK_DATA_DEL = "DELETE|delete\\s+\\d+";
 
+    public static final Pattern dataAdd = Pattern.compile(REG_CHECK_DATA_ADD, Pattern.CASE_INSENSITIVE);
+    public static final Pattern dataAddFull = Pattern.compile(REG_CHECK_DATA_FULL, Pattern.CASE_INSENSITIVE);
+    public static final Pattern dataEdit = Pattern.compile(REG_CHECK_DATA_EDIT, Pattern.CASE_INSENSITIVE);
+    public static final Pattern dataDelete = Pattern.compile(REG_CHECK_DATA_DEL, Pattern.CASE_INSENSITIVE);
 
     static ArrayList<String> toDoList = new ArrayList<>();
 
@@ -74,15 +81,15 @@ public class ToDoList {
             return;
         } else if (command.equalsIgnoreCase("list")) {
             viewToDoList();
-        } else if (data.matches(REG_CHECK_DATA_ADD)) {
-            if (data.matches(REG_CHECK_DATA_FULL)) {
+        } else if (dataAdd.matcher(data).find()) {
+            if (dataAddFull.matcher(data).find()) {
                 addToDoList(splitData(data, 3));
             } else {
                 addToDoList(splitData(data, 2));
             }
-        } else if (data.matches(REG_CHECK_DATA_EDIT)) {
+        } else if (dataEdit.matcher(data).find()) {
             editToDoList(splitData(data, 3));
-        } else if (data.matches(REG_CHECK_DATA_DEL)) {
+        } else if (dataDelete.matcher(data).find()) {
             deleteToDoList(splitData(data, 2));
         } else {
             System.out.println("Неверная команда");

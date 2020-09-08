@@ -64,7 +64,7 @@ public class ToDoList {
     }
 
     static void processingCommands(String data) {
-        String[] dataProcessing = data.trim().replaceAll("\\s+", " ").split("\\s", 3);
+        data = data.trim().replaceAll("\\s+", " ");
         String command = data;
         if (data.contains(" ")) {
             command = data.substring(0, data.indexOf(" "));

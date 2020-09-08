@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class SetEmail {
 
     // Я не помню почему я написал странное A-Za-z0-9 но наверно были причины, поэтому оставлю
-    private final String REG_CHECK_EMAIL = "([\\w._+-]+[@][A-Za-z0-9._+-]+[.][a-z]{1,6})";
+    private static final String REG_CHECK_EMAIL = "([\\w._+-]+[@][A-Za-z0-9._+-]+[.][a-z]{1,6})";
     private HashSet<String> setEmail = new HashSet<>();
 
     private void viewSetEmail() {

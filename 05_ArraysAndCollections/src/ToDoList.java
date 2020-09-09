@@ -5,10 +5,11 @@ import java.util.regex.Pattern;
 import static java.util.regex.Pattern.matches;
 
 public class ToDoList {
-    public static final String REG_CHECK_DATA_ADD = "add\\s+.+";
-    public static final String REG_CHECK_DATA_FULL = "(add)(\\s+)(\\d+)(\\s+)(.+)";
-    public static final String REG_CHECK_DATA_EDIT = "edit\\s+\\d+\\s+.+";
-    public static final String REG_CHECK_DATA_DEL = "delete\\s+\\d+";
+    //  (?i) делает выражение или часть не чуствительным к регистру (?-i) снова включает чувствительность к регистру
+    public static final String REG_CHECK_DATA_ADD = "(?i)add\\s+.+";
+    public static final String REG_CHECK_DATA_FULL = "(?i)(add)(\\s+)(\\d+)(\\s+)(.+)";
+    public static final String REG_CHECK_DATA_EDIT = "(?i)edit\\s+\\d+\\s+.+";
+    public static final String REG_CHECK_DATA_DEL = "(?i)delete\\s+\\d+";
 
     public static final Pattern dataAdd = Pattern.compile(REG_CHECK_DATA_ADD, Pattern.CASE_INSENSITIVE);
     public static final Pattern dataAddFull = Pattern.compile(REG_CHECK_DATA_FULL, Pattern.CASE_INSENSITIVE);
@@ -19,7 +20,6 @@ public class ToDoList {
     static ArrayList<String> toDoList = new ArrayList<>();
 
     public static void main(String[] args) {
-        Pattern pattern = Pattern.compile(REG_CHECK_DATA_FULL, Pattern.CASE_INSENSITIVE);
         runToDoList();
 
     }
@@ -84,13 +84,13 @@ public class ToDoList {
             return;
         } else if (command.equalsIgnoreCase("list")) {
             viewToDoList();
-        } else if (dataAdd.matcher(data).matches()) {
-            if (dataAddFull.matcher(data).matches()) {
+        } else if (data.matches(REG_CHECK_DATA_ADD)) {
+            if (data.matches(REG_CHECK_DATA_FULL)) {
                 addToDoList(splitData(data, 3));
             } else {
                 addToDoList(splitData(data, 2));
             }
-        } else if (dataEdit.matcher(data).matches()) {
+        } else if (data.matches(REG_CHECK_DATA_EDIT)) {
             editToDoList(splitData(data, 3));
         } else if (dataDelete.matcher(data).matches()) {
             deleteToDoList(splitData(data, 2));

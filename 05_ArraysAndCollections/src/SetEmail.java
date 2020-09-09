@@ -5,9 +5,9 @@ import java.util.regex.Pattern;
 public class SetEmail {
 
     // Я не помню почему я написал странное A-Za-z0-9 но наверно были причины, поэтому оставлю
-    private static final String REG_CHECK_EMAIL = "(add\\s+[\\w._+-]+[@][A-Za-z0-9._+-]+[.][a-z]{1,6})";
+    private static final String REG_EMAIL = "((?i)add\\s+[\\w._+-]+[@][A-Za-z0-9._+-]+[.][a-z]{1,6})";
     private HashSet<String> setEmail = new HashSet<>();
-    public static final Pattern dataAdd = Pattern.compile(REG_CHECK_EMAIL, Pattern.CASE_INSENSITIVE);
+    public static final Pattern dataAdd = Pattern.compile(REG_EMAIL, Pattern.CASE_INSENSITIVE);
 
     private void viewSetEmail() {
         if (setEmail.size() == 0) {
@@ -35,7 +35,7 @@ public class SetEmail {
             return;
         } else if (command.equalsIgnoreCase("list")) {
             viewSetEmail();
-        } else if (dataAdd.matcher(data).matches()) {
+        } else if (data.matches(REG_EMAIL)) {
              addSetEmail(data.substring(data.indexOf(" ") + 1));
             }
          else {

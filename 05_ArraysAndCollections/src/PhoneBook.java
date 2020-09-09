@@ -17,7 +17,7 @@ public class PhoneBook {
         return data;
     }
 
-    public void runToDoList() {
+    public void run() {
         String command;
         do {
             System.out.println("Введите имя (только буквы и пробелы) или номер телефона (содержит 11 - 12 цифр в любом формате) " +
@@ -34,7 +34,7 @@ public class PhoneBook {
         data = data.trim().replaceAll("\\s+", " ");
         if (data.equalsIgnoreCase("list")) {
             if (phoneBook.size() > 0) {
-                printPhoneBook();
+                view();
             } else {
                 System.out.println("Телефонная книга пуста");
             }
@@ -42,13 +42,13 @@ public class PhoneBook {
             return;
         } else if (data.matches(REG_CHECK_NAME)) {
             if (isContainsName(data)) {
-                printData(data, getPhone(data));
+                viewData(data, getPhone(data));
             } else {
                 receivingPhoneVerification(data);
             }
         } else if ((data = phoneVerification(data)).length() > 0) {
             if (isContainsPhone(data)) {
-                printData(getName(data), data);
+                viewData(getName(data), data);
             } else {
                 receivingNameVerification(data);
             }
@@ -57,7 +57,7 @@ public class PhoneBook {
         }
     }
 
-    private void printPhoneBook() {
+    private void view() {
         phoneBook.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue())
                 .forEach((entry) -> System.out.println("Имя: " + entry.getValue() + " - " + "телефон: " + entry.getKey()));
@@ -128,7 +128,7 @@ public class PhoneBook {
         System.out.println("Запись добавлена");
     }
 
-    private void printData(String name, String phone) {
+    private void viewData(String name, String phone) {
         System.out.println("Имя: " + name + " - телефон: " + phone);
     }
 }

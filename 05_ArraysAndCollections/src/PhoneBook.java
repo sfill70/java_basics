@@ -11,7 +11,7 @@ public class PhoneBook {
     private String consoleOperation() {
         String data;
         data = scanner.nextLine();
-        /*try (Scanner scanner = new Scanner(System.in)) {
+       /* try (Scanner scanner = new Scanner(System.in)) {
             data = scanner.nextLine();
         }*/
         return data;
@@ -19,17 +19,14 @@ public class PhoneBook {
 
     public void runToDoList() {
         String command;
-        while (true) {
+        do {
             System.out.println("Введите имя (только буквы и пробелы) или номер телефона (содержит 11 - 12 цифр в любом формате) " +
                     System.lineSeparator() +
                     "Для просмотра введите - list, " +
                     "Для выхода введите - exit");
             command = consoleOperation();
-            if (command.equalsIgnoreCase("exit") || command.equalsIgnoreCase("учше")) {
-                break;
-            }
             processingCommands(command);
-        }
+        } while (!command.equalsIgnoreCase("exit"));
         scanner.close();
     }
 
@@ -41,6 +38,8 @@ public class PhoneBook {
             } else {
                 System.out.println("Телефонная книга пуста");
             }
+        } else if (data.equalsIgnoreCase("exit") || data.equalsIgnoreCase("учше")) {
+            return;
         } else if (data.matches(REG_CHECK_NAME)) {
             if (isContainsName(data)) {
                 printData(data, getPhone(data));

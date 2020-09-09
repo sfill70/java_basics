@@ -3,8 +3,8 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class PhoneBook {
-    private static final String REG_CHECK_PHONE = "[\\d]{11,12}";
-    private static final String REG_CHECK_NAME = "[[\\p{Alpha}][а-я][А-Я]\\s]+";
+    private static final String REG_PHONE = "[\\d]{11,12}";
+    private static final String REG_NAME = "[[\\p{Alpha}][а-я][А-Я]\\s]+";
     private HashMap<String, String> phoneBook = new HashMap<>();
     private Scanner scanner = new Scanner(System.in);
 
@@ -40,7 +40,7 @@ public class PhoneBook {
             }
         } else if (data.equalsIgnoreCase("exit") || data.equalsIgnoreCase("учше")) {
             return;
-        } else if (data.matches(REG_CHECK_NAME)) {
+        } else if (data.matches(REG_NAME)) {
             if (isContainsName(data)) {
                 viewData(data, getPhone(data));
             } else {
@@ -69,7 +69,7 @@ public class PhoneBook {
         if (name.equals("cancel")) {
             return;
         }
-        if (name.matches(REG_CHECK_NAME)) {
+        if (name.matches(REG_NAME)) {
             addPhoneBook(data, name);
         } else {
             System.out.println("Только буквы английского, русского алфавитов и пробелы. Если передумали - " + "cancel");
@@ -94,7 +94,7 @@ public class PhoneBook {
 
     private String phoneVerification(String phone) {
         phone = phone.replaceAll("[^\\d]+", "");
-        if (phone.matches(REG_CHECK_PHONE)) {
+        if (phone.matches(REG_PHONE)) {
             return phone;
         } else {
             return "";

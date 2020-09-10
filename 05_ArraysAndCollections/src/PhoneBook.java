@@ -19,38 +19,37 @@ public class PhoneBook {
 
     public void run() {
         String command;
-        do {
+        boolean isRun = true;
+        while (isRun) {
             System.out.println("Введите имя (только буквы и пробелы) или номер телефона (содержит 11 - 12 цифр в любом формате) " +
                     System.lineSeparator() +
                     "Для просмотра введите - list, " +
                     "Для выхода введите - exit");
             command = consoleOperation();
+            if (command.equalsIgnoreCase("exit") || command.equalsIgnoreCase("учше")) {
+                isRun = false;
+                continue;
+            }
             processingCommands(command);
-        } while (!command.equalsIgnoreCase("exit"));
+        }
         scanner.close();
     }
 
     private void processingCommands(String data) {
         data = data.trim().replaceAll("\\s+", " ");
         if (data.equalsIgnoreCase("list")) {
-            if (phoneBook.size() > 0) {
-                view();
-            } else {
-                System.out.println("Телефонная книга пуста");
-            }
-        } else if (data.equalsIgnoreCase("exit") || data.equalsIgnoreCase("учше")) {
-            return;
+            view();
         } else if (data.matches(REG_NAME)) {
             if (isContainsName(data)) {
-                viewData(data, getPhone(data));
+                printSubscriber(data, getPhone(data));
             } else {
                 receivingPhoneVerification(data);
             }
         } else if ((data = phoneVerification(data)).length() > 0) {
             if (isContainsPhone(data)) {
-                viewData(getName(data), data);
+                printSubscriber(getName(data), data);
             } else {
-                receivingNameVerification(data);
+                addPhoneBook(data, requestNameFromConsole());
             }
         } else {
             System.out.println("Введите верные данные");
@@ -58,11 +57,15 @@ public class PhoneBook {
     }
 
     private void view() {
-        phoneBook.entrySet().stream()
-                .sorted(Map.Entry.comparingByValue())
-                .forEach((entry) -> System.out.println("Имя: " + entry.getValue() + " - " + "телефон: " + entry.getKey()));
+        if (phoneBook.size() > 0) {
+            phoneBook.entrySet().stream()
+                    .sorted(Map.Entry.comparingByValue())
+                    .forEach((entry) -> System.out.println("Имя: " + entry.getValue() + " - " + "телефон: " + entry.getKey()));
+        } else {
+            System.out.println("Телефонная книга пуста");
+        }
     }
-
+// не используется аналог private void receivingPhoneVerification(String data)
     private void receivingNameVerification(String data) {
         System.out.println("Введите Ф.И.О.");
         String name = consoleOperation();
@@ -77,10 +80,20 @@ public class PhoneBook {
         }
     }
 
+    private String requestNameFromConsole() {
+        System.out.println("Введите Ф.И.О.");
+        String name = consoleOperation();
+        if (name.matches(REG_NAME)) {
+            return name;
+        } else {
+            System.out.println("Только буквы английского, русского алфавитов и пробелы. Если передумали - " + "cancel");
+        }
+        return requestNameFromConsole();
+    }
+
     private void receivingPhoneVerification(String data) {
         System.out.println("Введите номер телефона в любом формате 11 - 12 цифр");
-        String phone;
-        phone = consoleOperation();
+        String phone = consoleOperation();
         if (phone.equals("cancel")) {
             return;
         }
@@ -116,7 +129,7 @@ public class PhoneBook {
                 return entry.getKey();
             }
         }
-        return null;
+        return "Абонент с таким номером не существует, а должен";
     }
 
     private String getName(String phone) {
@@ -124,11 +137,14 @@ public class PhoneBook {
     }
 
     private void addPhoneBook(String phone, String name) {
+        if (name.equalsIgnoreCase("cancel")) {
+            return;
+        }
         phoneBook.put(phone, name);
         System.out.println("Запись добавлена");
     }
 
-    private void viewData(String name, String phone) {
+    private void printSubscriber(String name, String phone) {
         System.out.println("Имя: " + name + " - телефон: " + phone);
     }
 }

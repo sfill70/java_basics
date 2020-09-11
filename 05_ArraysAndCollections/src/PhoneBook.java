@@ -43,7 +43,7 @@ public class PhoneBook {
             if (isContainsName(data)) {
                 printSubscriber(data, getPhone(data));
             } else {
-                receivingPhoneVerification(data);
+                requestPhoneVerification(data);
             }
         } else if ((data = phoneVerification(data)).length() > 0) {
             if (isContainsPhone(data)) {
@@ -57,41 +57,27 @@ public class PhoneBook {
     }
 
     private void view() {
-        if (phoneBook.size() > 0) {
-            phoneBook.entrySet().stream()
-                    .sorted(Map.Entry.comparingByValue())
-                    .forEach((entry) -> System.out.println("Имя: " + entry.getValue() + " - " + "телефон: " + entry.getKey()));
-        } else {
+        if (phoneBook.size() == 0) {
             System.out.println("Телефонная книга пуста");
         }
-    }
-// не используется аналог private void receivingPhoneVerification(String data)
-    private void receivingNameVerification(String data) {
-        System.out.println("Введите Ф.И.О.");
-        String name = consoleOperation();
-        if (name.equals("cancel")) {
-            return;
-        }
-        if (name.matches(REG_NAME)) {
-            addPhoneBook(data, name);
-        } else {
-            System.out.println("Только буквы английского, русского алфавитов и пробелы. Если передумали - " + "cancel");
-            receivingNameVerification(data);
-        }
+        phoneBook.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue())
+                .forEach((entry) -> System.out.printf("Имя:%s - телефон: %s ", entry.getValue(), entry.getKey()));
     }
 
     private String requestNameFromConsole() {
         System.out.println("Введите Ф.И.О.");
-        String name = consoleOperation();
-        if (name.matches(REG_NAME)) {
-            return name;
-        } else {
+        while (true) {
+            String name = consoleOperation();
+            if (name.matches(REG_NAME)) {
+                return name;
+            }
             System.out.println("Только буквы английского, русского алфавитов и пробелы. Если передумали - " + "cancel");
         }
-        return requestNameFromConsole();
     }
 
-    private void receivingPhoneVerification(String data) {
+    //Рекрусивный метод хуже.
+    private void requestPhoneVerification(String data) {
         System.out.println("Введите номер телефона в любом формате 11 - 12 цифр");
         String phone = consoleOperation();
         if (phone.equals("cancel")) {
@@ -101,7 +87,7 @@ public class PhoneBook {
             addPhoneBook(phone, data);
         } else {
             System.out.println("Ошибка во вводе номера. Если передумали - " + "cancel");
-            receivingPhoneVerification(data);
+            requestPhoneVerification(data);
         }
     }
 

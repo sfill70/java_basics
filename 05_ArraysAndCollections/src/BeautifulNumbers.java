@@ -22,13 +22,13 @@ public class BeautifulNumbers {
                 if (line.equalsIgnoreCase("exit")) {
                     break;
                 }
-                printResult(searchNumber(hashSet, arrayList, treeSet, line));
+                print(searchNumber(hashSet, arrayList, treeSet, line));
             }
         }
     }
 
-    public HashMap<String, String> searchNumber(HashSet<String> hashSet, ArrayList<String> arrayList, TreeSet<String> treeSet, String line) {
-        HashMap<String, String> result = new HashMap<>();
+    public LinkedList<String> searchNumber(HashSet<String> hashSet, ArrayList<String> arrayList, TreeSet<String> treeSet, String line) {
+        LinkedList<String> result = new LinkedList<>();
         long start;
         long duration;
         boolean isResult;
@@ -37,46 +37,52 @@ public class BeautifulNumbers {
         isResult = arrayList.contains(line);
         duration = System.nanoTime() - start;
         if (isResult) {
-            result.put("Поиск перебором", "Поиск перебором: номер найден, поиск занял - " + duration);
-            System.out.println(duration);
+            result.add("Поиск перебором: номер найден, поиск занял - " + duration);
         } else {
-            result.put("Поиск перебором", "Поиск перебором: номер не найден, поиск занял - " + duration);
+            result.add("Поиск перебором: номер не найден, поиск занял - " + duration);
         }
 
         start = System.nanoTime();
         isResult = Collections.binarySearch(arrayList, line) > 0;
         duration = System.nanoTime() - start;
         if (isResult) {
-            result.put("Бинарный поиск", "Бинарный поиск: номер найден, поиск занял - " + duration);
+            result.add("Бинарный поиск: номер найден, поиск занял - " + duration);
         } else {
-            result.put("Бинарный поиск", "Бинарный поиск: номер не найден, поиск занял - " + duration);
+            result.add("Бинарный поиск: номер не найден, поиск занял - " + duration);
         }
 
         start = System.nanoTime();
         isResult = hashSet.contains(line);
         duration = System.nanoTime() - start;
         if (isResult) {
-            result.put("HashSet", "Поиск в HashSet: номер найден, поиск занял - " + duration);
+            result.add("Поиск в HashSet: номер найден, поиск занял - " + duration);
         } else {
-            result.put("HashSet", "Поиск в HashSet: номер не найден, поиск занял - " + duration);
+            result.add("Поиск в HashSet: номер не найден, поиск занял - " + duration);
         }
 
         start = System.nanoTime();
         isResult = treeSet.contains(line);
         duration = System.nanoTime() - start;
         if (isResult) {
-            result.put("TreeSet", "Поиск в TreeSet: номер найден, поиск занял - " + duration);
+            result.add("Поиск в TreeSet: номер найден, поиск занял - " + duration);
         } else {
-            result.put("TreeSet", "Поиск в TreeSet: номер не найден, поиск занял - " + duration);
+            result.add("Поиск в TreeSet: номер не найден, поиск занял - " + duration);
         }
         return result;
     }
 
+    //Не используется
     private void printResult(HashMap<String, String> result) {
         System.out.println(result.get("Поиск перебором"));
         System.out.println(result.get("Бинарный поиск"));
         System.out.println(result.get("HashSet"));
         System.out.println(result.get("TreeSet"));
+    }
+
+    private void print(LinkedList<String> list) {
+        for (String element : list) {
+            System.out.println(element);
+        }
     }
 
     public void othersBeautyNumbers(HashSet<String> hashSet) {

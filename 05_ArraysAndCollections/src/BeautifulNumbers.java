@@ -31,39 +31,39 @@ public class BeautifulNumbers {
         LinkedList<String> result = new LinkedList<>();
         long start;
         long duration;
-        boolean isResult;
+        boolean isNumberFound;
 
         start = System.nanoTime();
-        isResult = arrayList.contains(line);
+        isNumberFound = arrayList.contains(line);
         duration = System.nanoTime() - start;
-        if (isResult) {
+        if (isNumberFound) {
             result.add("Поиск перебором: номер найден, поиск занял - " + duration);
         } else {
             result.add("Поиск перебором: номер не найден, поиск занял - " + duration);
         }
 
         start = System.nanoTime();
-        isResult = Collections.binarySearch(arrayList, line) > 0;
+        isNumberFound = Collections.binarySearch(arrayList, line) >= 0;
         duration = System.nanoTime() - start;
-        if (isResult) {
+        if (isNumberFound) {
             result.add("Бинарный поиск: номер найден, поиск занял - " + duration);
         } else {
             result.add("Бинарный поиск: номер не найден, поиск занял - " + duration);
         }
 
         start = System.nanoTime();
-        isResult = hashSet.contains(line);
+        isNumberFound = hashSet.contains(line);
         duration = System.nanoTime() - start;
-        if (isResult) {
+        if (isNumberFound) {
             result.add("Поиск в HashSet: номер найден, поиск занял - " + duration);
         } else {
             result.add("Поиск в HashSet: номер не найден, поиск занял - " + duration);
         }
 
         start = System.nanoTime();
-        isResult = treeSet.contains(line);
+        isNumberFound = treeSet.contains(line);
         duration = System.nanoTime() - start;
-        if (isResult) {
+        if (isNumberFound) {
             result.add("Поиск в TreeSet: номер найден, поиск занял - " + duration);
         } else {
             result.add("Поиск в TreeSet: номер не найден, поиск занял - " + duration);

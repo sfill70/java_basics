@@ -6,22 +6,22 @@ public class BankAccountDeposit extends BankAccount {
 
     public BankAccountDeposit(double balance) {
         super(balance);
-        this.closed = this.opened.plusMonths(1);
+        this.closed = this.getOpened().plusMonths(1);
     }
 
     public BankAccountDeposit(int id, double balance) {
         super(id, balance);
-        this.closed = this.opened.plusMonths(1);
+        this.closed = this.getOpened().plusMonths(1);
     }
 
     public BankAccountDeposit(int id, double balance, String date) {
         super(id, balance, date);
-        this.closed = this.opened.plusMonths(1);
+        this.closed = this.getOpened().plusMonths(1);
     }
 
     public BankAccountDeposit(double balance, String date) {
         super(balance, date);
-        this.closed = this.opened.plusMonths(1);
+        this.closed = this.getOpened().plusMonths(1);
     }
 
     @Override

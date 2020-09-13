@@ -7,7 +7,7 @@ public class BankAccount {
     private static HashSet<Integer> idSet = new HashSet();
     private int id;
     private double balance;
-    public LocalDate opened;
+    private LocalDate opened;
 
     public BankAccount(double balance) {
         this.id = generationId();
@@ -75,6 +75,10 @@ public class BankAccount {
         return id;
     }
 
+    public LocalDate getOpened() {
+        return opened;
+    }
+
     public double withdraw(double amount) {
         amount = round(amount,2);
         if (amount <= this.balance) {
@@ -105,7 +109,7 @@ public class BankAccount {
         return false;
     }
 
-    public static double round(double number, int scale) {
+    protected static double round(double number, int scale) {
         int pow = 10;
         for (int i = 1; i < scale; i++)
             pow *= 10;

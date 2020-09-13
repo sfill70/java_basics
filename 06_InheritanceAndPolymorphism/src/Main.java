@@ -29,7 +29,7 @@ public class Main {
         BankCard bankCard = new BankCard(4000);
         BankCard bankCard1 = new BankCard(7000);
 
-        bankCard1.send(bankCard,5000);
+        bankCard1.send(bankCard,5321);
 
         System.out.println(bankCard);
         System.out.println(bankCard1);

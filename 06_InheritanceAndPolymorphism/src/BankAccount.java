@@ -71,7 +71,12 @@ public class BankAccount {
         return balance;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public double withdraw(double amount) {
+        amount = round(amount,2);
         if (amount <= this.balance) {
             this.balance = this.balance - amount;
             System.out.println("Операция выполнена, остаток - " + getBalance());
@@ -83,19 +88,29 @@ public class BankAccount {
     }
 
     public void deposit(double amount) {
+        amount = round(amount,2);
         this.balance = this.balance + amount;
         System.out.println("Счет пополнен, остаток - " + getBalance());
     }
 
     public boolean send(BankAccount receiver, double amount) {
-        if (receiver != null) {
+        amount = round(amount,2);
+        if (idSet.contains(receiver.getId())) {
             double summ;
             if ((summ = this.withdraw(amount)) > 0) {
-                receiver.deposit(summ);
+                receiver.deposit(amount);
                 return true;
             }
         }
         return false;
+    }
+
+    public static double round(double number, int scale) {
+        int pow = 10;
+        for (int i = 1; i < scale; i++)
+            pow *= 10;
+        double tmp = number * pow;
+        return (double) (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) / pow;
     }
 
     @Override

@@ -1,63 +1,43 @@
-import java.time.DateTimeException;
+//import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.HashSet;
 
 public class BankAccount {
-    private static int countId;
     private static HashSet<Integer> idSet = new HashSet();
     private int id;
     private double balance;
     private LocalDate opened;
 
     public BankAccount(double balance) {
+        if (balance <= 0) {
+            System.out.println("Баланс должн быть больше 0");
+            return;
+        }
         this.id = generationId();
-        countId++;
         idSet.add(id);
         this.balance = balance;
         opened = LocalDate.now();
     }
 
     public BankAccount(int id, double balance) {
+        if (balance <= 0) {
+            System.out.println("Баланс должн быть больше 0");
+            return;
+        }
         this.balance = balance;
         opened = LocalDate.now();
-        if (!idSet.contains(id)) {
-            this.id = id;
-            idSet.add(id);
-            countId++;
-        } else {
-            this.id = generationId();
-            countId++;
-            idSet.add(id);
-            System.out.println("BankAccount с данным id создан быть не может, id: " + id);
-        }
+        checkId(id);
     }
 
-    public BankAccount(int id, double balance, String date) {
+
+    public BankAccount(int id, double balance, LocalDate opened) {
         this(id, balance);
-        String[] dateArray = date.trim().split("\\.|\\s|,");
-        try {
-            opened = LocalDate.of(Integer.parseInt(dateArray[0].replaceAll("[^0-9]", "")), Integer.parseInt(dateArray[1].replaceAll("[^0-9]", "")),
-                    Integer.parseInt(dateArray[2].replaceAll("[^0-9]", "")));
-        } catch (NumberFormatException | DateTimeException e) {
-            opened = LocalDate.now();
-            System.out.println("Пользовательские данные не коректны, создан BankAccount с текущей датой");
-        }
+        this.opened = opened;
     }
 
-    public BankAccount(double balance, String date) {
-        this(balance);
-        String[] dateArray = date.trim().split("\\.|\\s|,");
-        try {
-            opened = LocalDate.of(Integer.parseInt(dateArray[0].replaceAll("[^0-9]", "")), Integer.parseInt(dateArray[1].replaceAll("[^0-9]", "")),
-                    Integer.parseInt(dateArray[2].replaceAll("[^0-9]", "")));
-        } catch (NumberFormatException | DateTimeException e) {
-            opened = LocalDate.now();
-            System.out.println("Пользовательские данные не коректны, создан BankAccount с текущей датой");
-        }
-    }
 
     private int generationId() {
-        int id = countId + 1;
+        int id = idSet.size() + 1;
         while (idSet.contains(id)) {
             id = id + 1;
             if (!idSet.contains(id)) {
@@ -66,6 +46,30 @@ public class BankAccount {
         }
         return id;
     }
+
+    private void checkId(int id) {
+        if (!idSet.contains(id)) {
+            this.id = id;
+            idSet.add(id);
+        } else {
+            this.id = generationId();
+            idSet.add(id);
+            System.out.println("BankAccount с данным id создан быть не может, id: " + id);
+        }
+    }
+
+    // метод задание LocalData String'ом
+    /*private void gettingDateFromString(String date) {
+        String[] dateArray = date.trim().split("\\.|\\s|,");
+        try {
+            opened = LocalDate.of(Integer.parseInt(dateArray[0].replaceAll("[^0-9]", "")), Integer.parseInt(dateArray[1].replaceAll("[^0-9]", "")),
+                    Integer.parseInt(dateArray[2].replaceAll("[^0-9]", "")));
+        } catch (NumberFormatException | DateTimeException e) {
+            opened = LocalDate.now();
+            System.out.println("Пользовательские данные не коректны, создан BankAccount с текущей датой");
+        }
+    }*/
+
 
     public double getBalance() {
         return balance;
@@ -80,9 +84,13 @@ public class BankAccount {
     }
 
     public double withdraw(double amount) {
-        amount = round(amount,2);
-        if (amount <= this.balance) {
-            this.balance = this.balance - amount;
+        if (amount <= 0) {
+            System.out.println("Сумма должна быть больше 0");
+            return 0;
+        }
+        amount = round(amount, 2);
+        if (amount <= balance) {
+            balance = balance - amount;
             System.out.println("Операция выполнена, остаток - " + getBalance());
             return amount;
         } else {
@@ -92,16 +100,24 @@ public class BankAccount {
     }
 
     public void deposit(double amount) {
-        amount = round(amount,2);
-        this.balance = this.balance + amount;
+        if (amount <= 0) {
+            System.out.println("Сумма должна быть больше 0");
+            return;
+        }
+        amount = round(amount, 2);
+        balance = balance + amount;
         System.out.println("Счет пополнен, остаток - " + getBalance());
     }
 
     public boolean send(BankAccount receiver, double amount) {
-        amount = round(amount,2);
+        if (amount <= 0) {
+            System.out.println("Сумма должна быть больше 0");
+            return false;
+        }
+        amount = round(amount, 2);
         if (idSet.contains(receiver.getId())) {
-            double summ;
-            if ((summ = this.withdraw(amount)) > 0) {
+            double summ = withdraw(amount);
+            if (summ > 0) {
                 receiver.deposit(amount);
                 return true;
             }

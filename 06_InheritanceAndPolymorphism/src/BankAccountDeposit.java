@@ -15,15 +15,12 @@ public class BankAccountDeposit extends BankAccount {
         this.withdrawDeposit = this.getOpened().plusMonths(DEPOSIT_PERIOD);
     }
 
-    public BankAccountDeposit(int id, double balance, String date) {
+    public BankAccountDeposit(int id, double balance, LocalDate date) {
         super(id, balance, date);
         this.withdrawDeposit = this.getOpened().plusMonths(DEPOSIT_PERIOD);
     }
 
-    public BankAccountDeposit(double balance, String date) {
-        super(balance, date);
-        this.withdrawDeposit = this.getOpened().plusMonths(DEPOSIT_PERIOD);
-    }
+
 
     @Override
     public void deposit(double amount) {

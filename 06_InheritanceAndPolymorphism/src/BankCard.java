@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public class BankCard extends BankAccount {
 
     public BankCard(double balance) {
@@ -8,13 +10,11 @@ public class BankCard extends BankAccount {
         super(id, balance);
     }
 
-    public BankCard(int id, double balance, String date) {
+    public BankCard(int id, double balance, LocalDate date) {
         super(id, balance, date);
     }
 
-    public BankCard(double balance, String date) {
-        super(balance, date);
-    }
+
 
     @Override
     public double withdraw(double amount) {

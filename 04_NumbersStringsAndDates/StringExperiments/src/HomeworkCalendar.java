@@ -1,7 +1,9 @@
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -19,6 +21,12 @@ public class HomeworkCalendar {
             birthday = birthday.plusYears(1);
             i++;
         }
+
+        String date = "1234,56,67";
+        String[] dateArray = date.trim().split("\\.|\\s|,");
+        System.out.println(Arrays.asList(dateArray));
+        String da = "1232xffx.. ";
+        System.out.println(da.replaceAll("[^0-9]", ""));
 
 
        /* Базовый вариант

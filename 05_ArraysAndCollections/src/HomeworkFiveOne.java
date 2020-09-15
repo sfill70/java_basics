@@ -67,6 +67,7 @@ public class HomeworkFiveOne {
         System.out.println("Homework 5.1.3 bonus");
         printCross();
 
+
     }
 
     private static float round(float number, int scale) {

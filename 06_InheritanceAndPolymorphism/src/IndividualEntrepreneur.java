@@ -1,4 +1,4 @@
-public class IndividualEntrepreneur extends Individual {
+public class IndividualEntrepreneur extends Client {
     final static double COMMISSION_MIN = 1.005;
     final static double COMMISSION_MAX = 1.01;
 
@@ -20,10 +20,10 @@ public class IndividualEntrepreneur extends Individual {
         double amountCommissionMax = round(amount / COMMISSION_MAX);
         if (amount < 1000.00) {
             super.deposit(amountCommissionMin);
-            System.out.println(" удержена комиссия 0,5% = " + amountCommissionMin);
+            System.out.println(" удержена комиссия 0,5% = " + round(amount - amountCommissionMin));
         } else if (amount >= 1000) {
             super.deposit(amountCommissionMax);
-            System.out.println(" удержена комиссия 1,0% = " + (amountCommissionMax));
+            System.out.println(" удержена комиссия 1,0% = " + round(amount - amountCommissionMax));
         }
     }
 }

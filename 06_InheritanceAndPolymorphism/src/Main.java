@@ -55,5 +55,15 @@ public class Main {
         clientIP.getInformation();
         clientOOO.getInformation();
 
+        System.out.println("Hah Set " + clientIP.getClientSet());
+        System.out.println(clientIP.getClientSet());
+        clientIP.getClientSet().clear();
+        System.out.println(clientIP.getClientSet());
+        Client clientInd = new Individual(50000);
+        System.out.println(clientIP.getClientSet());
+        clientIP.getClientSet().add(clientInd);
+        clientIP.getClientSet().add(clientInd);
+        System.out.println(clientIP.getClientSet());
+
     }
 }

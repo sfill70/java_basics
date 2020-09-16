@@ -16,10 +16,10 @@ public class legalEntity extends Individual {
         amount = round(amount);
         double amountCommission = round(amount * COMMISSION);
         if (getBalance() >= amountCommission) {
-            System.out.println("Комиссия за снятие составляет - 1% = " + amountCommission);
+            System.out.println("Комиссия за снятие составляет - 1% = " + (amountCommission - amount));
             return super.withdraw(amountCommission);
         } else {
-            System.out.println("Остаток на счете менше запрашиваеммой суммы, доступно - " + amountCommission
+            System.out.println("Остаток на счете менше запрашиваеммой суммы, доступно - " + (round(amount/COMMISSION))
                     + " с учетом комиссии 1%");
             return 0;
         }

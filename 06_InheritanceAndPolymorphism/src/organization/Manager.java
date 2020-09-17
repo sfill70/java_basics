@@ -53,7 +53,7 @@ public class Manager implements Employee {
     @Override
     public String toString() {
         return "Manager{" +
-                "company=" +  (company != null ? company.getName() : "Я пока без работы") +
+                "company=" + (company.equals(Company.LABOR_EXCHANGE) ? "Я пока без работы" : company.getName()) +
                 ", name='" + name + '\'' +
                 ", income=" + income +
                 ", salary=" + getMonthSalary() +

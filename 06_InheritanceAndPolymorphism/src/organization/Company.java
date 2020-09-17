@@ -8,6 +8,7 @@ public class Company {
     private ArrayList<Employee> allEmployees = new ArrayList();
     private String name;
     private BigDecimal income = new BigDecimal("0");
+    final static Company LABOR_EXCHANGE = new Company("Биржа тружа");
 
     public Company(String name) {
         this.name = name;
@@ -111,7 +112,7 @@ public class Company {
                     hire(new Operator(this));
                 }
             }
-            System.out.println("Создано нвых рабочих - " + (number - count) + " " + staff);
+            System.out.println("Создано новых рабочих - " + (number - count) + " " + staff);
         }
     }
 
@@ -140,15 +141,15 @@ public class Company {
                 Manager manager = (Manager) employee;
                 income = income.subtract(manager.getIncome());
                 manager.setWork(false);
-                manager.setCompany(null);
+                manager.setCompany(LABOR_EXCHANGE);
             } else if (employee instanceof TopManager) {
                 TopManager topManager = (TopManager) employee;
                 topManager.setWork(false);
-                topManager.setCompany(null);
+                topManager.setCompany(LABOR_EXCHANGE);
             } else if (employee instanceof Operator) {
                 Operator operator = (Operator) employee;
                 operator.setWork(false);
-                operator.setCompany(null);
+                operator.setCompany(LABOR_EXCHANGE);
             }
         }
     }
@@ -166,7 +167,7 @@ public class Company {
                     Manager manager = (Manager) employee;
                     income = income.subtract(manager.getIncome());
                     manager.setWork(false);
-                    manager.setCompany(null);
+                    manager.setCompany(LABOR_EXCHANGE);
                     allEmployees.remove(employee);
                     break;
                 }
@@ -174,7 +175,7 @@ public class Company {
                 if (employee instanceof TopManager) {
                     TopManager topManager = (TopManager) employee;
                     topManager.setWork(false);
-                    topManager.setCompany(null);
+                    topManager.setCompany(LABOR_EXCHANGE);
                     allEmployees.remove(employee);
                     break;
                 }
@@ -182,7 +183,7 @@ public class Company {
                 if (employee instanceof Operator) {
                     Operator operator = (Operator) employee;
                     operator.setWork(false);
-                    operator.setCompany(null);
+                    operator.setCompany(LABOR_EXCHANGE);
                     allEmployees.remove(employee);
                     break;
                 }
@@ -197,15 +198,15 @@ public class Company {
             Manager manager = (Manager) employee;
             income = income.subtract(manager.getIncome());
             manager.setWork(false);
-            manager.setCompany(null);
+            manager.setCompany(LABOR_EXCHANGE);
         } else if (employee instanceof TopManager) {
             TopManager topManager = (TopManager) employee;
             topManager.setWork(false);
-            topManager.setCompany(null);
+            topManager.setCompany(LABOR_EXCHANGE);
         } else if (employee instanceof Operator) {
             Operator operator = (Operator) employee;
             operator.setWork(false);
-            operator.setCompany(null);
+            operator.setCompany(LABOR_EXCHANGE);
         }
     }
 

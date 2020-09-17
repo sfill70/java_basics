@@ -10,9 +10,10 @@ public class Main {
             romashka.hire(new Operator(romashka));
         }
 
-        for (int i = 0; i < 80; i++) {
+        for (int i = 0; i < 70; i++) {
             romashka.hire(new Manager(romashka));
         }
+        romashka.hire(Staff.MANAGER, 10);
 
         romashka.hireAll(0,0,10);
 
@@ -54,6 +55,16 @@ public class Main {
 
         System.out.println(romashka.getLowestSalaryStaff(20));
         System.out.println(romashka.getTopSalaryStaff(20));
+
+        Company fikus = new Company("Фикус");
+        fikus.hireAll(0,0,10);
+        fikus.printTopSalary(10);
+        System.out.println(fikus.getIncome());
+        fikus.hire(Staff.MANAGER, 20);
+        fikus.printTopSalary(30);
+        System.out.println(fikus.getIncome());
+        fikus.hire(Staff.OPERATOR,-3);
+        fikus.hireAll(-1,-6,-30);
 
 
 

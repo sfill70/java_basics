@@ -50,7 +50,7 @@ public class TopManager implements Employee {
     @Override
     public String toString() {
         return "TopManager{" +
-                "company=" +  (company != null ? company.getName() : "Я пока без работы") +
+                "company=" + (company.equals(Company.LABOR_EXCHANGE) ? "Я пока без работы" : company.getName()) +
                 ", name='" + name + '\'' +
                 ", salary=" + getMonthSalary() +
                 '}';

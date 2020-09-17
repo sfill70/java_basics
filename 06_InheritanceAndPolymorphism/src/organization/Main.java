@@ -46,6 +46,9 @@ public class Main {
         System.out.println("Трудовые ресурсы - " + Company.getLaborResources().size());
 
         System.out.println("Доходы Лютик - " + lutik.getIncome());
+        lutik.fire(40);
+        System.out.println("Доходы Лютик - " + lutik.getIncome());
+
         System.out.println("-----------/ Махсимальные зарплаты Лютик /----------------------------");
         lutik.printTopSalary(15);
         System.out.println("-----------/ Махсимальные зарплаты Ромашка /----------------------------");
@@ -56,9 +59,12 @@ public class Main {
         System.out.println(romashka.getLowestSalaryStaff(20));
         System.out.println(romashka.getTopSalaryStaff(20));
 
+
         Company fikus = new Company("Фикус");
         fikus.hireAll(0,0,10);
         fikus.printTopSalary(10);
+        fikus.fire(Staff.OPERATOR);
+        fikus.fire(Staff.MANAGER);
         System.out.println(fikus.getIncome());
         fikus.hire(Staff.MANAGER, 20);
         fikus.printTopSalary(30);

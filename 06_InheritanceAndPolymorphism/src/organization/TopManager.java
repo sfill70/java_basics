@@ -32,6 +32,20 @@ public class TopManager implements Employee {
         this.company = company;
     }
 
+    protected void remove(){
+        company.removeEmployee(this);
+        setWork(false);
+        setCompany(Company.LABOR_EXCHANGE);
+
+    }
+
+    protected void add(Company company){
+        setWork(true);
+        setCompany(company);
+        company.addEmployee(this);
+
+    }
+
 
     public BigDecimal getMonthSalary() {
         return salary.add(getBonus()).setScale(2, RoundingMode.HALF_UP);

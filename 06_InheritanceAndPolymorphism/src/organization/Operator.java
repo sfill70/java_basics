@@ -15,11 +15,11 @@ public class Operator implements Employee {
         this.company = company;
         this.name = "operator_" + id;
         isWork = true;
-        Company.addLaborResources(id,this);
+        Company.addLaborResources(id, this);
 
     }
 
-   public boolean isWork() {
+    protected boolean isWork() {
         return isWork;
     }
 
@@ -29,6 +29,20 @@ public class Operator implements Employee {
 
     protected void setCompany(Company company) {
         this.company = company;
+    }
+
+    protected void remove(){
+        company.removeEmployee(this);
+        setWork(false);
+        setCompany(Company.LABOR_EXCHANGE);
+
+    }
+
+    protected void add(Company company){
+        setWork(true);
+        setCompany(company);
+        company.addEmployee(this);
+
     }
 
     @Override

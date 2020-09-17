@@ -43,6 +43,13 @@ public class Company {
         laborResources.put(id, employee);
     }
 
+    protected void removeEmployee(Employee employee) {
+        allEmployees.remove(employee);
+    }
+
+    protected void addEmployee(Employee employee) {
+        allEmployees.add(employee);
+    }
 
  /*   public <T extends Employee> void hire(Employee employee){
 
@@ -67,9 +74,7 @@ public class Company {
                 if (employee instanceof Manager) {
                     Manager manager = (Manager) employee;
                     if (!manager.isWork()) {
-                        manager.setCompany(this);
-                        manager.setWork(true);
-                        allEmployees.add(manager);
+                        manager.add(this);
                         income = income.add(manager.getIncome());
                         count++;
                     }
@@ -78,9 +83,7 @@ public class Company {
                 if (employee instanceof TopManager) {
                     TopManager topManager = (TopManager) employee;
                     if (!topManager.isWork()) {
-                        topManager.setCompany(this);
-                        topManager.setWork(true);
-                        allEmployees.add(topManager);
+                        topManager.add(this);
                         count++;
                     }
                 }
@@ -88,9 +91,7 @@ public class Company {
                 if (employee instanceof Operator) {
                     Operator operator = (Operator) employee;
                     if (!operator.isWork()) {
-                        operator.setCompany(this);
-                        operator.setWork(true);
-                        allEmployees.add(operator);
+                        operator.add(this);
                         count++;
                     }
                 }
@@ -136,20 +137,17 @@ public class Company {
         Random random = new Random();
         for (int i = 0; i < count; i++) {
             Employee employee = allEmployees.get(random.nextInt(allEmployees.size() - 1));
-            allEmployees.remove(employee);
+//            allEmployees.remove(employee);
             if (employee instanceof Manager) {
                 Manager manager = (Manager) employee;
                 income = income.subtract(manager.getIncome());
-                manager.setWork(false);
-                manager.setCompany(LABOR_EXCHANGE);
+                manager.remove();
             } else if (employee instanceof TopManager) {
                 TopManager topManager = (TopManager) employee;
-                topManager.setWork(false);
-                topManager.setCompany(LABOR_EXCHANGE);
+                topManager.remove();
             } else if (employee instanceof Operator) {
                 Operator operator = (Operator) employee;
-                operator.setWork(false);
-                operator.setCompany(LABOR_EXCHANGE);
+                operator.remove();
             }
         }
     }
@@ -166,25 +164,19 @@ public class Company {
                 if (employee instanceof Manager) {
                     Manager manager = (Manager) employee;
                     income = income.subtract(manager.getIncome());
-                    manager.setWork(false);
-                    manager.setCompany(LABOR_EXCHANGE);
-                    allEmployees.remove(employee);
+                    manager.remove();
                     break;
                 }
             } else if (staff.equals(Staff.TOP_MANAGER)) {
                 if (employee instanceof TopManager) {
                     TopManager topManager = (TopManager) employee;
-                    topManager.setWork(false);
-                    topManager.setCompany(LABOR_EXCHANGE);
-                    allEmployees.remove(employee);
+                    topManager.remove();
                     break;
                 }
             } else if (staff.equals(Staff.OPERATOR)) {
                 if (employee instanceof Operator) {
                     Operator operator = (Operator) employee;
-                    operator.setWork(false);
-                    operator.setCompany(LABOR_EXCHANGE);
-                    allEmployees.remove(employee);
+                    operator.remove();
                     break;
                 }
             }
@@ -197,16 +189,13 @@ public class Company {
         if (employee instanceof Manager) {
             Manager manager = (Manager) employee;
             income = income.subtract(manager.getIncome());
-            manager.setWork(false);
-            manager.setCompany(LABOR_EXCHANGE);
+            manager.remove();
         } else if (employee instanceof TopManager) {
             TopManager topManager = (TopManager) employee;
-            topManager.setWork(false);
-            topManager.setCompany(LABOR_EXCHANGE);
+            topManager.remove();
         } else if (employee instanceof Operator) {
             Operator operator = (Operator) employee;
-            operator.setWork(false);
-            operator.setCompany(LABOR_EXCHANGE);
+            operator.remove();
         }
     }
 

@@ -50,6 +50,20 @@ public class Manager implements Employee {
         return income;
     }
 
+    protected void remove(){
+        company.removeEmployee(this);
+        setWork(false);
+        setCompany(Company.LABOR_EXCHANGE);
+
+    }
+
+    protected void add(Company company){
+        setWork(true);
+        setCompany(company);
+        company.addEmployee(this);
+
+    }
+
     @Override
     public String toString() {
         return "Manager{" +

@@ -1,6 +1,8 @@
 package organization;
 
 
+import java.math.BigDecimal;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -15,7 +17,7 @@ public class Main {
         }
         romashka.hire(Staff.MANAGER, 10);
 
-        romashka.hireAll(0,0,10);
+        romashka.hireAll(0, 0, 10);
 
         System.out.println("Доход компании - " + romashka.getIncome());
 
@@ -61,7 +63,7 @@ public class Main {
 
 
         Company fikus = new Company("Фикус");
-        fikus.hireAll(0,0,10);
+        fikus.hireAll(0, 0, 10);
         fikus.printTopSalary(10);
         fikus.fire(Staff.OPERATOR);
         fikus.fire(Staff.MANAGER);
@@ -69,8 +71,15 @@ public class Main {
         fikus.hire(Staff.MANAGER, 20);
         fikus.printTopSalary(30);
         System.out.println(fikus.getIncome());
-        fikus.hire(Staff.OPERATOR,-3);
-        fikus.hireAll(-1,-6,-30);
+        fikus.hire(Staff.OPERATOR, -3);
+        fikus.hireAll(-1, -6, -30);
+
+        BigDecimal bg;
+        System.out.println(bg = fikus.getIncome());
+        fikus.fire(Staff.MANAGER);
+        BigDecimal dg = bg.subtract(fikus.getIncome());
+        System.out.println(dg);
+        System.out.println(fikus.getIncome());
 
 
 

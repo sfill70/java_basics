@@ -46,11 +46,12 @@ public class Manager implements Employee {
         return new BigDecimal(String.valueOf(income.divide(BigDecimal.valueOf(20.00))));
     }
 
-    protected BigDecimal getIncome() {
+    public BigDecimal getIncome() {
         return income;
     }
 
     protected void remove(){
+        company.decreaseIncome(this);
         company.removeEmployee(this);
         setWork(false);
         setCompany(Company.LABOR_EXCHANGE);
@@ -61,6 +62,7 @@ public class Manager implements Employee {
         setWork(true);
         setCompany(company);
         company.addEmployee(this);
+        company.increaseIncome(this);
 
     }
 

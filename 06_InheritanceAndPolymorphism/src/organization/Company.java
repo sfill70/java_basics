@@ -54,11 +54,12 @@ public class Company {
  /*   public <T extends Employee> void hire(Employee employee){
 
     }*/
-
+// Здесь можно использовать мктод add всех Employee и отказаться от конструктора Employee(company)
     public void hire(Employee employee) {
         allEmployees.add(employee);
         if (employee instanceof Manager) {
-            income = income.add(((Manager) employee).getIncome());
+            Manager manager = (Manager) employee;
+            increaseIncome(manager);
         }
     }
 
@@ -75,7 +76,6 @@ public class Company {
                     Manager manager = (Manager) employee;
                     if (!manager.isWork()) {
                         manager.add(this);
-                        income = income.add(manager.getIncome());
                         count++;
                     }
                 }
@@ -124,6 +124,10 @@ public class Company {
         hire(Staff.TOP_MANAGER, topManager);
     }
 
+    protected void increaseIncome(Manager manager) {
+        income = income.add(manager.getIncome());
+    }
+
     // Увольнение нескольких случайных сотрудников
     public void fire(int count) {
         if (allEmployees.isEmpty()) {
@@ -140,7 +144,6 @@ public class Company {
 //            allEmployees.remove(employee);
             if (employee instanceof Manager) {
                 Manager manager = (Manager) employee;
-                income = income.subtract(manager.getIncome());
                 manager.remove();
             } else if (employee instanceof TopManager) {
                 TopManager topManager = (TopManager) employee;
@@ -163,7 +166,6 @@ public class Company {
             if (staff.equals(Staff.MANAGER)) {
                 if (employee instanceof Manager) {
                     Manager manager = (Manager) employee;
-                    income = income.subtract(manager.getIncome());
                     manager.remove();
                     break;
                 }
@@ -188,7 +190,6 @@ public class Company {
     public void fire(Employee employee) {
         if (employee instanceof Manager) {
             Manager manager = (Manager) employee;
-            income = income.subtract(manager.getIncome());
             manager.remove();
         } else if (employee instanceof TopManager) {
             TopManager topManager = (TopManager) employee;
@@ -197,6 +198,10 @@ public class Company {
             Operator operator = (Operator) employee;
             operator.remove();
         }
+    }
+
+    protected void decreaseIncome(Manager manager) {
+        income = income.subtract(manager.getIncome());
     }
 
     public BigDecimal getIncome() {

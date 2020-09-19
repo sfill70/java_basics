@@ -1,9 +1,12 @@
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Stream;
+
+import static java.lang.Integer.compare;
 
 public class Main {
     /*String root = "D:\\IdeaProjects\\java_basics\\07_AdvancedOOPFeatures";
@@ -26,10 +29,19 @@ public class Main {
         };
         staff.sort(comparator);
 
+/*
+        default Comparator<T> thenComparing(Comparator<? super T> other) {
+            Objects.requireNonNull(other);
+            return (Comparator<T> & Serializable) (c1, c2) -> {
+                int res = compare(c1, c2);
+                return (res != 0) ? res : other.compare(c1, c2);
+            };
+        }*/
+
         //Покороче
-        staff.sort((o1, o2) -> {
-            int compareSalary;
-            return (compareSalary = o1.getSalary().compareTo(o2.getSalary())) == 0 ? o1.getName().compareTo(o2.getName()) : compareSalary;
+        staff.sort((Employee o1, Employee o2) -> {
+            int compareSalary = o1.getSalary().compareTo(o2.getSalary());
+            return compareSalary == 0 ? o1.getName().compareTo(o2.getName()) : compareSalary;
         });
 
 

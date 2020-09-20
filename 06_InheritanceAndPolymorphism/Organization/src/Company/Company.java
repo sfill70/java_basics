@@ -159,14 +159,16 @@ public class Company {
     // Это IDE постарлась
     Comparator<Employee> comparator = Comparator.comparing(Employee::getMonthSalary);
 
-    private void AllEmployeesSort() {
-        allEmployees.sort(comparator);
-
+    private List<Employee> AllEmployeesSort() {
+        ArrayList<Employee> list = new ArrayList<Employee>(allEmployees);
+        list.sort(comparator);
+        return list;
     }
 
-    private void AllEmployeesReverse() {
-        AllEmployeesSort();
-        Collections.reverse(allEmployees);
+    private List<Employee> AllEmployeesReverse() {
+        ArrayList<Employee> list = new ArrayList<Employee>(AllEmployeesSort());
+        Collections.reverse(list);
+        return list;
     }
 
     public List<Employee> getTopSalaryStaff(int count) {
@@ -175,8 +177,7 @@ public class Company {
             System.out.println("Сотрудников нет.");
             return list;
         }
-        AllEmployeesReverse();
-        list.addAll(allEmployees.subList(0, count));
+        list.addAll(AllEmployeesReverse().subList(0, count));
         return list;
     }
 
@@ -186,30 +187,27 @@ public class Company {
             System.out.println("Сотрудников нет.");
             return list;
         }
-        AllEmployeesReverse();
-        list.addAll(allEmployees.subList(allEmployees.size() - count, allEmployees.size() - 1));
+        list.addAll(AllEmployeesReverse().subList(AllEmployeesReverse().size() - count, AllEmployeesReverse().size() - 1));
         return list;
     }
 
     public void printLowestSalary(int count) {
-        AllEmployeesSort();
-        if (count > allEmployees.size() || count <= 0) {
+        if (count >  AllEmployeesSort().size() || count <= 0) {
             System.out.println("Число сотрудниеков введено неверно");
             return;
         }
         for (int i = 0; i < count; i++) {
-            System.out.println(allEmployees.get(i));
+            System.out.println( AllEmployeesSort().get(i));
         }
     }
 
     public void printTopSalary(int count) {
-        AllEmployeesSort();
-        if (count > allEmployees.size() || count <= 0) {
+        if (count >  AllEmployeesSort().size() || count <= 0) {
             System.out.println("Число сотрудниеков введено неверно");
             return;
         }
-        for (int i = allEmployees.size() - 1; i >= (allEmployees.size() - count); i--) {
-            System.out.println(allEmployees.get(i));
+        for (int i =  AllEmployeesSort().size() - 1; i >= ( AllEmployeesSort().size() - count); i--) {
+            System.out.println( AllEmployeesSort().get(i));
         }
     }
 

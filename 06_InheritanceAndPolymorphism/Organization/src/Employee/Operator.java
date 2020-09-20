@@ -1,4 +1,6 @@
-package organization;
+package Employee;
+
+import Company.Company;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -6,43 +8,45 @@ import java.math.RoundingMode;
 public class Operator implements Employee {
 
     private Company company;
-    private boolean isWork;
     final private String id = Company.getIdEmployee();
     final private String name;
     final private BigDecimal salary = new BigDecimal("30000").setScale(2, RoundingMode.HALF_UP);
 
-    public Operator(Company company) {
-        this.company = company;
+    public Operator() {
         this.name = "operator_" + id;
-        isWork = true;
-        Company.addLaborResources(id, this);
-
+        this.company = Company.LABOR_EXCHANGE;
+        Company.addLaborResources(this);
     }
 
-    protected boolean isWork() {
-        return isWork;
-    }
-
-    protected void setWork(boolean work) {
-        isWork = work;
+    public boolean isWork() {
+        return company.equals(Company.LABOR_EXCHANGE);
     }
 
     protected void setCompany(Company company) {
         this.company = company;
     }
 
-    protected void remove(){
-        company.removeEmployee(this);
-        setWork(false);
-        setCompany(Company.LABOR_EXCHANGE);
-
+    public String getId() {
+        return id;
     }
 
-    protected void add(Company company){
-        setWork(true);
-        setCompany(company);
-        company.addEmployee(this);
+    @Override
+    public void add(Company company) {
+        if (company != Company.LABOR_EXCHANGE) {
+            setCompany(company);
+            company.addEmployee(this);
+        }
+    }
 
+    @Override
+    public void remove() {
+        company.removeEmployee(this);
+        setCompany(Company.LABOR_EXCHANGE);
+    }
+
+    @Override
+    public BigDecimal getIncome() {
+        return new BigDecimal("0");
     }
 
     @Override

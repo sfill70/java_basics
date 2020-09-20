@@ -1,4 +1,6 @@
-package organization;
+package Employee;
+
+import Company.Company;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -7,34 +9,27 @@ import java.util.Random;
 public class Manager implements Employee {
 
     private Company company;
-    private boolean isWork;
     final private String id = Company.getIdEmployee();
     final private String name;
     protected BigDecimal income = getIncomeManager();
     final private BigDecimal salary = new BigDecimal("40000").setScale(2, RoundingMode.HALF_UP);
 
-    public Manager(Company company) {
-        this.company = company;
+    public Manager() {
         this.name = "manager_" + id;
-        isWork = true;
-        Company.addLaborResources(id, this);
-
+        this.company = Company.LABOR_EXCHANGE;
+        Company.addLaborResources(this);
     }
 
-    protected boolean isWork() {
-        return isWork;
-    }
-
-    protected void setWork(boolean work) {
-        isWork = work;
+    public boolean isWork() {
+        return company.equals(Company.LABOR_EXCHANGE);
     }
 
     protected void setCompany(Company company) {
         this.company = company;
     }
-    @Override
-    public BigDecimal getMonthSalary() {
-        return salary.add(getBonus()).setScale(2, RoundingMode.HALF_UP);
+
+    public String getId() {
+        return id;
     }
 
     private BigDecimal getIncomeManager() {
@@ -46,24 +41,31 @@ public class Manager implements Employee {
         return new BigDecimal(String.valueOf(income.divide(BigDecimal.valueOf(20.00))));
     }
 
+
+    @Override
+    public BigDecimal getMonthSalary() {
+        return salary.add(getBonus()).setScale(2, RoundingMode.HALF_UP);
+    }
+
+    @Override
     public BigDecimal getIncome() {
         return income;
     }
 
-    protected void remove(){
-        company.decreaseIncome(this);
-        company.removeEmployee(this);
-        setWork(false);
-        setCompany(Company.LABOR_EXCHANGE);
-
+    @Override
+    public void add(Company company) {
+        if (company != Company.LABOR_EXCHANGE) {
+            setCompany(company);
+            company.addEmployee(this);
+            company.increaseIncome(this);
+        }
     }
 
-    protected void add(Company company){
-        setWork(true);
-        setCompany(company);
-        company.addEmployee(this);
-        company.increaseIncome(this);
-
+    @Override
+    public void remove() {
+        company.decreaseIncome(this);
+        company.removeEmployee(this);
+        setCompany(Company.LABOR_EXCHANGE);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package organization;
+package Company;
 
 public enum Staff {
     OPERATOR,

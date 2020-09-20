@@ -173,6 +173,10 @@ public class Company {
 
     public List<Employee> getTopSalaryStaff(int count) {
         List<Employee> list = new ArrayList<>();
+        if (count > AllEmployeesSort().size() || count <= 0) {
+            System.out.println("Число сотрудниеков введено неверно");
+            return list;
+        }
         if (allEmployees.isEmpty()) {
             System.out.println("Сотрудников нет.");
             return list;
@@ -183,6 +187,10 @@ public class Company {
 
     public List<Employee> getLowestSalaryStaff(int count) {
         List<Employee> list = new ArrayList<>();
+        if (count > AllEmployeesSort().size() || count <= 0) {
+            System.out.println("Число сотрудниеков введено неверно");
+            return list;
+        }
         if (allEmployees.isEmpty()) {
             System.out.println("Сотрудников нет.");
             return list;
@@ -192,22 +200,22 @@ public class Company {
     }
 
     public void printLowestSalary(int count) {
-        if (count >  AllEmployeesSort().size() || count <= 0) {
+        if (count > AllEmployeesSort().size() || count <= 0) {
             System.out.println("Число сотрудниеков введено неверно");
             return;
         }
         for (int i = 0; i < count; i++) {
-            System.out.println( AllEmployeesSort().get(i));
+            System.out.println(AllEmployeesSort().get(i));
         }
     }
 
     public void printTopSalary(int count) {
-        if (count >  AllEmployeesSort().size() || count <= 0) {
+        if (count > AllEmployeesSort().size() || count <= 0) {
             System.out.println("Число сотрудниеков введено неверно");
             return;
         }
-        for (int i =  AllEmployeesSort().size() - 1; i >= ( AllEmployeesSort().size() - count); i--) {
-            System.out.println( AllEmployeesSort().get(i));
+        for (int i = AllEmployeesSort().size() - 1; i >= (AllEmployeesSort().size() - count); i--) {
+            System.out.println(AllEmployeesSort().get(i));
         }
     }
 

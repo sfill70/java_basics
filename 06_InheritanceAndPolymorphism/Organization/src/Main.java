@@ -25,7 +25,7 @@ public class Main {
             rose.fire(Staff.TOP_MANAGER);
         }
         System.out.println(rose.getLowestSalaryStaff(20));
-        System.out.println(rose.getTopSalaryStaff(20));
+        System.out.println(rose.getTopSalaryStaff(-1));
         System.out.println("----------------/-----------------------/----------------------------/------------------------/");
 
         //Вот здесь набрано количество по условию задачи.

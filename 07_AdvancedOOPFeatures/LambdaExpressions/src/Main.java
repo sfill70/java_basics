@@ -1,12 +1,8 @@
-import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Stream;
 
-import static java.lang.Integer.compare;
 
 public class Main {
     /*String root = "D:\\IdeaProjects\\java_basics\\07_AdvancedOOPFeatures";
@@ -20,6 +16,7 @@ public class Main {
 
         ArrayList<Employee> staff = loadStaffFromFile();
 
+
         Comparator<Employee> comparator = (Employee o1, Employee o2) -> {
             int compareSalary = (o1.getSalary().compareTo(o2.getSalary().compareTo(o2.getName().compareTo(o1.getName()))));
             if ((compareSalary == 0)) {
@@ -27,7 +24,6 @@ public class Main {
             }
             return compareSalary;
         };
-        staff.sort(comparator);
 
 /*
         default Comparator<T> thenComparing(Comparator<? super T> other) {
@@ -38,12 +34,12 @@ public class Main {
             };
         }*/
 
+
         //Покороче
         staff.sort((Employee o1, Employee o2) -> {
             int compareSalary = o1.getSalary().compareTo(o2.getSalary());
             return compareSalary == 0 ? o1.getName().compareTo(o2.getName()) : compareSalary;
         });
-
 
         for (Employee e : staff
         ) {
@@ -58,8 +54,14 @@ public class Main {
         for (Employee e : staff
         ) {
             System.out.println(e);
-
         }
+
+        System.out.println("------------------------------/--------------------------------------");
+        System.out.println("Работник с максимальной зарплатой работающий с 2017 года");
+        staff.stream()
+                .filter(e -> e.getWorkStart().toString().trim().substring(e.getWorkStart().toString().trim().lastIndexOf(" ")).equals(" 2017"))
+                .max(Comparator.comparing(Employee::getSalary))
+                .ifPresent(System.out::println);
     }
 
     private static ArrayList<Employee> loadStaffFromFile() {

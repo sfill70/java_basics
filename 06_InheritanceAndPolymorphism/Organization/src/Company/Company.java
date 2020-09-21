@@ -1,9 +1,7 @@
 package Company;
 
 import Employee.Employee;
-import Employee.Operator;
-import Employee.TopManager;
-import Employee.Manager;
+
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -71,13 +69,13 @@ public class Company {
     }
 
     //Получение Set для hireAll
-    public HashSet<Employee> getEmployeeSet(int operator, int manager, int topManager) {
-        return laborResources.getEmployeeSet(operator, manager, topManager);
+    public HashSet<Employee> getEmployeeSet(int operator, int manager, int topManager, int developer) {
+        return laborResources.getEmployeeSet(operator, manager, topManager, developer);
     }
 
     //Получение Set для hireAll по сотруднику можно перегрузить предыдущий метод
-    public HashSet<Employee> getStaffSet(Staff staff, int count) {
-        return laborResources.getStaffSet(staff, count);
+    public HashSet<Employee> getStaffSet(Class<? extends Employee> classToFire, int count) {
+        return laborResources.getStaffSet(classToFire, count);
     }
 
     public void increaseIncome(Employee employee) {
@@ -109,45 +107,23 @@ public class Company {
     }
 
     //Увольнение первого попавшегося сотрудника этой профессии
-    public void fire(Staff staff) {
+    public void fire(Class<? extends Employee> classToFire) {
         if (allEmployees.isEmpty()) {
             System.out.println("У фирмы нет сотрудников");
             return;
         }
         for (Employee employee : allEmployees
         ) {
-            if (staff.equals(Staff.MANAGER)) {
-                if (employee instanceof Manager) {
-                    fire(employee);
-                    break;
-                }
-            } else if (staff.equals(Staff.TOP_MANAGER)) {
-                if (employee instanceof TopManager) {
-                    fire(employee);
-                    break;
-                }
-            } else if (staff.equals(Staff.OPERATOR)) {
-                if (employee instanceof Operator) {
-                    fire(employee);
-                    break;
-                }
+            if (employee.getClass() == (classToFire)) { // проверяем классы
+//                System.out.println(employee.getClass() + " - " + classToFire);
+                employee.remove();
+                break;
             }
         }
     }
 
-    // Для проверки
-    public Employee getEmployeeDyId(String id) {
-        for (Employee employee : allEmployees
-        ) {
-            if (employee.getId().equals(id))
-                return employee;
-        }
-        return null;
-    }
-
-
-    public void decreaseIncome(Manager manager) {
-        income = income.subtract(manager.getIncome());
+    public void decreaseIncome(Employee employee) {
+        income = income.subtract(employee.getIncome());
     }
 
     public BigDecimal getIncome() {
@@ -159,21 +135,40 @@ public class Company {
     // Это IDE постарлась
     Comparator<Employee> comparator = Comparator.comparing(Employee::getMonthSalary);
 
-    private List<Employee> AllEmployeesSort() {
+    private List<Employee> getSortedEmployee(int count, Comparator<Employee> comparator) {
+        if (count <= 0) {
+            System.out.println("Число сотрудников введено неверно");
+            return Collections.emptyList();
+        }
+
+        ArrayList<Employee> list = new ArrayList<Employee>(allEmployees);
+        list.sort(comparator);
+        return list.subList(0, Math.min(count, list.size()));
+    }
+
+    public List<Employee> getTopSalaryStaff(int count) {
+        return getSortedEmployee(count, comparator);
+    }
+
+    public List<Employee> getLowestSalaryStaff(int count) {
+        return getSortedEmployee(count, comparator.reversed());
+    }
+
+    /*private List<Employee> allEmployeesSort() {
         ArrayList<Employee> list = new ArrayList<Employee>(allEmployees);
         list.sort(comparator);
         return list;
     }
 
-    private List<Employee> AllEmployeesReverse() {
-        ArrayList<Employee> list = new ArrayList<Employee>(AllEmployeesSort());
-        Collections.reverse(list);
+    private List<Employee> allEmployeesReverse() {
+        ArrayList<Employee> list = new ArrayList<Employee>(allEmployees);
+        list.sort(comparator.reversed());
         return list;
     }
 
-    public List<Employee> getTopSalaryStaff(int count) {
+    public List<Employee> getTopSalaryStaff1(int count) {
         List<Employee> list = new ArrayList<>();
-        if (count > AllEmployeesSort().size() || count <= 0) {
+        if (count > allEmployeesSort().size() || count <= 0) {
             System.out.println("Число сотрудниеков введено неверно");
             return list;
         }
@@ -181,13 +176,13 @@ public class Company {
             System.out.println("Сотрудников нет.");
             return list;
         }
-        list.addAll(AllEmployeesReverse().subList(0, count));
+        list.addAll(allEmployeesReverse().subList(0, count));
         return list;
     }
 
-    public List<Employee> getLowestSalaryStaff(int count) {
+    public List<Employee> getLowestSalaryStaff1(int count) {
         List<Employee> list = new ArrayList<>();
-        if (count > AllEmployeesSort().size() || count <= 0) {
+        if (count > allEmployeesSort().size() || count <= 0) {
             System.out.println("Число сотрудниеков введено неверно");
             return list;
         }
@@ -195,29 +190,29 @@ public class Company {
             System.out.println("Сотрудников нет.");
             return list;
         }
-        list.addAll(AllEmployeesReverse().subList(AllEmployeesReverse().size() - count, AllEmployeesReverse().size() - 1));
+        list.addAll(allEmployeesReverse().subList(allEmployeesReverse().size() - count, allEmployeesReverse().size() - 1));
         return list;
     }
 
     public void printLowestSalary(int count) {
-        if (count > AllEmployeesSort().size() || count <= 0) {
+        if (count > allEmployeesSort().size() || count <= 0) {
             System.out.println("Число сотрудниеков введено неверно");
             return;
         }
         for (int i = 0; i < count; i++) {
-            System.out.println(AllEmployeesSort().get(i));
+            System.out.println(allEmployeesSort().get(i));
         }
     }
 
     public void printTopSalary(int count) {
-        if (count > AllEmployeesSort().size() || count <= 0) {
+        if (count > allEmployeesSort().size() || count <= 0) {
             System.out.println("Число сотрудниеков введено неверно");
             return;
         }
-        for (int i = AllEmployeesSort().size() - 1; i >= (AllEmployeesSort().size() - count); i--) {
-            System.out.println(AllEmployeesSort().get(i));
+        for (int i = allEmployeesSort().size() - 1; i >= (allEmployeesSort().size() - count); i--) {
+            System.out.println(allEmployeesSort().get(i));
         }
-    }
+    }*/
 
 
 }

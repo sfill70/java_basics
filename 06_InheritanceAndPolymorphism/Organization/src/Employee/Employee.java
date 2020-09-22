@@ -5,11 +5,27 @@ import Company.Company;
 import java.math.BigDecimal;
 
 public interface Employee {
+
     BigDecimal getMonthSalary();
 
-   void add(Company company);
+    Company getCompany();
 
-    void remove();
+    void setCompany(Company company);
+
+    default void add(Company company) {
+        if (company != Company.LABOR_EXCHANGE) {
+            setCompany(company);
+            company.addEmployee(this);
+            company.increaseIncome(this);
+        }
+    }
+
+    default void remove() {
+        Company company = this.getCompany();
+        company.decreaseIncome(this);
+        company.removeEmployee(this);
+        setCompany(Company.LABOR_EXCHANGE);
+    }
 
     boolean isWork();
 

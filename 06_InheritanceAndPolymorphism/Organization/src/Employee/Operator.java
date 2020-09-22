@@ -22,26 +22,16 @@ public class Operator implements Employee {
         return company.equals(Company.LABOR_EXCHANGE);
     }
 
-    protected void setCompany(Company company) {
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
         this.company = company;
     }
 
     public String getId() {
         return id;
-    }
-
-    @Override
-    public void add(Company company) {
-        if (company != Company.LABOR_EXCHANGE) {
-            setCompany(company);
-            company.addEmployee(this);
-        }
-    }
-
-    @Override
-    public void remove() {
-        company.removeEmployee(this);
-        setCompany(Company.LABOR_EXCHANGE);
     }
 
     @Override
@@ -62,4 +52,19 @@ public class Operator implements Employee {
                 ", salary=" + getMonthSalary() +
                 '}';
     }
+
+    /*@Override
+    public void add(Company company) {
+        if (company != Company.LABOR_EXCHANGE) {
+            setCompany(company);
+            company.addEmployee(this);
+        }
+    }
+
+    @Override
+    public void remove() {
+        company = this.company;
+        company.removeEmployee(this);
+        setCompany(Company.LABOR_EXCHANGE);
+    }*/
 }

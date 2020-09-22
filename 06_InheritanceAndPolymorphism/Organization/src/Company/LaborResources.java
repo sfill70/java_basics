@@ -39,6 +39,11 @@ public class LaborResources {
             if (count >= number) {
                 break;
             }
+            /*try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }*/
         }
         if (count > 0) {
             System.out.println("Набрано из трудовых ресурсов - " + count + " " + classToFire);

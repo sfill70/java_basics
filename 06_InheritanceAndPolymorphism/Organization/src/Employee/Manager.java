@@ -24,7 +24,11 @@ public class Manager implements Employee {
         return company.equals(Company.LABOR_EXCHANGE);
     }
 
-    protected void setCompany(Company company) {
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
         this.company = company;
     }
 
@@ -52,7 +56,18 @@ public class Manager implements Employee {
         return income;
     }
 
+
     @Override
+    public String toString() {
+        return "Manager{" +
+                "company=" + (company.equals(Company.LABOR_EXCHANGE) ? "Я пока без работы" : company.getName()) +
+                ", name='" + name + '\'' +
+                ", income=" + income +
+                ", salary=" + getMonthSalary() +
+                '}';
+    }
+
+    /*@Override
     public void add(Company company) {
         if (company != Company.LABOR_EXCHANGE) {
             setCompany(company);
@@ -66,15 +81,5 @@ public class Manager implements Employee {
         company.decreaseIncome(this);
         company.removeEmployee(this);
         setCompany(Company.LABOR_EXCHANGE);
-    }
-
-    @Override
-    public String toString() {
-        return "Manager{" +
-                "company=" + (company.equals(Company.LABOR_EXCHANGE) ? "Я пока без работы" : company.getName()) +
-                ", name='" + name + '\'' +
-                ", income=" + income +
-                ", salary=" + getMonthSalary() +
-                '}';
-    }
+    }*/
 }

@@ -46,13 +46,14 @@ public class Main {
         romashka.hireAll(romashka.getStaffSet(Manager.class, 70));
         romashka.hireAll(romashka.getEmployeeSet(0, 10, 0,1));
         romashka.hireAll(romashka.getEmployeeSet(0, 0, 10,0));
-        System.out.println("Доход компании - " + romashka.getIncome());
+        System.out.println("Доход компании Ромашка - " + romashka.getIncome());
         System.out.println("Весь персонал - " + romashka.getAllEmployees().size());
         System.out.println("Трудовые ресурсы - " + Company.getLaborResources().size());
         System.out.println(romashka.getLowestSalaryStaff(20));
         System.out.println(romashka.getTopSalaryStaff(20));
         //Увольнение половины.
         romashka.fire(romashka.getAllEmployees().size() / 2);
+        System.out.println("Доход компании Ромашка - " + romashka.getIncome());
         System.out.println("----------------/-----------------------/----------------------------/------------------------/");
         Company tulpan = new Company("Тюльпан");
         tulpan.hireAll(tulpan.getStaffSet(TopManager.class, 7));

@@ -23,27 +23,17 @@ public class TopManager implements Employee {
         return company.equals(Company.LABOR_EXCHANGE);
     }
 
+    public Company getCompany() {
+        return company;
+    }
 
-    protected void setCompany(Company company) {
+
+    public void setCompany(Company company) {
         this.company = company;
     }
 
     public String getId() {
         return id;
-    }
-
-    @Override
-    public void add(Company company) {
-        if (company != Company.LABOR_EXCHANGE) {
-            setCompany(company);
-            company.addEmployee(this);
-        }
-    }
-
-    @Override
-    public void remove() {
-        company.removeEmployee(this);
-        setCompany(Company.LABOR_EXCHANGE);
     }
 
     @Override
@@ -72,4 +62,19 @@ public class TopManager implements Employee {
                 ", salary=" + getMonthSalary() +
                 '}';
     }
+
+    /*@Override
+    public void add(Company company) {
+        if (company != Company.LABOR_EXCHANGE) {
+            setCompany(company);
+            company.addEmployee(this);
+        }
+    }
+
+    @Override
+    public void remove() {
+        company.removeEmployee(this);
+        setCompany(Company.LABOR_EXCHANGE);
+    }*/
+
 }

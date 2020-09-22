@@ -5,7 +5,7 @@ import Company.Company;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class Developer  implements Employee{
+public class Developer implements Employee {
     private Company company;
     final private String id = Company.getIdEmployee();
     final private String name;
@@ -21,26 +21,17 @@ public class Developer  implements Employee{
         return company.equals(Company.LABOR_EXCHANGE);
     }
 
-    protected void setCompany(Company company) {
+    @Override
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
         this.company = company;
     }
 
     public String getId() {
         return id;
-    }
-
-    @Override
-    public void add(Company company) {
-        if (company != Company.LABOR_EXCHANGE) {
-            setCompany(company);
-            company.addEmployee(this);
-        }
-    }
-
-    @Override
-    public void remove() {
-        company.removeEmployee(this);
-        setCompany(Company.LABOR_EXCHANGE);
     }
 
     @Override
@@ -61,4 +52,18 @@ public class Developer  implements Employee{
                 ", salary=" + getMonthSalary() +
                 '}';
     }
+
+    /*@Override
+    public void add(Company company) {
+        if (company != Company.LABOR_EXCHANGE) {
+            setCompany(company);
+            company.addEmployee(this);
+        }
+    }
+
+    @Override
+    public void remove() {
+        company.removeEmployee(this);
+        setCompany(Company.LABOR_EXCHANGE);
+    }*/
 }

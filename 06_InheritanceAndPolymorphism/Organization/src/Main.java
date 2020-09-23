@@ -1,20 +1,47 @@
 
 import Company.Company;
+import Company.Staff;
 import Employee.Manager;
 import Employee.TopManager;
 import Employee.Operator;
 import Employee.Employee;
 import Employee.Developer;
-import Company.Staff;
+import Company.LaborResources;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.function.*;
 
 
 public class Main {
 
-    public static void main(String[] args)  {
+    static HashMap<String, Integer> hM = new HashMap<>();
 
+    public static void main(String[] args) {
+
+        Company gvozdika = new Company("Гвоздика");
+        LinkedHashMap<Staff, Integer> employeeM = new LinkedHashMap<Staff, Integer>();
+        employeeM.put(Staff.OPERATOR, 40);
+        employeeM.put(Staff.MANAGER, 50);
+        employeeM.put(Staff.TOP_MANAGER, 5);
+        employeeM.put(Staff.DEVELOPER, 10);
+        gvozdika.hireAll(LaborResources.getStaffSet(employeeM));
+
+        System.out.println("Весь персонал Гвоздика - " + gvozdika.getAllEmployees().size());
+        System.out.println("Трудовые ресурсы - " + Company.getLaborResources().size());
+
+        Company liliya = new Company("Лилия");
+        HashMap<Class<? extends Employee>, Integer> employeeMap = new HashMap<>();
+        employeeMap.put(Operator.class, 90);
+        employeeMap.put(Manager.class, 100);
+        employeeMap.put(Developer.class, 40);
+        employeeMap.put(TopManager.class, 15);
+        liliya.hireAll(LaborResources.getStaffSet(employeeMap));
+        System.out.println("Весь персонал Лилия - " + liliya.getAllEmployees().size());
+        System.out.println("Трудовые ресурсы - " + Company.getLaborResources().size());
         Company rose = new Company("Роза");
-        rose.hireAll(rose.getEmployeeSet(120, 110, 15, 20));
-        System.out.println("Весь персонал - " + rose.getAllEmployees().size());
+        rose.hireAll(LaborResources.getEmployeeSet(120, 110, 15, 20));
+        System.out.println("Весь персонал Роза - " + rose.getAllEmployees().size());
         System.out.println("Трудовые ресурсы - " + Company.getLaborResources().size());
 
         for (int i = 0; i < 5; i++) {
@@ -24,7 +51,6 @@ public class Main {
                 e.printStackTrace();
             }
         }
-
 
         System.out.println("Трудовые ресурсы - " + Company.getLaborResources().size());
         for (int i = 0; i < 40; i++) {
@@ -42,10 +68,10 @@ public class Main {
 
         //Вот здесь набрано количество по условию задачи.
         Company romashka = new Company("Ромашка");
-        romashka.hireAll(romashka.getStaffSet(Operator.class, 180));
-        romashka.hireAll(romashka.getStaffSet(Manager.class, 70));
-        romashka.hireAll(romashka.getEmployeeSet(0, 10, 0,1));
-        romashka.hireAll(romashka.getEmployeeSet(0, 0, 10,0));
+        romashka.hireAll(LaborResources.getStaffSet(Operator.class, 180));
+        romashka.hireAll(LaborResources.getStaffSet(Manager.class, 70));
+        romashka.hireAll(LaborResources.getEmployeeSet(0, 10, 0, 1));
+        romashka.hireAll(LaborResources.getEmployeeSet(0, 0, 10, 0));
         System.out.println("Доход компании Ромашка - " + romashka.getIncome());
         System.out.println("Весь персонал - " + romashka.getAllEmployees().size());
         System.out.println("Трудовые ресурсы - " + Company.getLaborResources().size());
@@ -54,14 +80,27 @@ public class Main {
         //Увольнение половины.
         romashka.fire(romashka.getAllEmployees().size() / 2);
         System.out.println("Доход компании Ромашка - " + romashka.getIncome());
+        System.out.println("----------------Фиалка-----------------------/----------------------------/------------------------/");
+
+        Company fialka = new Company("Фиалка");
+        LinkedHashMap<Staff, Integer> employeeMa = new LinkedHashMap<Staff, Integer>();
+        employeeMa.put(Staff.OPERATOR, 10);
+        employeeMa.put(Staff.MANAGER, 15);
+        employeeMa.put(Staff.TOP_MANAGER, 5);
+        employeeMa.put(Staff.DEVELOPER, 10);
+        fialka.hireAll(LaborResources.getStaffSet(employeeMa));
+        System.out.println("Весь персонал Фиалка - " + fialka.getAllEmployees().size());
+        System.out.println("Трудовые ресурсы - " + Company.getLaborResources().size());
+
         System.out.println("----------------/-----------------------/----------------------------/------------------------/");
+
         Company tulpan = new Company("Тюльпан");
-        tulpan.hireAll(tulpan.getStaffSet(TopManager.class, 7));
-        tulpan.hireAll(tulpan.getStaffSet(Manager.class, 11));
-        tulpan.hireAll(tulpan.getStaffSet(Manager.class, 20));
-        tulpan.hireAll(tulpan.getStaffSet(Operator.class, 11));
-        tulpan.hireAll(tulpan.getStaffSet(Operator.class, 11));
-        tulpan.hireAll(tulpan.getEmployeeSet(15, 20, 5, 5));
+        tulpan.hireAll(LaborResources.getStaffSet(TopManager.class, 7));
+        tulpan.hireAll(LaborResources.getStaffSet(Manager.class, 11));
+        tulpan.hireAll(LaborResources.getStaffSet(Manager.class, 20));
+        tulpan.hireAll(LaborResources.getStaffSet(Operator.class, 11));
+        tulpan.hireAll(LaborResources.getStaffSet(Operator.class, 11));
+        tulpan.hireAll(LaborResources.getEmployeeSet(15, 20, 5, 5));
         for (int i = 0; i < 20; i++) {
             tulpan.hire(new Developer());
         }

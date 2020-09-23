@@ -8,7 +8,7 @@ import java.util.*;
 
 public class Company {
 
-    private static LaborResources laborResources = new LaborResources();
+    //    private static LaborResources laborResources = new LaborResources();
     public static final Company LABOR_EXCHANGE = new Company("Биржа тружа");
     private ArrayList<Employee> allEmployees = new ArrayList<Employee>();
     private String name;
@@ -25,25 +25,12 @@ public class Company {
 
     //Только для проверки
     public static HashMap<String, Employee> getLaborResources() {
-        return laborResources.getLaborResources();
+        return LaborResources.getLaborResources();
     }
 
     //Только для проверки
     public ArrayList<Employee> getAllEmployees() {
         return new ArrayList<Employee>(allEmployees);
-    }
-
-    public static String getIdEmployee() {
-        String stId;
-        do {
-            UUID id = UUID.randomUUID();
-            stId = id.toString().substring(id.toString().length() - 12);
-        } while (laborResources.getLaborResources().containsKey(stId));
-        return stId;
-    }
-
-    public static void addLaborResources(Employee employee) {
-        laborResources.addLaborResources(employee);
     }
 
     public void removeEmployee(Employee employee) {
@@ -66,16 +53,6 @@ public class Company {
         ) {
             hire(employee);
         }
-    }
-
-    //Получение Set для hireAll
-    public HashSet<Employee> getEmployeeSet(int operator, int manager, int topManager, int developer) {
-        return laborResources.getEmployeeSet(operator, manager, topManager, developer);
-    }
-
-    //Получение Set для hireAll по сотруднику можно перегрузить предыдущий метод
-    public HashSet<Employee> getStaffSet(Class<? extends Employee> classToFire, int count) {
-        return laborResources.getStaffSet(classToFire, count);
     }
 
     public void increaseIncome(Employee employee) {
@@ -130,9 +107,6 @@ public class Company {
         return income;
     }
 
-//    Comparator<Employee> comparator = (Employee o1, Employee o2) -> (o1.getMonthSalary().compareTo(o2.getMonthSalary()));
-
-    // Это IDE постарлась
     Comparator<Employee> comparator = Comparator.comparing(Employee::getMonthSalary);
 
     private List<Employee> getSortedEmployee(int count, Comparator<Employee> comparator) {

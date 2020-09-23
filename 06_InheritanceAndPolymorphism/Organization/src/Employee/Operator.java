@@ -1,6 +1,7 @@
 package Employee;
 
 import Company.Company;
+import Company.LaborResources;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -8,14 +9,14 @@ import java.math.RoundingMode;
 public class Operator implements Employee {
 
     private Company company;
-    final private String id = Company.getIdEmployee();
+    final private String id = LaborResources.getIdEmployee();
     final private String name;
     final private BigDecimal salary = new BigDecimal("30000").setScale(2, RoundingMode.HALF_UP);
 
     public Operator() {
         this.name = "operator_" + id;
         this.company = Company.LABOR_EXCHANGE;
-        Company.addLaborResources(this);
+        LaborResources.addLaborResources(this);
     }
 
     public boolean isWork() {

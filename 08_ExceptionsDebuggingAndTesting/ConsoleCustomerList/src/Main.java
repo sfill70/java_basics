@@ -46,7 +46,6 @@ public class Main {
                     executor.removeCustomer(tokens[1]);
                 } catch (ArrayIndexOutOfBoundsException e) {
                     System.out.println("Не верный формат команды remove, введите имя фамилия");
-                    e.printStackTrace();
                 }
             } else if (tokens[0].equals("count")) {
                 System.out.println("There are " + executor.getCount() + " customers");

@@ -1,15 +1,16 @@
 package Exceptions;
 
-public class NameFormatException extends Exception {
+public class NameFormatException extends RuntimeException {
     private static final String message = "Неверный формат имени (только буквы русского или английского алфавита)- ";
-    String name;
+    protected String additionalMessage;
 
-    public NameFormatException(String name) {
+    public NameFormatException(String additionalName) {
         super(message);
-        this.name = name;
+        this.additionalMessage = additionalName;
+
     }
 
-    public String getName() {
-        return name;
+    public String getAdditionalMessage() {
+        return message + additionalMessage;
     }
 }

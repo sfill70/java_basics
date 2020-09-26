@@ -1,15 +1,16 @@
 package Exceptions;
 
-public class PhoneFormatException extends Exception {
+public class PhoneFormatException extends  NameFormatException {
     private static final String message = "Неверный формат телефона - ";
-    String phone;
+    String additionalMessage;
 
-    public PhoneFormatException(String phone) {
+    public PhoneFormatException(String additionalMessage) {
         super(message);
-        this.phone = phone;
+        this.additionalMessage = additionalMessage;
     }
 
-    public String getPhone() {
-        return phone;
+    @Override
+    public String getAdditionalMessage() {
+        return message + additionalMessage;
     }
 }

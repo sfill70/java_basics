@@ -1,15 +1,16 @@
 package Exceptions;
 
-public class EmailFormatException extends Exception {
-    String email;
+public class EmailFormatException extends  NameFormatException {
+    String additionalMessage;
     private static final String message = "Неверный формат email - ";
 
-    public EmailFormatException(String email) {
+    public EmailFormatException(String additionalMessage) {
         super(message);
-        this.email = email;
+        this.additionalMessage = additionalMessage;
     }
 
-    public String getEmail() {
-        return email;
+    @Override
+    public String getAdditionalMessage() {
+        return message + additionalMessage;
     }
 }

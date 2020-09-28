@@ -10,12 +10,9 @@ import Company.LaborResources;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.function.*;
 
 
 public class Main {
-
-    static HashMap<String, Integer> hM = new HashMap<>();
 
     public static void main(String[] args) {
 
@@ -108,8 +105,8 @@ public class Main {
         System.out.println("В фирме Тюльпан - " + tulpan.getAllEmployees().size());
         System.out.println("Трудовые ресурсы - " + Company.getLaborResources().size());
         System.out.println("В фирме ромашка - " + romashka.getAllEmployees().size());
-        Employee employee;
-        System.out.println("Выбран для увольения сотрудник - " + (employee = romashka.getLowestSalaryStaff(135).get(2)));
+        Employee employee = romashka.getLowestSalaryStaff(135).get(2);
+        System.out.println("Выбран для увольения сотрудник - " + (employee));
         romashka.fire(employee);
         System.out.println("Уволеный  сотрудник -  " + Company.getLaborResources().get(employee.getId()));
         Employee employee1 = new TopManager();

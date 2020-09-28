@@ -25,6 +25,9 @@ public class Main
         scanner = new Scanner(System.in);
         for(;;)
         {
+            /*System.out.println(stationIndex.connections);
+            System.out.println(stationIndex.stations);
+            System.out.println(stationIndex.number2line);*/
             Station from = takeStation("Введите станцию отправления:");
             Station to = takeStation("Введите станцию назначения:");
 
@@ -134,7 +137,8 @@ public class Main
             {
                 Station station = new Station((String) stationObject, line);
                 stationIndex.addStation(station);
-                line.addStation(station);
+                //Зменил методом в конструкторе Station
+//                line.addStation(station);
             });
         });
     }

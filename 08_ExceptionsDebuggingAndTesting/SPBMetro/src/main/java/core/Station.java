@@ -9,6 +9,8 @@ public class Station implements Comparable<Station>
     {
         this.name = name;
         this.line = line;
+       // добавил это поле в конструктор
+        line.addStation(this);
     }
 
     public Line getLine()

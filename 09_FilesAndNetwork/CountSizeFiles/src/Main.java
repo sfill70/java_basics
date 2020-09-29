@@ -6,39 +6,36 @@ import java.io.InputStreamReader;
 public class Main {
 
 
-    public static void main(String[] args){
-
-
-        System.out.println(System.getProperty("user.dir"));
+    public static void main(String[] args) {
         try {
             runCountSizeFiles();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-//        CountSizeFilesRecursion countSizeFilesRecursion = new CountSizeFilesRecursion(System.getProperty("user.dir"));
-//        countSizeFilesRecursion.printFiles();
-//        // Не вызывает исключентй
-//        CountSizeFilesQueue countSizeFilesQueue = new CountSizeFilesQueue(System.getProperty("user.dir"));
-//        countSizeFilesQueue.printFiles();
+        /*CountSizeFilesRecursion countSizeFilesRecursion = new CountSizeFilesRecursion();
+        countSizeFilesRecursion.printFiles(System.getProperty("user.dir"));
+        // Не вызывает исключентй
+        CountSizeFilesQueue countSizeFilesQueue = new CountSizeFilesQueue();
+        countSizeFilesQueue.printFiles(System.getProperty("user.dir"));*/
 
     }
 
     static void runCountSizeFiles() throws IOException {
         String path;
-        CountSizeFilesRecursion countSizeFilesRecursion;
-        CountSizeFilesQueue countSizeFilesQueue;
+        CountSizeFilesRecursion countSizeFilesRecursion = new CountSizeFilesRecursion();
+        CountSizeFilesQueue countSizeFilesQueue = new CountSizeFilesQueue();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             do {
                 System.out.println("путь к директории " +
                         "Для выхода введите - exit");
                 path = reader.readLine();
-                countSizeFilesRecursion = new CountSizeFilesRecursion(path);
-                countSizeFilesQueue = new CountSizeFilesQueue(path);
+                if (path.equalsIgnoreCase("exit")) {
+                    continue;
+                }
                 System.out.println("Метод - countSizeFilesRecursion");
-                countSizeFilesRecursion.printFiles();
+                countSizeFilesRecursion.printFiles(path);
                 System.out.println("Метод -  countSizeFilesQueue");
-                countSizeFilesQueue.printFiles();
+                countSizeFilesQueue.printFiles(path);
             } while (!path.equalsIgnoreCase("exit"));
         }
     }

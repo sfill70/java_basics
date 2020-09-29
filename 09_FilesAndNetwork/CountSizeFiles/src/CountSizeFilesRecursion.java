@@ -8,11 +8,11 @@ public class CountSizeFilesRecursion {
     long sizeFiles = 0;
     private final static Locale LOCALE = new Locale("ru");
     private final static NumberFormat FORMAT = NumberFormat.getInstance(LOCALE);
-    File file;
+//    File file;
 
-    public CountSizeFilesRecursion(String path) {
-        this.file = new File(path);
-        countSizeFiles(file);
+    public CountSizeFilesRecursion() {
+        /*this.file = new File(path);
+        countSizeFiles(file);*/
     }
 
     private void countSizeFiles(File file) {
@@ -36,10 +36,15 @@ public class CountSizeFilesRecursion {
         }
     }
 
-    public void printFiles() {
+    public void printFiles(String path) {
+        File file = new File(path);
+        countSizeFiles(file);
         System.out.printf("Размер директории - " + FORMAT.format(sizeFiles)
                 + " байт  Файлов - %s  Директорий - %s", countFile, countDir);
         System.out.println();
+        countDir = 0;
+        countFile = 0;
+        sizeFiles = 0;
     }
 
     private static String parseDir(String st) {

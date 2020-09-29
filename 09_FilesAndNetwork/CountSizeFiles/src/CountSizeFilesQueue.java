@@ -9,17 +9,9 @@ public class CountSizeFilesQueue {
     long sizeFiles = 0;
     private final static Locale LOCALE = new Locale("ru");
     private final static NumberFormat FORMAT = NumberFormat.getInstance(LOCALE);
-    File file;
     List<File> fileList;
 
-    public CountSizeFilesQueue(String path){
-        this.file = new File(path);
-        //В теории исключений не вызывает
-        try {
-            fileList = getFileTree(file);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public CountSizeFilesQueue(){
     }
 
     //Здась нужно void, но менять не стал.
@@ -47,12 +39,15 @@ public class CountSizeFilesQueue {
         return listFileTree;
     }
 
-    public void printFiles() {
+    public void printFiles(String path) {
+        File file = new File(path);
+        getFileTree(file);
         System.out.printf("Размер директории - " + FORMAT.format(sizeFiles)
                 + " байт  Файлов - %s  Директорий - %s", countFile, countDir - 1);
         System.out.println();
+        countDir = 0;
+        countFile = 0;
+        sizeFiles = 0;
     }
-
-
 }
 

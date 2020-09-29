@@ -18,7 +18,6 @@ public class CountSizeFilesRecursion {
     private void countSizeFiles(File file) {
         File[] arrayFiles = file.listFiles();
         if (arrayFiles == null) {
-            System.out.println("Директории не существует");
             return;
         }
         try {
@@ -26,7 +25,7 @@ public class CountSizeFilesRecursion {
                 if (f.isDirectory()) {
                     countSizeFiles(f);
                     countDir++;
-                } else {
+                } else if (f.isFile()) {
                     sizeFiles = sizeFiles + f.length();
                     countFile++;
                 }
@@ -38,9 +37,12 @@ public class CountSizeFilesRecursion {
 
     public void printFiles(String path) {
         File file = new File(path);
+        if (!file.exists() && !file.isDirectory()) {
+            System.out.println("Директории не существует");
+            return;
+        }
         countSizeFiles(file);
-        System.out.printf("Размер директории - " + FORMAT.format(sizeFiles)
-                + " байт  Файлов - %s  Директорий - %s", countFile, countDir);
+        System.out.printf("Размер директории - %s байт  Файлов - %s  Директорий - %s", FORMAT.format(sizeFiles), countFile, countDir);
         System.out.println();
         countDir = 0;
         countFile = 0;

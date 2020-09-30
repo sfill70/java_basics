@@ -14,35 +14,32 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        /*CountSizeFilesRecursion countSizeFilesRecursion = new CountSizeFilesRecursion();
-        countSizeFilesRecursion.printFiles(System.getProperty("user.dir"));
-        // Не вызывает исключентй
-        CountSizeFilesQueue countSizeFilesQueue = new CountSizeFilesQueue();
-        countSizeFilesQueue.printFiles(System.getProperty("user.dir"));*/
-
     }
 
     static void runCountSizeFiles() throws IOException {
-        String path = "";
-        CountSizeFilesRecursion countSizeFilesRecursion = new CountSizeFilesRecursion();
-        CountSizeFilesQueue countSizeFilesQueue = new CountSizeFilesQueue();
+        String path;
+        CountSizeFiles countSizeFilesRecursion = new CountSizeFilesRecursion();
+        CountSizeFiles countSizeFilesQueue = new CountSizeFilesQueue();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-            do {
+            while (true) {
                 try {
-                    System.out.println("путь к директории " +
+                    System.out.println("Введите путь к директории " +
                             "Для выхода введите - exit");
                     path = reader.readLine();
                     if (path.equalsIgnoreCase("exit")) {
-                        continue;
+                        break;
                     }
-                    System.out.println("Метод - countSizeFilesRecursion");
-                    countSizeFilesRecursion.printFiles(path);
-                    System.out.println("Метод -  countSizeFilesQueue");
-                    countSizeFilesQueue.printFiles(path);
-                }  catch (NullPointerException e) {
+                    printDataDir(countSizeFilesRecursion, path);
+                    printDataDir(countSizeFilesQueue, path);
+                } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
-            } while (!path.equalsIgnoreCase("exit"));
+            }
         }
+    }
+
+    static void printDataDir(CountSizeFiles countSizeFiles, String path) throws NullPointerException {
+        System.out.println("Метод - " + countSizeFiles.getClass().getCanonicalName());
+        countSizeFiles.printFiles(path);
     }
 }

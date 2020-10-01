@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="error"
+               monitorInterval="5"> 
+    <Properties>
+        <Property name="APP_LOG_ROOT">Your log's path</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"/>
+        </Console>
+        <RollingFile name="fileLogger" fileName="logs/search.log"
+                     filePattern="${APP_LOG_ROOT}/search-%d{yyyy-MM-dd}.log">
+            <ThresholdFilter level="error" onMatch="DENY" onMismatch="ACCEPT"/>
+            <PatternLayout>
+                <pattern>%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="searchLogger" fileName="logs/input_errors.log"
+                     filePattern="${APP_LOG_ROOT}/input_errors-%d{yyyy-MM-dd}.log">
+            <ThresholdFilter level="FATAL" onMatch="DENY" onMismatch="ACCEPT"/>
+            <PatternLayout>
+                <pattern>%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="errorLogger" fileName="logs/exceptions.log"
+                     filePattern="${APP_LOG_ROOT}/exceptions-%d{yyyy-MM-dd}.log">
+            <ThresholdFilter level="FATAL" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout>
+                <pattern>%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="fileLogger" level="info"/>
+            <AppenderRef ref="searchLogger" level="error"/>
+            <AppenderRef ref="errorLogger" level="FATAL"/>
+
+        </Root>
+    </Loggers>
+</Configuration>

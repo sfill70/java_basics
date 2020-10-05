@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.NumberFormat;
 import java.util.Locale;
+
 import CountSizeDirectory.*;
 
 public class Main {
@@ -34,7 +35,8 @@ public class Main {
                     System.out.println("Копирование успешно завершено, скопировано - " + FORMAT.format(arrayFrom[0]) + "Кбайт");
                 }
                 countSizeFiles.printFiles(pathWhere);
-
+                pathFrom = "";
+                pathWhere = "";
 
             }
         } catch (IOException e) {

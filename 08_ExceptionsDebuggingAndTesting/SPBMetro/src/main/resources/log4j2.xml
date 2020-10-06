@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="error"
-               monitorInterval="5"> 
+               monitorInterval="5">
     <Properties>
         <Property name="APP_LOG_ROOT">Your log's path</Property>
     </Properties>

@@ -6,7 +6,7 @@ public class CopingFullDirectoryQueue {
     private static final int BUFFER_SIZE = 1024/* * 1024*/;
     private int count = 0;
 
-   protected void copyingDirectory(String fromPath, String wherePath) throws IOException {
+    protected void copyingDirectory(String fromPath, String wherePath) throws IOException {
         System.out.println("Идет копирование файлов");
         File from = new File(fromPath);
         File where = new File(wherePath);
@@ -17,16 +17,17 @@ public class CopingFullDirectoryQueue {
             printPoint();
             //Защита от циклического копирования
             if (queueFiles.remove(where)) {
-//                System.out.println("!!!!!!!!!! Удалил");
             }
             File file = queueFiles.poll();
-            //Защита от циклического копирования на всякий случай
-            if (file != null && (file.getAbsolutePath().equalsIgnoreCase(where.getAbsolutePath()) ||
-                    file.getAbsolutePath().toLowerCase().startsWith(where.getAbsolutePath().toLowerCase()))) {
-//                System.out.println("YES " + file.getAbsolutePath() + " " + where.getAbsolutePath());
+            if (file == null) {
                 continue;
             }
-            if (file != null && file.isDirectory()) {
+            //Еще Защита от циклического копирования на всякий случай она
+            if ((file.getAbsolutePath().equalsIgnoreCase(where.getAbsolutePath()) ||
+                    file.getAbsolutePath().toLowerCase().startsWith(where.getAbsolutePath().toLowerCase()))) {
+                continue;
+            }
+            if (file.isDirectory()) {
                 if (file.listFiles() != null) {
                     queueFiles.addAll(Arrays.asList(Objects.requireNonNull(file.listFiles())));
                     //Путь для директории
@@ -34,7 +35,7 @@ public class CopingFullDirectoryQueue {
                     //Создать директорию
                     new File(copyPath).mkdir();
                 }
-            } else if (file != null && file.isFile()) {
+            } else if (file.isFile()) {
                 //Путь для файла
                 copyPath = UtilCopingDir.copyPath(fromPath, wherePath, file.getPath());
                 //Скопировать файл

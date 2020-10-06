@@ -4,43 +4,45 @@ import java.util.List;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import static java.util.stream.Collectors.toList;
 
 public class CopingFullDirectoryNio {
     private int count = 0;
-   Path errFile;
 
     public static void main(String[] args) {
         try {
-            copyingDir(UtilCopingDir.parseDir("i:/bp7"), UtilCopingDir.parseDir("i:/301"));
+            copyingDirectoryFull(UtilCopingDir.parseDir("h:/"), UtilCopingDir.parseDir("h:/302"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void copyingDirectory(String from, String where, List<Path> list) throws IOException {
-        Path fromPath = Paths.get(from);
-        Path wherePath = Paths.get(where);
-        Path copyPath;
-        for (Path path : list
-        ) {
-            printPoint();
-            copyPath = takeCopyPath(fromPath, wherePath, path);
-            if (path.toString().contains("System Volume Information")) {
-                errFile = path;
-                System.out.println(path);
-                continue;
-            }
-            try {
-                Files.copy(path, copyPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Error");
-            }
+    public static void copyingDirectoryFull(String from, String where) throws IOException {
+        Path source = Paths.get(from);
+        Path destination = Paths.get(where);
+       /* Files.walk(source)
+                .map(source::relativize)
+                .map(destination::resolve)
+                .forEach(f ->copyFile(f, destinationDir));*/
+
+        try {
+            Files.walk(source)
+                    .forEach(f -> copyFile(source, destination, f));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        System.out.println();
-        if (errFile != null) {
-            System.out.println(errFile.toAbsolutePath());
+    }
+
+    private static void copyFile(Path from, Path where, Path path) {
+        //защита от циклического копирования
+        if (path != null && !path.toString().equals(where.toString()) && !path.toString().startsWith(where.toString())) {
+            try {
+                Files.copy(path, takeCopyPath(from, where, path), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
+            } catch (IOException e) {
+                System.out.println();
+                e.printStackTrace();
+            }
         }
     }
 
@@ -73,20 +75,4 @@ public class CopingFullDirectoryNio {
             Files.copy(sources.get(i), destinations.get(i));
         }
     }
-
-    /*private static void copyingFile(File original, File copied)
-            throws IOException {
-        try (InputStream in = new BufferedInputStream(
-                new FileInputStream(original));
-             OutputStream out = new BufferedOutputStream(
-                     new FileOutputStream(copied))) {
-            byte[] buffer = new byte[1024];
-            int lengthRead;
-            while ((lengthRead = in.read(buffer)) > 0) {
-                out.write(buffer, 0, lengthRead);
-                out.flush();
-            }
-        }
-    }*/
-
 }

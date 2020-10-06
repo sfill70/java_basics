@@ -6,10 +6,11 @@ public class UtilCopingDir {
 
     //Приводим данные к единому формату проверить Linux
     protected static String parseDir(String st) {
+        String separator = File.separator;
         String os = System.getProperty("os.name").toLowerCase();
         StringBuilder sb = new StringBuilder();
         String[] arrayPath = st.trim().split("\\|//|/|\\\\");
-        if (!os.startsWith("windows")) {
+        if (!os.startsWith("windows") && !String.valueOf(st.charAt(0)).equals(separator)) {
             sb.append(System.getProperty("file.separator"));
         }
         for (String s : arrayPath) {

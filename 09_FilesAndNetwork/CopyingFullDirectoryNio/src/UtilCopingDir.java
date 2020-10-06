@@ -1,4 +1,8 @@
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 public class UtilCopingDir {
 
@@ -7,10 +11,11 @@ public class UtilCopingDir {
 
     //Приводим данные к единому формату проверить Linux
     protected static String parseDir(String st) {
+        String separator = File.separator;
         String os = System.getProperty("os.name").toLowerCase();
         StringBuilder sb = new StringBuilder();
         String[] arrayPath = st.trim().split("\\|//|/|\\\\");
-        if (!os.startsWith("windows")) {
+        if (!os.startsWith("windows") && !String.valueOf(st.charAt(0)).equals(separator)) {
             sb.append(System.getProperty("file.separator"));
         }
         for (String s : arrayPath) {
@@ -19,6 +24,7 @@ public class UtilCopingDir {
         }
         return sb.toString();
     }
+
 
     //Прверяем наличие директории, если заднно создание - создаем если возможно и возвращаем путь
     protected static String checkDirectory(String pathDirectory, Boolean makeDirectory) {

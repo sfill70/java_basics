@@ -39,7 +39,9 @@ public class CopingFullDirectoryNio {
             }
         }
         System.out.println();
-        System.out.println(errFile.toAbsolutePath());
+        if (errFile != null) {
+            System.out.println(errFile.toAbsolutePath());
+        }
     }
 
     private static Path takeCopyPath(Path fromPath, Path wherePath, Path filePath) {

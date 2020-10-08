@@ -2,6 +2,8 @@ import core.Line;
 import core.Station;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -14,15 +16,17 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    private static Logger logger;
     private static String dataFile = "src/main/resources/map.json";
     private static Scanner scanner;
-
     private static StationIndex stationIndex;
+    private static final Logger LOGGER = LogManager.getLogger(Main.class);
+
+    private static final Marker INPUT_HISTORY_MARKER = MarkerManager.getMarker("INPUT_HISTORY");
+    private static final Marker INVALID_STATIONS_MARKER = MarkerManager.getMarker("INVALID_STATIONS");
 
     public static void main(String[] args) {
         RouteCalculator calculator = getRouteCalculator();
-        logger = LogManager.getRootLogger();
+//        logger = LogManager.getRootLogger();
 
         System.out.println("Программа расчёта маршрутов метрополитена Санкт-Петербурга\n");
         scanner = new Scanner(System.in);
@@ -38,7 +42,8 @@ public class Main {
                 System.out.println("Длительность: " +
                         RouteCalculator.calculateDuration(route) + " минут");
             } catch (Exception e) {
-                logger.fatal(e + " " + Arrays.toString(e.getStackTrace()));
+                // При добавлении Arrays.toString(e.getStackTrace()) виден номер строки с ошибкой
+                LOGGER.error(e + " " + Arrays.toString(e.getStackTrace()));
             }
         }
     }
@@ -70,10 +75,14 @@ public class Main {
             String line = scanner.nextLine().trim();
             Station station = stationIndex.getStation(line);
             if (station != null) {
-                logger.info(("Станция -  " + line));
+                LOGGER.info(INPUT_HISTORY_MARKER, "Пользователь ввел станцию: {}", station);
+                LOGGER.info(("Станция -  " + line));
+                LOGGER.info("User search station {} and the result is {}", line, true);
                 return station;
             }
-            logger.error("Станция -  " + line);
+            LOGGER.warn(INVALID_STATIONS_MARKER, "Пользователь ввел станцию: {}", line);
+            LOGGER.warn("Станция -  " + line);
+            LOGGER.warn("User search station {} and the result is {}", line, false);
             System.out.println("Станция не найдена :(");
         }
     }

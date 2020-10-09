@@ -1,9 +1,13 @@
+import au.com.bytecode.opencsv.CSVReader;
 import core.ReaderStatement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.*;
 
@@ -32,16 +36,31 @@ public class Main {
     private static double credit = 0.00;
     private static double movement = 0.00;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
+        //Build reader instance
+        //Read data.csv
+        //Default seperator is comma
+        //Default quote character is double quote
+        //Start reading from line number 2 (line numbers start from zero)
+        CSVReader reader = new CSVReader(new FileReader(PATH_FILE), ',' , '"' , 0);
+        //Read CSV line by line and use the string array as you want
+        String[] nextLine;
+        while ((nextLine = reader.readNext()) != null) {
+            //Verifying the read data here
+            arrayLength[nextLine.length] = arrayLength[nextLine.length] + 1;
+            listArray.add(nextLine);
+        }
         //Формируем из строки массив с данными,
         // данные в кавычках "...." помещаем в ячейку целиком
         //остальные разбиваем по csv разделителю
-        for (String line : linesFile) {
+       /* for (String line : linesFile) {
+//            System.out.println(line.replaceAll("\".+,?.+,?.+\"","!!!!!!!!!!!!!!!!!!!!!!!"));
+//            System.out.println(line);
             String[] array = getArray(line.trim().split("\""));
             arrayLength[array.length] = arrayLength[array.length] + 1;
             listArray.add(array);
-        }
-
+        }*/
         for (String[] array : listArray
         ) {
             // Полкучаем позиции в массиве интересующих нас данными

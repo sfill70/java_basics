@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="APP_LOG_ROOT">Your log's path</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"/>
+        </Console>
+        <File name="ViewArray" fileName="ParserBankStatement/logs/view_array.log">
+            <PatternLayout pattern="%msg%n"/>
+            <Filters>
+                <MarkerFilter marker="VIEW_ARRAY"/>
+            </Filters>
+        </File>
+        <File name="InputErrorsMarker" fileName="ParserBankStatement/logs/search_marker.log">
+            <PatternLayout pattern="%msg%n"/>
+            <Filters>
+                <MarkerFilter marker="VIEW_INVALID_ARRAY"/>
+            </Filters>
+        </File>
+        <File name="ViewDebet" fileName="ParserBankStatement/logs/debet.log">
+            <PatternLayout pattern="%msg%n"/>
+            <Filters>
+                <MarkerFilter marker="VIEW_DEBET_ARRAY"/>
+            </Filters>
+        </File>
+        <File name="ViewCredit" fileName="ParserBankStatement/logs/credit.log">
+            <PatternLayout pattern="%msg%n"/>
+            <Filters>
+                <MarkerFilter marker="VIEW_CREDIT_ARRAY"/>
+            </Filters>
+        </File>
+        <File name="SearchFile" fileName="ParserBankStatement/logs/search.log">
+            <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>
+            <PatternLayout>
+                <pattern>%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+        </File>
+        <File name="InputErrors" fileName="ParserBankStatement/logs/input_errors.log">
+            <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+            <PatternLayout>
+                <pattern>%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+        </File>
+        <File name="exceptions" fileName="ParserBankStatement/logs/exceptions.log">
+            <ThresholdFilter level="FATAL" onMatch="DENY" onMismatch="NEUTRAL"/>
+            <PatternLayout>
+                <pattern>%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <appender-ref ref="ViewArray"/>
+            <appender-ref ref="InputErrorsMarker"/>
+            <appender-ref ref="ViewDebet"/>
+            <appender-ref ref="ViewCredit"/>
+            <appender-ref ref="SearchFile" level="info"/>
+            <appender-ref ref="InputErrors" level="warn"/>
+            <appender-ref ref="exceptions" level="error"/>
+        </Root>
+    </Loggers>
+</Configuration>

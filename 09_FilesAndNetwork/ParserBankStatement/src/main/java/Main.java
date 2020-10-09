@@ -10,6 +10,8 @@ import java.util.*;
 public class Main {
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
     private static final Marker INVALID_LINE_MARKER = MarkerManager.getMarker("VIEW_INVALID_ARRAY");
+    //    private static final Marker VIEW_DEBIT = MarkerManager.getMarker("VIEW_DEBIT");
+    private static final Marker VIEW_CREDIT = MarkerManager.getMarker("VIEW_CREDIT");
     private final static Locale LOCALE = new Locale("ru");
     private final static NumberFormat FORMAT = NumberFormat.getInstance(LOCALE);
     private final static String CSV_SEPARATOR = ",";
@@ -18,20 +20,31 @@ public class Main {
     private static final String PATH_FILE = root + sDirSeparator + "ParserBankStatement" + sDirSeparator + "src" + sDirSeparator +
             "main" + sDirSeparator + "resources" + sDirSeparator + "movementList.csv";
 
+    private static List<String> linesFile = ReaderStatement.readerFile(PATH_FILE);
+    private static HashMap<String, Double> organisation = new HashMap<>();
+    private static List<String[]> listArray = new ArrayList<>();
+
+    private static int[] arrayLength = new int[22];
+    private static int posDebit = 0;
+    private static int posCredit = 0;
+    private static int posOperation = 0;
+    private static double debit = 0.00;
+    private static double credit = 0.00;
+    private static double movement = 0.00;
+
     public static void main(String[] args) {
-        List<String> linesFile = ReaderStatement.readerFile(PATH_FILE);
-        HashMap<String, Double> organisation = new HashMap<>();
+        //Формируем из строки массив с данными,
+        // данные в кавычках "...." помещаем в ячейку целиком
+        //остальные разбиваем по csv разделителю
+        for (String line : linesFile) {
+            String[] array = getArray(line.trim().split("\""));
+            arrayLength[array.length] = arrayLength[array.length] + 1;
+            listArray.add(array);
+        }
 
-        int[] arrayLength = new int[22];
-        int posDebit = 0;
-        int posCredit = 0;
-        int posOperation = 0;
-        double debit = 0.00;
-        double credit = 0.00;
-
-        for (String line : linesFile
+        for (String[] array : listArray
         ) {
-            String[] array = line.trim().split(CSV_SEPARATOR);
+            // Полкучаем позиции в массиве интересующих нас данными
             if (posCredit == 0 || posDebit == 0) {
                 for (int i = 0; i < array.length; i++) {
                     if (array[i].equalsIgnoreCase("приход"/*"дебет"*/)) {
@@ -46,22 +59,28 @@ public class Main {
                 }
                 continue;
             }
-            arrayLength[array.length] = arrayLength[array.length] + 1;
+
+            //Массивы которые отличаются по длинне от самой распространненой длинны массива пропускаем
             if (array.length != takeLengthArray(arrayLength)) {
                 LOGGER.warn(INVALID_LINE_MARKER, "length array = " + array.length + " / string line -> "
                         + Arrays.toString(array));
                 continue;
             }
-            if (array[posDebit] != null && array[posDebit].length() > 0) {
+            if (array[posCredit] != null) {
+                movement = getMovement(array[posCredit], "Credit", array);
+                credit = credit + movement;
+                if (movement != 0) {
+                    //Оставил слеши без них не читаемо на пробелы не стал менять
+                    String operation = array[posOperation].replaceAll("(?u)[^\\p{Alpha}\\\\]", "");
+                    organisation.put(operation, organisation.getOrDefault(operation, 0.00) + movement);
+                    LOGGER.info(VIEW_CREDIT, "String -> " + array[posCredit] + " / movement -> "
+                            + movement + " / operation ->" + operation);
+                }
+            }
+            if (array[posDebit] != null && movement == 0) {
                 debit = debit + getMovement(array[posDebit], "Debit", array);
             }
-            if (array[posCredit] != null && array[posCredit].length() > 0) {
-                double movement = getMovement(array[posCredit], "Credit", array);
-                credit = credit + movement;
-                //Оставил слеши без них не читаемо на пробелы не стал менять
-                String operation = array[posOperation].replaceAll("(?u)[^\\p{Alpha}\\\\]", "");
-                organisation.put(operation, organisation.getOrDefault(operation, 0.00) + movement);
-            }
+
         }
         System.out.println("Сумма расходов : " + FORMAT.format(credit));
         System.out.println("Сумма доходов :" + FORMAT.format(debit));
@@ -70,6 +89,26 @@ public class Main {
         ) {
             System.out.println(entry.getKey() + " - " + FORMAT.format(entry.getValue()) + " руб.");
         }
+    }
+
+    private static String[] getArray(String[] array) {
+        if (array == null || array.length == 0) {
+            return new String[0];
+        }
+        String[] result = null;
+        for (int i = 0; i < array.length; i++) {
+            if (i % 2 == 0) {
+                String[] temp = array[i].trim().split(CSV_SEPARATOR);
+                if (i + 1 < array.length) {
+                    result = new String[temp.length + 1];
+                    System.arraycopy(temp, 0, result, 0, temp.length);
+                    result[result.length - 1] = array[i + 1];
+                } else {
+                    result = temp;
+                }
+            }
+        }
+        return result;
     }
 
     private static double getMovement(String s, String operation, String[] array) {
@@ -83,6 +122,7 @@ public class Main {
         return movement;
     }
 
+    // метод находит самую частую длинну массива, делаем вывод, что это необходимый формат данных
     private static int takeLengthArray(int[] array) {
         int index = 0;
         for (int i = 0; i < array.length; i++) {

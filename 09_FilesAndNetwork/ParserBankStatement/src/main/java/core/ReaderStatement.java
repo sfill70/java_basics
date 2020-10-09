@@ -11,9 +11,6 @@ import java.util.List;
 
 
 public class ReaderStatement {
-/*    public static void main(String[] args) {
-        System.out.println(Double.parseDouble("14243.005"));
-    }*/
     private static final Logger LOGGER = LogManager.getLogger(ReaderStatement.class);
     public static List<String> readerFile(String stPath) {
         List<String> lines = null;

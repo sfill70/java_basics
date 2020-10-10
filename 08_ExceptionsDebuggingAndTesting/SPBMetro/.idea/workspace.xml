@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="25ed526d-efa2-4586-8cf9-26303e44fd1e" name="Default Changelist" comment="Homrwork 8.2 Metro">
-      <change afterPath="$PROJECT_DIR$/../../09_FilesAndNetwork/CopyingFullDirectory/CopyingFullDirectory.iml" afterDir="false" />
+    <list default="true" id="25ed526d-efa2-4586-8cf9-26303e44fd1e" name="Default Changelist" comment="work_on_bugs Homrwork 8.2 Metro">
+      <change afterPath="$PROJECT_DIR$/../../09_FilesAndNetwork/CopyingFullDirectoryNio/CopyingFullDirectoryNio.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../09_FilesAndNetwork/ParserCsv/ParserCsv.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../09_FilesAndNetwork/ParserCsv/resources/export.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../09_FilesAndNetwork/ParserCsv/resources/movementList.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../09_FilesAndNetwork/ParserCsv/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/log4j2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/log4j2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../09_FilesAndNetwork/CopyingFullDirectory/src/CopingFullDirectoryQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../09_FilesAndNetwork/CopyingFullDirectory/src/CopingFullDirectoryQueue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../09_FilesAndNetwork/CopyingFullDirectory/src/UtilCopingDir.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../09_FilesAndNetwork/CopyingFullDirectory/src/UtilCopingDir.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../09_FilesAndNetwork/CopyingFullDirectoryNio/src/CopingFullDirectoryNio.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../09_FilesAndNetwork/CopyingFullDirectoryNio/src/CopingFullDirectoryNio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../09_FilesAndNetwork/CopyingFullDirectoryNio/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../09_FilesAndNetwork/CopyingFullDirectoryNio/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../09_FilesAndNetwork/CopyingFullDirectoryNio/src/TakeTreeFiles.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../09_FilesAndNetwork/CopyingFullDirectoryNio/src/UtilCopingDir.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../09_FilesAndNetwork/CopyingFullDirectoryNio/src/UtilCopingDir.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../09_FilesAndNetwork/CountSizeFiles/src/AbstractCountSizeFiles.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../09_FilesAndNetwork/CountSizeFiles/src/CountSizeFiles.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../09_FilesAndNetwork/CountSizeFiles/src/CountSizeFiles.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../09_FilesAndNetwork/CountSizeFiles/src/CountSizeFilesQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../09_FilesAndNetwork/CountSizeFiles/src/CountSizeFilesQueue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../09_FilesAndNetwork/CountSizeFiles/src/CountSizeFilesRecursion.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../09_FilesAndNetwork/CountSizeFiles/src/CountSizeFilesRecursion.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../09_FilesAndNetwork/CountSizeFiles/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../09_FilesAndNetwork/CountSizeFiles/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../09_FilesAndNetwork/ParserBankStatement/ParserBankStatement.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../09_FilesAndNetwork/ParserBankStatement/ParserBankStatement.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,10 +49,11 @@
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
     <property name="create.test.in.the.same.root" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/logs" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="RainbowCSV.Settings" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
@@ -66,6 +66,7 @@
       <recent name="" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\IdeaProjects\java_basics\08_ExceptionsDebuggingAndTesting\SPBMetro\src\main\resources" />
       <recent name="D:\IdeaProjects\java_basics\08_ExceptionsDebuggingAndTesting\SPBMetro\logs" />
     </key>
   </component>
@@ -161,13 +162,21 @@
       <option name="project" value="LOCAL" />
       <updated>1601569945334</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="work_on_bugs Homrwork 8.2 Metro">
+      <created>1602150334419</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1602150334419</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Homrwork 8.2 Metro" />
     <MESSAGE value="Homrwork 8.3 Metro" />
-    <option name="LAST_COMMIT_MESSAGE" value="Homrwork 8.3 Metro" />
+    <MESSAGE value="work_on_bugs Homrwork 8.2 Metro" />
+    <option name="LAST_COMMIT_MESSAGE" value="work_on_bugs Homrwork 8.2 Metro" />
   </component>
   <component name="WindowStateProjectService">
     <state x="361" y="73" key="#Project_Structure" timestamp="1601052575930">
@@ -178,10 +187,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="93" y="93" width="1350" height="638" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/0.0.1536.824@0.0.1536.824" timestamp="1601284628064" />
-    <state x="510" y="221" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1601493757007">
+    <state x="510" y="221" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1602146789140">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="510" y="221" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1601493757007" />
+    <state x="510" y="221" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1602146789140" />
     <state x="574" y="121" key="#com.intellij.ide.util.MemberChooser" timestamp="1601052954095">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -190,30 +199,30 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="571" y="280" width="393" height="269" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1536.824@0.0.1536.824" timestamp="1601052587542" />
-    <state x="347" y="10" key="CommitChangelistDialog2" timestamp="1601569944549">
+    <state x="347" y="10" key="CommitChangelistDialog2" timestamp="1602150333625">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="347" y="10" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1601569944549" />
+    <state x="347" y="10" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1602150333625" />
     <state x="445" y="124" key="FileChooserDialogImpl" timestamp="1601042773175">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="445" y="124" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1601042773175" />
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1601569776093">
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1602149866364">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1601569776093" />
-    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1601569776093">
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1602149866364" />
+    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1602149866364">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1601569776093" />
-    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1601569776093">
+    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1602149866364" />
+    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1602149866364">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1601569776093" />
-    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1601569776093">
+    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1602149866364" />
+    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1602149866364">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1601569776093" />
+    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1602149866364" />
     <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1601557853673">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -234,14 +243,18 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="249" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1601284377702" />
-    <state x="361" y="147" key="Vcs.Push.Dialog.v2" timestamp="1601569952498">
+    <state x="361" y="147" key="Vcs.Push.Dialog.v2" timestamp="1602150341602">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="147" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1601569952498" />
+    <state x="361" y="147" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1602150341602" />
     <state x="477" y="239" key="com.intellij.ide.util.TipDialog" timestamp="1601279608056">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="477" y="239" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1601279608056" />
+    <state x="580" y="330" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602150305202">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="580" y="330" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1602150305202" />
     <state x="506" y="228" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1601052278541">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -254,6 +267,17 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1601297085890" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Main.java</url>
+          <line>33</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/spb_metro$All_in_spb_metro.ic" NAME="All in spb-metro Coverage Results" MODIFIED="1601297300014" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

@@ -22,10 +22,10 @@ public interface CountSizeFiles {
     }
 
     private static String parseDir(String st) {
-        String os = System.getProperty("os.name");
+        String os = System.getProperty("os.name").toLowerCase();
         StringBuilder sb = new StringBuilder();
         String[] arrayPath = st.trim().split("\\|//|/|\\\\");
-        if(!os.startsWith("Windows")){
+        if(!os.startsWith("windows")){
             sb.append(System.getProperty("file.separator"));
         }
         for (String s : arrayPath) {

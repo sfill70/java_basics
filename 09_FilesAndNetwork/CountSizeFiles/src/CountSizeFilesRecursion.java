@@ -2,7 +2,10 @@ import java.io.File;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class CountSizeFilesRecursion extends AbstractCountSizeFiles {
+public class CountSizeFilesRecursion implements CountSizeFiles {
+    protected int countFile = 0;
+    protected int countDir = 0;
+    protected double sizeFiles = 0;
     private final static Locale LOCALE = new Locale("ru");
     private final static NumberFormat FORMAT = NumberFormat.getInstance(LOCALE);
 
@@ -25,6 +28,12 @@ public class CountSizeFilesRecursion extends AbstractCountSizeFiles {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void zeroingVariable() {
+        countDir = 0;
+        countFile = 0;
+        sizeFiles = 0;
     }
 
     public void print() {

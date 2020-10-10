@@ -1,10 +1,17 @@
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
+import java.util.regex.Pattern;
+
 
 public class UtilCopingDir {
+
+    public static void main(String[] args) {
+        File file = new File("G:\\bp7\\dict");
+        String[] arrayPath =file.getAbsolutePath().trim().split("\\|//|/|\\\\");
+        System.out.println(Arrays.toString(arrayPath));
+        String[] arrayPath2 =file.getAbsolutePath().trim().split(Pattern.quote(File.separator));
+        System.out.println(Arrays.toString(arrayPath2));
+    }
 
     //Переменная для создания папки в родительской директории копируемой папки если введено только имя папки
     private static String pathParentFrom = "";

@@ -46,6 +46,7 @@ public class Main {
                     LOGGER.info(VIEW_FILEPATH_MARKER, pathFile);
                 }
                 FileDownload.downloadFile(url, pathFile);
+                System.out.println(pathFile.substring(pathFile.lastIndexOf(System.getProperty("file.separator")) + 1));
             } else {
                 LOGGER.warn(INVALID_LINE_MARKER, src);
             }

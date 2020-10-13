@@ -1,14 +1,12 @@
-import au.com.bytecode.opencsv.CSVReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.time.LocalDate;
 import java.util.*;
-/*import org.apache.logging.log4j.LogManager;
+import java.util.stream.Collectors;
+
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
-import org.apache.logging.log4j.MarkerManager;*/
+import org.apache.logging.log4j.MarkerManager;
 
 public class Main {
     private final static Locale LOCALE = new Locale("ru");
@@ -19,73 +17,86 @@ public class Main {
     static String sDirSeparator = System.getProperty("file.separator");
     private static final String PATH_FILE = root + sDirSeparator + "ParserCsv" + sDirSeparator +
             "resources" + sDirSeparator + "movementList.csv";
-    private static HashMap<String, Double> organisation = new HashMap<>();
-    private static List<String[]> listArray = new ArrayList<>();
-    private static int[] arrayLength = new int[22];
+    private static final Logger LOGGER = LogManager.getLogger(Main.class);
+    private static final Marker INVALID_LINE_MARKER = MarkerManager.getMarker("VIEW_INVALID_ARRAY");
     private static int posDebit = 0;
     private static int posCredit = 0;
     private static int posOperation = 0;
-    private static double debit = 0.00;
-    private static double credit = 0.00;
-    private static double movement = 0.00;
+    private static int posDate = 0;
+    private static int posMcc = 0;
+    private static List<Movement> movementList = new ArrayList<>();
 
-    public static void main(String[] args) throws IOException {
-        System.out.println(root);
-
-        CSVReader reader = new CSVReader(new FileReader(PATH_FILE), CSV_SEPARATOR, QUOTE , 0);
-        //Read CSV line by line and use the string array as you want
-        String[] nextLine;
-        while ((nextLine = reader.readNext()) != null) {
-            //Verifying the read data here
-            arrayLength[nextLine.length] = arrayLength[nextLine.length] + 1;
-            listArray.add(nextLine);
-        }
+    public static void main(String[] args) {
+        ReaderMovement readerMovement = new ReaderMovement();
+        List<String[]> listArray = readerMovement.getMovementList(PATH_FILE, CSV_SEPARATOR, QUOTE);
+        int verificationArray = takeLengthArray(readerMovement.getArrayLength());
         for (String[] array : listArray
         ) {
-            // Полкучаем позиции в массиве интересующих нас данными
             if (posCredit == 0 || posDebit == 0) {
-                for (int i = 0; i < array.length; i++) {
-                    if (array[i].equalsIgnoreCase("приход"/*"дебет"*/)) {
-                        posDebit = i;
-                    }
-                    if (array[i].equalsIgnoreCase("расход"/*"кредит"*/)) {
-                        posCredit = i;
-                    }
-                    if (array[i].equalsIgnoreCase("описание операции")) {
-                        posOperation = i;
-                    }
-                }
+                getPositionInArray(array);
                 continue;
             }
-
             //Массивы которые отличаются по длинне от самой распространненой длинны массива пропускаем
-            if (array.length != takeLengthArray(arrayLength)) {
-               /* LOGGER.warn(INVALID_LINE_MARKER, "length array = " + array.length + " / string line -> "
-                        + Arrays.toString(array));*/
+            if (array.length != verificationArray) {
+                LOGGER.warn(INVALID_LINE_MARKER, "length array = " + array.length + " / string line -> "
+                        + Arrays.toString(array));
                 continue;
             }
+            String nameOrganisation = "";
+            String mcc = "";
+            double income = 0;
+            double expense = 0;
+            String[] arrayDate;
+            LocalDate date = LocalDate.of(1, 1, 1);
             if (array[posCredit] != null) {
-                movement = getMovement(array[posCredit], "Credit", array);
-                credit = credit + movement;
-                if (movement != 0) {
-                    //Оставил слеши без них не читаемо на пробелы не стал менять
-                    String operation = array[posOperation].replaceAll("(?u)[^\\p{Alpha}\\\\]", "");
-                    organisation.put(operation, organisation.getOrDefault(operation, 0.00) + movement);
-                   /* LOGGER.info(VIEW_CREDIT, "String -> " + array[posCredit] + " / movement -> "
-                            + movement + " / operation ->" + operation);*/
-                }
+                expense = getMovement(array[posCredit], "Credit", array);
             }
-            if (array[posDebit] != null && movement == 0) {
-                debit = debit + getMovement(array[posDebit], "Debit", array);
+            if (array[posOperation] != null) {
+                nameOrganisation = array[posOperation].replaceAll("\\\\+", "/").replaceAll("[\\s]+", "").replaceAll("(?u)[^\\p{Alpha}/]", "");
+            }
+            if (array[posDate] != null) {
+                arrayDate = array[posDate].trim().split("[.]");
+                date = LocalDate.of(Integer.parseInt(20 + arrayDate[2]), Integer.parseInt(arrayDate[1]),
+                        Integer.parseInt(arrayDate[0]));
+            }
+            if (array[posDebit] != null) {
+                income = getMovement(array[posDebit], "Debit", array);
+            }
+            if (array[posMcc] != null) {
+                mcc = array[posMcc];
+            }
+            movementList.add(new Movement(nameOrganisation, date, income, expense, mcc));
+        }
+        double sumExpense = movementList.stream().map(Movement::getExpense).reduce((Double::sum)).orElse(0.0);
+        double sumIncome = movementList.stream().map(Movement::getIncome).reduce((Double::sum)).orElse(0.0);
+        System.out.println("Сумма расходов : " + FORMAT.format(sumExpense));
+        System.out.println("Сумма расходов : " + FORMAT.format(sumIncome));
+        System.out.println("Суммы расходов по организациям:");
+        movementList.stream().collect(Collectors.groupingBy((Movement::getName),
+                Collectors.summingDouble(Movement::getExpense)))
+                .forEach((o, e) -> System.out.println(o + " - " + FORMAT.format(e) + " руб."));
+    }
+
+
+    private static void getPositionInArray(String[] array) {
+        for (int i = 0; i < array.length; i++) {
+
+            if (array[i].equalsIgnoreCase("приход")) {
+                posDebit = i;
+            }
+            if (array[i].equalsIgnoreCase("расход")) {
+                posCredit = i;
+            }
+            if (array[i].contains("Описание")) {
+                posOperation = i;
+            }
+            if (array[i].contains("Дата")) {
+                posDate = i;
+            }
+            if (array[i].equalsIgnoreCase("Референс проводки")) {
+                posMcc = i;
             }
 
-        }
-        System.out.println("Сумма расходов : " + FORMAT.format(credit));
-        System.out.println("Сумма доходов :" + FORMAT.format(debit));
-        System.out.println("Суммы расходов по организациям:");
-        for (Map.Entry<String, Double> entry : organisation.entrySet()
-        ) {
-            System.out.println(entry.getKey() + " - " + FORMAT.format(entry.getValue()) + " руб.");
         }
     }
 
@@ -94,7 +105,7 @@ public class Main {
         try {
             movement = Double.parseDouble(s.replace(",", "."));
         } catch (NumberFormatException e) {
-//            LOGGER.error("error in -> {} parse -> {} string line -> {}", operation, s, Arrays.toString(array));
+            LOGGER.error("error in -> {} parse -> {} string line -> {}", operation, s, Arrays.toString(array));
             e.printStackTrace();
         }
         return movement;

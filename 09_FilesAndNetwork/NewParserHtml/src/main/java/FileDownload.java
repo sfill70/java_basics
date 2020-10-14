@@ -2,6 +2,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -18,14 +19,16 @@ public class FileDownload {
         try (ReadableByteChannel readableByteChannel = Channels.newChannel(new URL(url).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(pathFile, true)) {
             FileChannel fileChannel = fileOutputStream.getChannel();
-            fileOutputStream.getChannel()
-                    .transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+            fileChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
         } catch (Exception e) {
             LOGGER.error(e + Arrays.toString(e.getStackTrace()));
             e.printStackTrace();
         }
     }
 
+    protected static String getDirDownload(String url, String dirDownload) {
+        return dirDownload + File.separator + url.substring(url.lastIndexOf("/") + 1);
+    }
 
     protected static void downloadFile(String url, String pathFile) {
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());

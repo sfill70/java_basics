@@ -46,7 +46,6 @@ public class Main {
             String mcc = "";
             double income = 0;
             double expense = 0;
-            String[] arrayDate;
             LocalDate date = LocalDate.of(1, 1, 1);
             if (array[posCredit] != null) {
                 expense = getMovement(array[posCredit], "Credit", array);
@@ -55,9 +54,7 @@ public class Main {
                 nameOrganisation = array[posOperation].replaceAll("\\\\+", "/").replaceAll("[\\s]+", "").replaceAll("(?u)[^\\p{Alpha}/]", "");
             }
             if (array[posDate] != null) {
-                arrayDate = array[posDate].trim().split("[.]");
-                date = LocalDate.of(Integer.parseInt(20 + arrayDate[2]), Integer.parseInt(arrayDate[1]),
-                        Integer.parseInt(arrayDate[0]));
+                date = getLocalDate(array[posDate]);
             }
             if (array[posDebit] != null) {
                 income = getMovement(array[posDebit], "Debit", array);
@@ -75,6 +72,20 @@ public class Main {
         movementList.stream().collect(Collectors.groupingBy((Movement::getName),
                 Collectors.summingDouble(Movement::getExpense)))
                 .forEach((o, e) -> System.out.println(o + " - " + FORMAT.format(e) + " руб."));
+    }
+
+    private static LocalDate getLocalDate(String s) {
+        try {
+            LocalDate date;
+            String[] arrayDate;
+            arrayDate = s.trim().split("[.]");
+            date = LocalDate.of(Integer.parseInt(20 + arrayDate[2]), Integer.parseInt(arrayDate[1]),
+                    Integer.parseInt(arrayDate[0]));
+            return date;
+        } catch (NumberFormatException e) {
+            LOGGER.error(e + " - " + Arrays.toString(e.getStackTrace()) + " error in -> {} ", s);
+            return LocalDate.of(1, 1, 1);
+        }
     }
 
 

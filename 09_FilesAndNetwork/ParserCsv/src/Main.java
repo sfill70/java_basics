@@ -1,6 +1,7 @@
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -27,10 +28,9 @@ public class Main {
     private static List<Movement> movementList = new ArrayList<>();
 
     public static void main(String[] args) {
-        ReaderMovement readerMovement = new ReaderMovement();
-        List<String[]> listArray = readerMovement.getMovementList(PATH_FILE, CSV_SEPARATOR, QUOTE);
-        int verificationArray = takeLengthArray(readerMovement.getArrayLength());
-        for (String[] array : listArray
+        List<String[]> listArrays = ReaderMovement.getArraysDataList(PATH_FILE, CSV_SEPARATOR, QUOTE);
+        int verificationArray = takeLengthArray(ReaderMovement.getArrayLength());
+        for (String[] array : listArrays
         ) {
             if (posCredit == 0 || posDebit == 0) {
                 getPositionInArray(array);
@@ -42,37 +42,51 @@ public class Main {
                         + Arrays.toString(array));
                 continue;
             }
-            String nameOrganisation = "";
-            String mcc = "";
-            double income = 0;
-            double expense = 0;
-            LocalDate date = LocalDate.of(1, 1, 1);
-            if (array[posCredit] != null) {
-                expense = getMovement(array[posCredit], "Credit", array);
-            }
-            if (array[posOperation] != null) {
-                nameOrganisation = array[posOperation].replaceAll("\\\\+", "/").replaceAll("[\\s]+", "").replaceAll("(?u)[^\\p{Alpha}/]", "");
-            }
-            if (array[posDate] != null) {
-                date = getLocalDate(array[posDate]);
-            }
-            if (array[posDebit] != null) {
-                income = getMovement(array[posDebit], "Debit", array);
-            }
-            if (array[posMcc] != null) {
-                mcc = array[posMcc];
-            }
-            movementList.add(new Movement(nameOrganisation, date, income, expense, mcc));
+            fillingMovementList(array);
         }
-        double sumExpense = movementList.stream().map(Movement::getExpense).reduce((Double::sum)).orElse(0.0);
-        double sumIncome = movementList.stream().map(Movement::getIncome).reduce((Double::sum)).orElse(0.0);
+        double sumExpense = getSum(movementList, Movement::getExpense);
+        double sumIncome = getSum(movementList, Movement::getIncome);
+
         System.out.println("Сумма расходов : " + FORMAT.format(sumExpense));
         System.out.println("Сумма расходов : " + FORMAT.format(sumIncome));
         System.out.println("Суммы расходов по организациям:");
         movementList.stream().collect(Collectors.groupingBy((Movement::getName),
                 Collectors.summingDouble(Movement::getExpense)))
-                .forEach((o, e) -> System.out.println(o + " - " + FORMAT.format(e) + " руб."));
+                .forEach((name, expense) -> System.out.printf("%s - %s руб." + System.lineSeparator(), name, FORMAT.format(expense)));
     }
+
+    private static void fillingMovementList(String[] array) {
+        String nameOrganisation = "";
+        String mcc = "";
+        double income = 0;
+        double expense = 0;
+        LocalDate date = LocalDate.of(1, 1, 1);
+        if (array[posCredit] != null) {
+            expense = getMovement(array[posCredit], "Credit", array);
+        }
+        if (array[posOperation] != null) {
+            nameOrganisation = array[posOperation].replaceAll("\\\\+", "/").replaceAll("[\\s]+", "").replaceAll("(?u)[^\\p{Alpha}/]", "");
+        }
+        if (array[posDate] != null) {
+            date = getLocalDate(array[posDate]);
+        }
+        if (array[posDebit] != null) {
+            income = getMovement(array[posDebit], "Debit", array);
+        }
+        if (array[posMcc] != null) {
+            mcc = array[posMcc];
+        }
+        movementList.add(new Movement(nameOrganisation, date, income, expense, mcc));
+    }
+
+
+    private static double getSum(List<Movement> movements, Function<Movement, Double> supplier) {
+        return movements.stream()
+                .map(supplier)
+                .mapToDouble(Double::doubleValue)
+                .sum();
+    }
+
 
     private static LocalDate getLocalDate(String s) {
         try {
@@ -82,7 +96,7 @@ public class Main {
             date = LocalDate.of(Integer.parseInt(20 + arrayDate[2]), Integer.parseInt(arrayDate[1]),
                     Integer.parseInt(arrayDate[0]));
             return date;
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
             LOGGER.error(e + " - " + Arrays.toString(e.getStackTrace()) + " error in -> {} ", s);
             return LocalDate.of(1, 1, 1);
         }

@@ -1,11 +1,11 @@
 import java.time.LocalDate;
 
 class Movement {
-    private String name;
-    private LocalDate date;
-    private double income;
-    private double expense;
-    private String mcc;
+    private final String name;
+    private final LocalDate date;
+    private final double income;
+    private final double expense;
+    private final String mcc;
 
     public Movement(String name, LocalDate date, double income, double expense, String mcc) {
         this.name = name;

@@ -9,10 +9,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ReaderMovement {
-    private int[] arrayLength = new int[22];
+    private static int[] arrayLength = new int[22];
     private static final Logger LOGGER = LogManager.getLogger(ReaderMovement.class);
 
-    public List<String[]> getMovementList(String pathFile, char csvSeparator, char quote) {
+    public static List<String[]> getArraysDataList(String pathFile, char csvSeparator, char quote) {
         List<String[]> listArray = new ArrayList<>();
         try (CSVReader reader = new CSVReader(new FileReader(pathFile), csvSeparator, quote, 0)) {
             //Read CSV line by line and use the string array as you want
@@ -29,7 +29,7 @@ public class ReaderMovement {
         return listArray;
     }
 
-    public int[] getArrayLength() {
+    public static int[] getArrayLength() {
         return arrayLength;
     }
 }

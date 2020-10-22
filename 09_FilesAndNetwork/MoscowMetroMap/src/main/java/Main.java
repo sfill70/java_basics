@@ -1,7 +1,9 @@
+import com.google.gson.GsonBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 import java.io.File;
 import java.util.*;
 
@@ -21,11 +23,11 @@ public class Main {
     public static void main(String[] args) {
         Document doc = null;
         try {
-            /*File file = new File(DATA_PATH + File.separator + "metro.html");
-            doc = Jsoup.parse(file, "utf-8");*/
-             doc = Jsoup.connect(SOURCE_URL ).
+            File file = new File(DATA_PATH + File.separator + "metro.html");
+            doc = Jsoup.parse(file, "utf-8");
+            /* doc = Jsoup.connect(SOURCE_URL ).
                     userAgent(USER_AGENT).
-                    referrer(REFERRER).get();
+                    referrer(REFERRER).maxBodySize(0).get();*/
         } catch (Exception e) {
             System.exit(1);
         }
@@ -34,7 +36,8 @@ public class Main {
 
         try {
             parseMoscowMetro(target);
-            JsonWriteUtil.writeDataJson(listLine, connectionSet, PATH_JSON_FILE);
+            JsonWriteUtil.writeDataWithGson(listLine, connectionSet, PATH_JSON_FILE);
+//            JsonWriteUtil.writeDataJson(listLine, connectionSet, PATH_JSON_FILE);
             JsonReadUtil.printJson(PATH_JSON_FILE);
         } catch (Exception e) {
             e.printStackTrace();

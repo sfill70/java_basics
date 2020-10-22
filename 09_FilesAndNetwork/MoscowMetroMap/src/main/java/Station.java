@@ -3,29 +3,29 @@ import java.util.Objects;
 public class Station implements Comparable<Station> {
 
     private String name;
-    private String numberLine;
+    private String line;
 
     public Station() {
     }
 
     public Station(String name, String numberLine) {
         this.name = name;
-        this.numberLine = numberLine;
+        this.line = numberLine;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getNumberLine() {
-        return numberLine;
+    public String getLine() {
+        return line;
     }
 
     @Override
     public String toString() {
         return "Station{" +
                 "name='" + name + '\'' +
-                ", numberLine='" + numberLine + '\'' +
+                ", numberLine='" + line + '\'' +
                 '}';
     }
 
@@ -38,22 +38,22 @@ public class Station implements Comparable<Station> {
         Station station = (Station) o;
 
         if (!Objects.equals(name, station.name)) return false;
-        return Objects.equals(numberLine, station.numberLine);
+        return Objects.equals(line, station.line);
     }
 
     @Override
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (numberLine != null ? numberLine.hashCode() : 0);
+        result = 31 * result + (line != null ? line.hashCode() : 0);
         return result;
     }
 
     @Override
     public int compareTo(Station o) {
 
-        int compare = numberLine.length() - o.getNumberLine().length();
+        int compare = line.length() - o.getLine().length();
         if (compare == 0) {
-            compare = numberLine.compareToIgnoreCase(o.getNumberLine());
+            compare = line.compareToIgnoreCase(o.getLine());
         }
         return compare == 0 ? name.compareTo(o.getName()) : compare;
     }

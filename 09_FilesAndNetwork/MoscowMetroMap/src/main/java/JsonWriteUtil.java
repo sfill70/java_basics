@@ -13,6 +13,17 @@ import java.util.Set;
 
 public class JsonWriteUtil {
 
+    protected static void writeDataWithGson(List<Line> linesList, Set<Connection> connectionSet, String pathFile) throws IOException {
+        JsonResponse jsonResponse = new JsonResponse();
+        GsonBuilder gsonBuilder = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping();
+        jsonResponse.setLines(linesList);
+        jsonResponse.setStations(linesList);
+        jsonResponse.setConnections(connectionSet);
+        String json = gsonBuilder.create().toJson(jsonResponse);
+        Files.write(Paths.get(pathFile), json.getBytes());
+    }
+
+
     protected static void writeDataJson(List<Line> linesList, Set<Connection> connectionSet, String pathFile) throws IOException {
         JSONObject metro = new JSONObject();
         JSONArray lines = getJsonLines(linesList);
@@ -53,7 +64,7 @@ public class JsonWriteUtil {
             JSONArray oneConnection = new JSONArray();
             connection.getStationSet().forEach(station -> {
                 JSONObject connectedStation = new JSONObject();
-                connectedStation.put("line", station.getNumberLine());
+                connectedStation.put("line", station.getLine());
                 connectedStation.put("station", station.getName());
                 oneConnection.add(connectedStation);
             });

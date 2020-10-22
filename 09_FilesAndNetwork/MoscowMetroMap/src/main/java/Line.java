@@ -1,10 +1,12 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Line implements Comparable<Line>{
+public class Line implements Comparable<Line> {
     private String number;
     private String name;
-    private List<Station> stations;
+    private transient List<Station> stations;
+//    private List<Station> stations = new ArrayList<Station>();
+
 
     public Line() {
     }

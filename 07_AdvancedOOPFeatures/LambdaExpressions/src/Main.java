@@ -32,7 +32,8 @@ public class Main {
                 int res = compare(c1, c2);
                 return (res != 0) ? res : other.compare(c1, c2);
             };
-        }*/
+        }
+*/
 
 
         //Покороче

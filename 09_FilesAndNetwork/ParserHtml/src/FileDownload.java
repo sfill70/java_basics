@@ -1,8 +1,12 @@
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
 import java.util.Arrays;
 
 import org.apache.logging.log4j.LogManager;
@@ -11,10 +15,24 @@ import org.apache.logging.log4j.Logger;
 public class FileDownload {
     private static final Logger LOGGER = LogManager.getLogger(FileDownload.class);
 
+    protected static void downloadFileNio(String url, String pathFile) {
+        try (ReadableByteChannel readableByteChannel = Channels.newChannel(new URL(url).openStream());
+             FileOutputStream fileOutputStream = new FileOutputStream(pathFile, true)) {
+            FileChannel fileChannel = fileOutputStream.getChannel();
+            fileChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+        } catch (Exception e) {
+            LOGGER.error(e + Arrays.toString(e.getStackTrace()));
+            e.printStackTrace();
+        }
+    }
+
+    protected static String getDirDownload(String url, String dirDownload) {
+        return dirDownload + File.separator + url.substring(url.lastIndexOf("/") + 1);
+    }
+
     protected static void downloadFile(String url, String pathFile) {
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(pathFile, true)) {
-
             byte[] dataBuffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
@@ -25,7 +43,6 @@ public class FileDownload {
             e.printStackTrace();
         }
     }
-
 
     protected static long fileSize(String fileUrl) throws IOException {
         URL url = new URL(fileUrl);

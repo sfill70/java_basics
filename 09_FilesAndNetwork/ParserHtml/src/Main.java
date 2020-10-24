@@ -1,15 +1,13 @@
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import java.io.IOException;
-import java.util.Arrays;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 
 public class Main {
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
@@ -17,7 +15,8 @@ public class Main {
     private static final String REFERRER = "https://www.google.com/";
     static String root = System.getProperty("user.dir");
     static String dirSeparator = System.getProperty("file.separator");
-    private static final String IMAGES_PATH = root + dirSeparator + "ParserHtml" + dirSeparator + "images" + dirSeparator;
+//    private static final String IMAGES_PATH = root + dirSeparator + "ParserHtml" + dirSeparator + "images" + dirSeparator;
+    private static final String IMAGES_PATH = String.join(File.separator,  root, "ParserHtml", "images");
     private static final String REGEX_FILTER = ".+[.]png|.+[.]jpg|.+[.]tif|.+[.]jpeg";
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
     private static final String SOURCE_URL = "https://lenta.ru/";
@@ -33,9 +32,19 @@ public class Main {
                     referrer(REFERRER).get();
         } catch (IOException e) {
             LOGGER.error(e + Arrays.toString(e.getStackTrace()));
+            System.exit(1);
         }
-        assert doc != null;
-        Elements listSrc = doc.select("[src]");
+
+        doc.select("[src]").stream()
+                .filter(tag -> tag.normalName().equals("img"))
+                .map(tag -> tag.attr("abs:src"))
+                .filter(url -> url.matches(REGEX_FILTER))
+                .peek(LOGGER::debug)
+                .forEach(url ->  FileDownload.downloadFileNio(url, FileDownload.getDirDownload(url, IMAGES_PATH)));
+
+
+
+       /* Elements listSrc = doc.select("[src]");
         for (Element src : listSrc
         ) {
             if (src.normalName().equals("img")) {
@@ -44,12 +53,12 @@ public class Main {
                 if (fileName.matches(REGEX_FILTER)) {
                     pathFile = IMAGES_PATH + fileName;
                     LOGGER.info(VIEW_FILEPATH_MARKER, pathFile);
+                    FileDownload.downloadFile(url, pathFile);
+                System.out.println(fileName);
                 }
-                FileDownload.downloadFile(url, pathFile);
-                System.out.println(pathFile.substring(pathFile.lastIndexOf(System.getProperty("file.separator")) + 1));
             } else {
                 LOGGER.warn(INVALID_LINE_MARKER, src);
             }
-        }
+        }*/
     }
 }

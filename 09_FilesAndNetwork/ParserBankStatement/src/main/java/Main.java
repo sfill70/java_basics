@@ -4,8 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
-
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -38,7 +36,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        //Build reader instance
+        /*//Build reader instance
         //Read data.csv
         //Default seperator is comma
         //Default quote character is double quote
@@ -50,17 +48,18 @@ public class Main {
             //Verifying the read data here
             arrayLength[nextLine.length] = arrayLength[nextLine.length] + 1;
             listArray.add(nextLine);
-        }
+        }*/
+
         //Формируем из строки массив с данными,
         // данные в кавычках "...." помещаем в ячейку целиком
         //остальные разбиваем по csv разделителю
-       /* for (String line : linesFile) {
+        for (String line : linesFile) {
 //            System.out.println(line.replaceAll("\".+,?.+,?.+\"","!!!!!!!!!!!!!!!!!!!!!!!"));
 //            System.out.println(line);
             String[] array = getArray(line.trim().split("\""));
             arrayLength[array.length] = arrayLength[array.length] + 1;
             listArray.add(array);
-        }*/
+        }
         for (String[] array : listArray
         ) {
             // Полкучаем позиции в массиве интересующих нас данными

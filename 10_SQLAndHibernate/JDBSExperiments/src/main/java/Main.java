@@ -3,7 +3,7 @@ import java.sql.*;
 public class Main {
 
     public static void main(String[] args) {
-        String query = "SELECT course_name,COUNT(subscription_date) / (max(MONTH(subscription_date))-min(MONTH(subscription_date)))" +
+        String query = "SELECT course_name,COUNT(subscription_date) / (1 + max(MONTH(subscription_date))-min(MONTH(subscription_date)))" +
                 " AS AveragePurchase FROM PurchaseList GROUP BY course_name";
         try (Connection connection = MysqlConnection.connectionMysql();
              Statement statement = connection.createStatement()) {

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="APP_LOG_ROOT">Your log's path</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"/>
+        </Console>
+
+        <File name="InputErrorsMarker" fileName="HibernateSkillbox/logs/invalid_url.log">
+            <PatternLayout pattern="%msg%n"/>
+            <Filters>
+                <MarkerFilter marker="VIEW_INVALID"/>
+            </Filters>
+        </File>
+        <File name="ViewFilePath" fileName="HibernateSkillbox/logs/filePath.log">
+            <PatternLayout pattern="%msg%n"/>
+            <Filters>
+                <MarkerFilter marker="VIEW_FILEPATH"/>
+            </Filters>
+        </File>
+
+        <File name="SearchFile" fileName="HibernateSkillbox/logs/search.log">
+            <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>
+            <PatternLayout>
+                <pattern>%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+        </File>
+        <File name="InputErrors" fileName="HibernateSkillbox/logs/invalid_atr.log">
+            <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+            <PatternLayout>
+                <pattern>%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+        </File>
+        <File name="exceptions" fileName="HibernateSkillbox/logs/exceptions.log">
+            <ThresholdFilter level="FATAL" onMatch="DENY" onMismatch="NEUTRAL"/>
+            <PatternLayout>
+                <pattern>%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <appender-ref ref="Console" level="info"/>
+            <appender-ref ref="InputErrorsMarker"/>
+            <appender-ref ref="ViewFilePath"/>
+            <appender-ref ref="SearchFile" level="info"/>
+            <appender-ref ref="InputErrors" level="warn"/>
+            <appender-ref ref="exceptions" level="error"/>
+        </Root>
+    </Loggers>
+</Configuration>

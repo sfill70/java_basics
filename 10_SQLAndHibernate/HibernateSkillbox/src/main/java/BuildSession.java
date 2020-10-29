@@ -11,6 +11,7 @@ public class BuildSession {
             Metadata metadata = new MetadataSources(registry).getMetadataBuilder().build();
             return metadata.getSessionFactoryBuilder().build();
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

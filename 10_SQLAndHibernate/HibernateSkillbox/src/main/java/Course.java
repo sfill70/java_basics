@@ -1,10 +1,11 @@
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 
 @Entity
 @Table(name = "Courses")
-public class Course {
+public class Course implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -16,8 +17,8 @@ public class Course {
     private String description;
     @ManyToOne(cascade = CascadeType.ALL)
     private Teacher teacher;
-    @Column(name = "students_count")
-    private int studentCount;
+    @Column(name = "students_count", nullable = true)
+    private Integer studentCount;
     private int price;
     @Column(name = "price_per_hour")
     private float pricePerHour;

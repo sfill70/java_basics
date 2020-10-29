@@ -1,3 +1,4 @@
+
 import javax.persistence.*;
 
 import java.io.Serializable;
@@ -6,6 +7,7 @@ import java.io.Serializable;
 @Table(name = "LinkedPurchaseList")
 public class LinkedPurchaseList implements Serializable {
     @EmbeddedId
+    @Column(name = "student_id")
     private Id id;
 
     public Id getId() {
@@ -31,6 +33,40 @@ public class LinkedPurchaseList implements Serializable {
 
         @Column(name = "course_id")
         private int courseId;
+
+        public int getStudentId() {
+            return studentId;
+        }
+
+        public void setStudentId(int studentId) {
+            this.studentId = studentId;
+        }
+
+        public int getCourseId() {
+            return courseId;
+        }
+
+        public void setCourseId(int courseId) {
+            this.courseId = courseId;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Id)) return false;
+
+            Id id = (Id) o;
+
+            if (studentId != id.studentId) return false;
+            return courseId == id.courseId;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = studentId;
+            result = 31 * result + courseId;
+            return result;
+        }
     }
 
 

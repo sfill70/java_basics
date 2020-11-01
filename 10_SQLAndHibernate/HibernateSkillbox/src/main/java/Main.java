@@ -9,14 +9,20 @@ import java.sql.Statement;
 public class Main {
 
     public static void main(String[] args) {
+        try (Connection connection = MysqlConnection.connectionMysql();
+             Statement statement = connection.createStatement()
+        ) {
+            statement.execute("CREATE TABLE IF NOT EXISTS LinkedPurchaseList(student_id INT, course_id INT, primary key(student_id, course_id))");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         try (SessionFactory sessionFactory = BuildSession.getSessionFactory();
              Session session = sessionFactory.openSession();
              Connection connection = MysqlConnection.connectionMysql();
              Statement statement = connection.createStatement()
         ) {
-            String query = "select st_id,id as id_course from (select student_name,course_name,id as st_id from purchaselist, " +
-                    "students where purchaselist.student_name = students.name)as tb, " +
-                    "courses where tb.course_name = courses.name order by st_id";
+            String query = "SELECT st_id,id AS id_course From (SELECT student_name,course_name,id AS\n" +
+                    "st_id FROM PurchaseList, Students WHERE PurchaseList.student_name = Students.name)as tb,Courses WHERE tb.course_name = Courses.name order by st_id";
             Transaction transaction = session.beginTransaction();
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {

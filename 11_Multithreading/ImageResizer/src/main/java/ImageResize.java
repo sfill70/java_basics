@@ -1,40 +1,47 @@
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.image.RescaleOp;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 public class ImageResize implements Runnable {
-    private File[] files;
     private String dstFolder;
-
-    public ImageResize(File[] files, String dstFolder) {
-        this.files = files;
+    ConcurrentLinkedDeque<File> queue;
+    int newWidth = 60;
+    public ImageResize(String dstFolder, ConcurrentLinkedDeque<File> queue) {
         this.dstFolder = dstFolder;
+        this.queue = queue;
     }
 
     @Override
     public void run() {
         long start = System.currentTimeMillis();
-        try {
-            for (File file : files) {
+        boolean isSwitch = true;
+        while (!queue.isEmpty()) {
+            try {
+                File file = null;
+                if (isSwitch) {
+                    file = queue.pollFirst();
+                } else {
+                    file = queue.pollLast();
+                }
+                isSwitch = !isSwitch;
+                if (file == null) {
+                    continue;
+                }
                 BufferedImage image = ImageIO.read(file);
                 if (image == null) {
                     continue;
                 }
-                int newWidth = 300;
-                int newHeight = (int) Math.round(
-                        image.getHeight() / (image.getWidth() / (double) newWidth)
-                );
-                BufferedImage newImage = resize(image, newWidth, newHeight);
+                BufferedImage newImage = resize(image, newWidth);
                 writeFiles(file, newImage);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
-        System.out.println("Duration: " + (System.currentTimeMillis() - start));
+        System.out.println(Thread.currentThread().getName() + " - Duration: " + (System.currentTimeMillis() - start));
     }
 
     private void writeFiles(File file, BufferedImage newImage) throws IOException {
@@ -45,7 +52,10 @@ public class ImageResize implements Runnable {
         }
     }
 
-    private BufferedImage resize(BufferedImage image, int newWidth, int newHeight) {
+    private BufferedImage resize(BufferedImage image, int newWidth) {
+        int newHeight = (int) Math.round(
+                image.getHeight() / (image.getWidth() / (double) newWidth)
+        );
         BufferedImage newImage = new BufferedImage(
                 newWidth, newHeight, BufferedImage.TYPE_INT_RGB
         );

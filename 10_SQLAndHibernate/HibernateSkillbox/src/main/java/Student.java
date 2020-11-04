@@ -2,7 +2,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Set;
 
 
 @Entity
@@ -13,6 +13,7 @@ public class Student implements Serializable {
     private int id;
     private String name;
     private int age;
+
     @Column(name = "registration_date")
     private Date registrationDate;
 
@@ -70,5 +71,13 @@ public class Student implements Serializable {
 
     public void setSubscriptions(List<Subscription> subscriptions) {
         this.subscriptions = subscriptions;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

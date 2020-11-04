@@ -1,14 +1,28 @@
-
 import javax.persistence.*;
-
 import java.io.Serializable;
 
 @Entity
 @Table(name = "LinkedPurchaseList")
 public class LinkedPurchaseList implements Serializable {
     @EmbeddedId
-    @Column(name = "student_id")
     private Id id;
+
+    @ManyToOne
+    @JoinColumn(name = "student_id", updatable = false, insertable = false)
+    private Student student;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id", updatable = false, insertable = false)
+    private Course course;
+
+    public LinkedPurchaseList() {
+    }
+
+    public LinkedPurchaseList(Student student, Course course) {
+        this.id = new Id(student.getId(), course.getId());
+        this.student = student;
+        this.course = course;
+    }
 
     public Id getId() {
         return id;
@@ -21,32 +35,17 @@ public class LinkedPurchaseList implements Serializable {
     @Embeddable
     public static class Id implements Serializable {
 
-        public Id() {}
+        @Column(name = "student_id")
+        public int studentId;
+
+        @Column(name = "course_id")
+        public int courseId;
+
+        public Id() {
+        }
 
         public Id(int studentId, int courseId) {
             this.studentId = studentId;
-            this.courseId = courseId;
-        }
-
-        @Column(name = "student_id")
-        private int studentId;
-
-        @Column(name = "course_id")
-        private int courseId;
-
-        public int getStudentId() {
-            return studentId;
-        }
-
-        public void setStudentId(int studentId) {
-            this.studentId = studentId;
-        }
-
-        public int getCourseId() {
-            return courseId;
-        }
-
-        public void setCourseId(int courseId) {
             this.courseId = courseId;
         }
 
@@ -68,6 +67,4 @@ public class LinkedPurchaseList implements Serializable {
             return result;
         }
     }
-
-
 }

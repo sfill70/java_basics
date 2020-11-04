@@ -57,7 +57,6 @@ public class Subscription implements Serializable{
     @Embeddable
     public static class Key implements Serializable {
 
-
         @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
         @JoinColumn(name = "student_id")
         public Student student;

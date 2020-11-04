@@ -3,8 +3,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.List;
 
 public class Main {
 
@@ -13,6 +13,7 @@ public class Main {
              Statement statement = connection.createStatement()
         ) {
             statement.execute("CREATE TABLE IF NOT EXISTS LinkedPurchaseList(student_id INT, course_id INT, primary key(student_id, course_id))");
+//            statement.execute("CREATE TABLE IF NOT EXISTS LinkedPurchaseList(student_id INT, course_id INT)");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -21,18 +22,18 @@ public class Main {
              Connection connection = MysqlConnection.connectionMysql();
              Statement statement = connection.createStatement()
         ) {
-            String query = "SELECT st_id,id AS id_course From (SELECT student_name,course_name,id AS\n" +
-                    "st_id FROM PurchaseList, Students WHERE PurchaseList.student_name = Students.name)as tb,Courses WHERE tb.course_name = Courses.name order by st_id";
             Transaction transaction = session.beginTransaction();
-            ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
-                LinkedPurchaseList linkedPurchaseList = new LinkedPurchaseList();
-                System.out.print(resultSet.getInt(1) + " - ");
-                System.out.println(resultSet.getInt(2));
-                LinkedPurchaseList.Id id = new LinkedPurchaseList.Id(resultSet.getInt(1), resultSet.getInt(2));
-                linkedPurchaseList.setId(id);
+            List<PurchaseList> purchaseLists = session.createQuery("FROM PurchaseList", PurchaseList.class).getResultList();
+
+            for (PurchaseList pl : purchaseLists
+            ) {
+                Student student = session.createQuery("FROM Student WHERE name = '" + pl.getStudentName() + "'", Student.class).getSingleResult();
+                Course course = session.createQuery("FROM Course WHERE name = '" + pl.getCourseName() + "'", Course.class).getSingleResult();
+                System.out.println(student + " - " + course);
+                LinkedPurchaseList linkedPurchaseList = new LinkedPurchaseList(student, course);
                 session.save(linkedPurchaseList);
             }
+
             transaction.commit();
 
         } catch (NullPointerException ex) {

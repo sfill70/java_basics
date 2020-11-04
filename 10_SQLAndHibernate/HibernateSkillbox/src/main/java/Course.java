@@ -107,4 +107,12 @@ public class Course implements Serializable {
     public void setStudents(List<Student> students) {
         this.students = students;
     }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", name='" + name + '\''  +
+                '}';
+    }
 }

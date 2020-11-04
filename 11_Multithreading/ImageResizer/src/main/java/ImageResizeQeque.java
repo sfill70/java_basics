@@ -2,17 +2,16 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 
-public class ImageResize implements Runnable {
+public class ImageResizeQeque implements Runnable {
     private String dstFolder;
     private static final String REGEX_FILTER = "(?i).+[.]jpg";
-    ConcurrentLinkedDeque<File> queue;
+    ConcurrentLinkedQueue<File> queue;
     int newWidth = 60;
 
-    public ImageResize(String dstFolder, ConcurrentLinkedDeque<File> queue) {
+    public ImageResizeQeque(String dstFolder, ConcurrentLinkedQueue<File> queue) {
         this.dstFolder = dstFolder;
         this.queue = queue;
     }
@@ -23,8 +22,7 @@ public class ImageResize implements Runnable {
         boolean isSwitch = true;
         while (!queue.isEmpty()) {
             try {
-                File file = isSwitch ? queue.pollFirst() : queue.pollLast();
-                isSwitch = !isSwitch;
+                File file = queue.poll();
                 if (file != null) {
                     BufferedImage image = ImageIO.read(file);
                     if (image == null) {

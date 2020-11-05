@@ -13,7 +13,6 @@ public class Main {
              Statement statement = connection.createStatement()
         ) {
             statement.execute("CREATE TABLE IF NOT EXISTS LinkedPurchaseList(student_id INT, course_id INT, primary key(student_id, course_id))");
-//            statement.execute("CREATE TABLE IF NOT EXISTS LinkedPurchaseList(student_id INT, course_id INT)");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -29,16 +28,16 @@ public class Main {
             ) {
                 Student student = session.createQuery("FROM Student WHERE name = '" + pl.getStudentName() + "'", Student.class).getSingleResult();
                 Course course = session.createQuery("FROM Course WHERE name = '" + pl.getCourseName() + "'", Course.class).getSingleResult();
-                System.out.println(student + " - " + course);
+//                System.out.println(student + " - " + course);
                 LinkedPurchaseList linkedPurchaseList = new LinkedPurchaseList(student, course);
                 session.save(linkedPurchaseList);
             }
 
             transaction.commit();
 
-        } catch (NullPointerException ex) {
-            System.out.println("Ошибка соеденения с базой данных");
+        } catch (ExceptionConnectionMysql ex) {
             ex.printStackTrace();
+            System.exit(-1);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -6,12 +6,12 @@ public class MysqlConnection {
     static final String USER = "root";
     static final String PASSWORD = "q1w2e3r4ty";
 
-    protected static Connection connectionMysql() {
+    protected static Connection connectionMysql() throws ExceptionConnectionMysql {
         try {
             return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (Exception e
         ) {
-            return null;
+            throw new ExceptionConnectionMysql("Ошибка соеденения с базой данных");
         }
     }
 }

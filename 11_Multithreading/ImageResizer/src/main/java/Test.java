@@ -1,13 +1,12 @@
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 
-public class Main {
+public class Test {
     private static final String IMAGES_PATH = String.join(File.separator, System.getProperty("user.dir"),/*"11_Multithreading", "ImageResizer",*/ "images");
     private static int numberCores = Runtime.getRuntime().availableProcessors();
 
@@ -19,13 +18,22 @@ public class Main {
             String dstFolder = IMAGES_PATH + File.separator + "dst";
             File srcDir = new File(srcFolder);
             File[] files = srcDir.listFiles();
-            System.out.println("Количество файлов: " + files.length);
-            imageResizeDeque(dstFolder, files);
-            imageResizeQeque(dstFolder, files);
+            if (args.length > 0) {
+                System.out.println("Количество файлов: " + files.length);
+                if (args[0].equalsIgnoreCase("qeque")) {
+                    imageResizeQeque(dstFolder, files);
+                }
+                if (args[0].equalsIgnoreCase("deque")) {
+                    imageResizeDeque(dstFolder, files);
+                }
+            } else {
+                imageResizeQeque(dstFolder, files);
+                Thread.sleep(100);
+                imageResizeDeque(dstFolder, files);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     private static void imageResizeDeque(String dstFolder, File[] files) throws InterruptedException {
@@ -39,11 +47,11 @@ public class Main {
         long start = System.currentTimeMillis();
         System.out.println("Двухсторонняя очередь");
         for (int i = 0; i < numberCores; i++) {
+            Thread.sleep(20);
             ImageResize imageResize = new ImageResize(dstFolder, queue);
             Thread thread = new Thread(imageResize);
             thread.start();
             threadList.add(thread);
-            Thread.sleep(10);
         }
         threadJoin(threadList);
         System.out.println(Thread.currentThread().getName() + " - Duration: :" + (System.currentTimeMillis() - start));
@@ -57,11 +65,11 @@ public class Main {
         File dstDir = deleteFiles(dstFolder);
         System.out.println("Просто очередь");
         for (int i = 0; i < numberCores; i++) {
+            Thread.sleep(20);
             ImageResizeQeque imageResize = new ImageResizeQeque(dstFolder, queueQ);
             Thread thread = new Thread(imageResize);
             thread.start();
             threadList.add(thread);
-            Thread.sleep(10);
         }
         threadJoin(threadList);
         System.out.println(Thread.currentThread().getName() + " - Duration: :" + (System.currentTimeMillis() - start));

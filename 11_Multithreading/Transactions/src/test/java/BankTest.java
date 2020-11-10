@@ -58,7 +58,7 @@ public class BankTest extends TestCase {
     @Test
     public void testTransfer() throws InterruptedException {
         bank.transfer("a2", "a4", 30000);
-        long actual1 = accounts.get("a2").getMoney();
+        long actual1 = bank.getAccounts().get("a2").getMoney();
 //        long actual2 = accounts.get("a4").getMoney();
         long expected1 = 30000;
 //        long expected2 = 90000;

@@ -42,21 +42,18 @@ public class Main {
             for (int i = 0; i < bank.getAccounts().size(); i++) {
                 Account accountFrom;
                 Account accountTo = null;
-
-                synchronized (bank.getAccounts()) {
-                    int fromNum = random.nextInt(bank.getAccounts().size());
-                    accountFrom = (Account) bank.getAccounts().get(bank.getAccounts().keySet().toArray()[fromNum]);
-                    int toNum = 0;
-
-                    while (accountTo == null || accountFrom.equals(accountTo)) {
-                        toNum = random.nextInt(bank.getAccounts().size());
-
+                Integer fromNum = random.nextInt(bank.getAccounts().size());
+                Integer toNum = 0;
+                while (toNum == 0 || fromNum == toNum) {
+                    toNum = random.nextInt(bank.getAccounts().size());
+                }
+                synchronized (fromNum.compareTo(toNum) > 0 ? toNum : fromNum) {
+                    synchronized (fromNum.compareTo(toNum) > 0 ? fromNum : toNum) {
+                        accountFrom = (Account) bank.getAccounts().get(bank.getAccounts().keySet().toArray()[fromNum]);
                         accountTo = (Account) bank.getAccounts().get(bank.getAccounts().keySet().toArray()[toNum]);
                     }
                 }
-                if (accountFrom.getMoney() < accountTo.getMoney()) {
-                    permutation(accountFrom, accountTo);
-                }
+
                 Long amount = accountFrom.getMoney() / 3 + (long) (Math.random() * (accountFrom.getMoney() / 3));
 //                System.out.println(accountFrom.getMoney() + " - " + accountFrom.getAccNumber());
 //                System.out.println(accountTo.getMoney() + " - " + accountTo.getAccNumber());
@@ -71,11 +68,6 @@ public class Main {
         }
     }
 
-    private static void permutation(Account accountFrom, Account accountTo) {
-        long tmp = accountFrom.getMoney();
-        accountFrom.setMoney(accountTo.getMoney());
-        accountTo.setMoney(tmp);
-    }
 
     private static void threadJoin(List<Thread> threadList) {
         for (Thread tr : threadList

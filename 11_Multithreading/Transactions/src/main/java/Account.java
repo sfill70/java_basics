@@ -3,7 +3,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Account implements Comparable<Account> {
-    private long money;
+    private volatile long money;
     private String accNumber;
 
     public Account(long money, String accNumber) {

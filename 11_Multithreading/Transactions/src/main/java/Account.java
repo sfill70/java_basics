@@ -5,10 +5,24 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Account implements Comparable<Account> {
     private volatile long money;
     private String accNumber;
+    private boolean isLocked;
 
     public Account(long money, String accNumber) {
         this.money = money;
         this.accNumber = accNumber;
+        isLocked = false;
+    }
+
+    public void setAccNumber(String accNumber) {
+        this.accNumber = accNumber;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
     }
 
     public long getMoney() {

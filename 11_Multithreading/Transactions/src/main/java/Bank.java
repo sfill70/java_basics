@@ -1,16 +1,20 @@
+import javax.swing.text.html.parser.Entity;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class Bank {
     private HashMap<String, Account> accounts;
-    private ConcurrentHashMap<String, Account> lockedAccounts;
+    private ConcurrentSkipListSet<Account> lockedAccounts;
     private final Random random = new Random();
     private final long OPERATION_LIMIT = 50000L;
 
     public Bank(HashMap<String, Account> accounts) {
         this.accounts = accounts;
-        lockedAccounts = new ConcurrentHashMap<String, Account>();
+        lockedAccounts = new ConcurrentSkipListSet<Account>();
     }
 
     public HashMap<String, Account> getAccounts() {
@@ -21,18 +25,35 @@ public class Bank {
         this.accounts = accounts;
     }
 
-    public ConcurrentHashMap<String, Account> getLockedAccounts() {
+    public ConcurrentSkipListSet<Account> getLockedAccounts() {
         return lockedAccounts;
     }
 
-    public void setLockedAccounts(ConcurrentHashMap<String, Account> lockedAccounts) {
+    public void setLockedAccounts(ConcurrentSkipListSet<Account> lockedAccounts) {
         this.lockedAccounts = lockedAccounts;
+    }
+
+    public int countLock() {
+        int count = 0;
+        for (Map.Entry<String, Account> entry : accounts.entrySet()) {
+            if (entry.getValue().isLocked()) {
+                count++;
+            }
+        }
+        return count;
     }
 
     public synchronized boolean isFraud(String fromAccountNum, String toAccountNum, long amount)
             throws InterruptedException {
-        Thread.sleep(10);
-        return random.nextBoolean();
+        boolean isLock = random.nextBoolean();
+        accounts.get(fromAccountNum).setLocked(true);
+        accounts.get(toAccountNum).setLocked(true);
+        Thread.sleep(100);
+        if (!isLock) {
+            accounts.get(fromAccountNum).setLocked(false);
+            accounts.get(toAccountNum).setLocked(false);
+        }
+        return isLock;
     }
 
     /**
@@ -43,26 +64,21 @@ public class Bank {
      * счетов (как – на ваше усмотрение)
      */
     public void transfer(String fromAccountNum, String toAccountNum, long amount) throws InterruptedException {
-        synchronized (accounts) {
-            Account fromAccount = accounts.get(fromAccountNum);
-            Account toAccount = accounts.get(toAccountNum);
-            if (fromAccount != null && toAccount != null) {
-                if (accounts.size() > 100 && !fromAccount.equals(toAccount) && fromAccount.getMoney() >= amount) {
-                    fromAccount.withdraw(amount);
-//                    accounts.put(fromAccountNum, fromAccount);
-                    accounts.replace(fromAccountNum, fromAccount);
-                    toAccount.deposit(amount);
-//                    accounts.put(toAccountNum, toAccount);
-                    accounts.replace(toAccountNum, toAccount);
-                    if (amount > OPERATION_LIMIT) {
-                        if (isFraud(fromAccountNum, toAccountNum, amount)) {
-                            lockedAccounts.put(fromAccountNum, fromAccount);
-                            lockedAccounts.put(toAccountNum, toAccount);
-                            accounts.remove(fromAccountNum);
-                            accounts.remove(toAccountNum);
-                        }
+
+        Account fromAccount = accounts.get(fromAccountNum);
+        Account toAccount = accounts.get(toAccountNum);
+
+        if (!fromAccount.isLocked() && !toAccount.isLocked()) {
+            if (!fromAccount.equals(toAccount) && fromAccount.getMoney() >= amount) {
+                synchronized (fromAccount.compareTo(toAccount) > 0 ? toAccount : fromAccount) {
+                    synchronized (fromAccount.compareTo(toAccount) > 0 ? fromAccount : toAccount) {
+                        fromAccount.withdraw(amount);
+                        toAccount.deposit(amount);
                     }
                 }
+            }
+            if (amount > OPERATION_LIMIT) {
+                isFraud(fromAccountNum, toAccountNum, amount);
             }
         }
     }

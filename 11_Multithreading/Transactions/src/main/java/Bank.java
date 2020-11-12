@@ -48,7 +48,7 @@ public class Bank {
         boolean isLock = random.nextBoolean();
         accounts.get(fromAccountNum).setLocked(true);
         accounts.get(toAccountNum).setLocked(true);
-        Thread.sleep(100);
+        Thread.sleep(1000);
         if (!isLock) {
             accounts.get(fromAccountNum).setLocked(false);
             accounts.get(toAccountNum).setLocked(false);
@@ -64,19 +64,24 @@ public class Bank {
      * счетов (как – на ваше усмотрение)
      */
     public void transfer(String fromAccountNum, String toAccountNum, long amount) throws InterruptedException {
-
+        if (amount > OPERATION_LIMIT){
+//            System.out.println(amount);
+        }
         Account fromAccount = accounts.get(fromAccountNum);
         Account toAccount = accounts.get(toAccountNum);
-
-        if (!fromAccount.isLocked() && !toAccount.isLocked()) {
-            if (!fromAccount.equals(toAccount) && fromAccount.getMoney() >= amount) {
-                synchronized (fromAccount.compareTo(toAccount) > 0 ? toAccount : fromAccount) {
-                    synchronized (fromAccount.compareTo(toAccount) > 0 ? fromAccount : toAccount) {
+        if (fromAccount.equals(toAccount)) {
+            return;
+        }
+        synchronized (fromAccount.compareTo(toAccount) > 0 ? toAccount : fromAccount) {
+            synchronized (fromAccount.compareTo(toAccount) > 0 ? fromAccount : toAccount) {
+                if (!fromAccount.isLocked() && !toAccount.isLocked()) {
+                    if (fromAccount.getMoney() >= amount) {
                         fromAccount.withdraw(amount);
                         toAccount.deposit(amount);
                     }
                 }
             }
+
             if (amount > OPERATION_LIMIT) {
                 isFraud(fromAccountNum, toAccountNum, amount);
             }

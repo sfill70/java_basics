@@ -35,10 +35,9 @@ public class Main {
         return new Bank(hashMap);
     }
 
-
     private static void transactions(Random random, Bank bank) {
         try {
-            for (int i = 0; i < 500; i++) {
+            for (int i = 0; i < 5000; i++) {
                 Account accountFrom;
                 Account accountTo = null;
                 int fromNum = random.nextInt(bank.getAccounts().size());
@@ -54,9 +53,9 @@ public class Main {
                    accountTo = tmp;
                 }
 
-                Long amount = 1000 + (long) (Math.random() * 100000);
+                long amount = 1000 + (long) (Math.random() * 100000);
                 bank.transfer(accountFrom.getAccNumber(), accountTo.getAccNumber(), amount);
-                System.out.println(Thread.currentThread().getName());
+//                System.out.println(Thread.currentThread().getName());
             }
             System.out.println(Thread.currentThread().getName() + " Завершен");
         } catch (Exception e) {

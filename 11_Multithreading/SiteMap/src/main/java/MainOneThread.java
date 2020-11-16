@@ -1,4 +1,5 @@
 import java.io.File;
+
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,53 +26,62 @@ public class MainOneThread {
     public static void main(String[] args) {
         queue.add(baseLink);
         try {
-            getLinks(baseLink);
+            getLinks(baseLink,"");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    private static void getLinks(String url) throws IOException, InterruptedException {
-        Elements links = null;
-        try {
-            links = getElements(url);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-        if (links.isEmpty()) {
-            return;
-        }
-        StringBuffer tab = new StringBuffer();
-        for (int i = 0; i < url.split("/").length - 2; i++) {
+    private static void getLinks(String url, String t) throws IOException, InterruptedException {
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("test.txt", true)))) {
+            Elements links = null;
             try {
-                tab.append("\t");
+                links = getElements(url);
             } catch (Exception e) {
                 e.printStackTrace();
+                return;
             }
-        }
-        uniqueURL.add(url);
-        tab.append("\t");
-        for (Element link : links) {
-            String href = link.attr("abs:href");
-            if (href.contains(url)&& !href.contains("#") && !href.contains("?")
-                    && !uniqueURL.contains(href) && !href.contains("@")) {
-                uniqueURL.add(href);
-                Thread.sleep(100);
-                System.out.println(tab + href);
-                queue.add(tab + href);
+            if (links.isEmpty()) {
+                return;
+            }
+            StringBuffer tab = new StringBuffer(t);
+            for (int i = 0; i < url.split("/").length - 2; i++) {
                 try {
-                    getLinks(href);
+                    tab.append("\t");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+            uniqueURL.add(url);
+            System.out.println(url);
+            out.println(tab + url);
+            tab.append("\t");
+            for (Element link : links) {
+                String href = link.attr("abs:href");
+                if (href.contains(url) && !href.contains("#") && !href.contains("?")
+                        && !uniqueURL.contains(href) && !href.contains("@")) {
+                    uniqueURL.add(href);
+                    out.println(tab + href);
+                    Thread.sleep(100);
+//                    System.out.println(tab + href);
+                    queue.add(tab + href);
+                    try {
+                        getLinks(href, tab.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            List<String> list = new LinkedList<>(uniqueURL);
+            list.subList(1, list.size()).replaceAll(l -> l = "\t".repeat(l.split("/").length - 2) + l);
+            FileUtils.writeLines(mapFile, list);
+            FileUtils.writeLines(mapFile1, queue);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        List<String> list = new LinkedList<>(uniqueURL);
-        list.subList(1, list.size()).replaceAll(l -> l = "\t".repeat(l.split("/").length - 2) + l);
-        FileUtils.writeLines(mapFile, list);
-        FileUtils.writeLines(mapFile1, queue);
     }
 
     private static Elements getElements(String link) throws IOException {

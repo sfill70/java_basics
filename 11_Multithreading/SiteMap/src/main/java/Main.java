@@ -16,7 +16,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            new ForkJoinPool().invoke(new LinkRecursiveAction(baseLink));
+            new ForkJoinPool().invoke(new LinkRecursiveAction(baseLink,""));
             System.out.println("Ссылки собраны");
             List<String> linkList = new ArrayList<String>(LinkRecursiveAction.getUniqueURL());
             linkList.subList(1, linkList.size()).replaceAll(link -> link = "\t".repeat(link.split("/").length - 2) + link);

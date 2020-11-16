@@ -18,10 +18,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class LinkRecursiveAction extends RecursiveAction {
     private String baseLink;
+    private String t;
     static String baseUrl = "https://lenta.ru/";
     //    static String baseUrl = "https://skillbox.ru/";
 
-    static ConcurrentLinkedQueue<String> queue = new ConcurrentLinkedQueue();
+    static ConcurrentLinkedQueue<String> queue = new ConcurrentLinkedQueue(Collections.singletonList(baseUrl));
     private static Set<String> uniqueURL = new ConcurrentSkipListSet<>();
     private List<LinkRecursiveAction> actionList = new CopyOnWriteArrayList<>();
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
@@ -33,8 +34,9 @@ public class LinkRecursiveAction extends RecursiveAction {
     private static final Marker INVALID_LINE_MARKER = MarkerManager.getMarker("VIEW_INVALID");
     private static final Marker VIEW_FILEPATH_MARKER = MarkerManager.getMarker("VIEW_FILEPATH");
 
-    public LinkRecursiveAction(String baseLink){
+    public LinkRecursiveAction(String baseLink, String t){
         this.baseLink = baseLink;
+        this.t = t;
 
     }
 
@@ -48,10 +50,10 @@ public class LinkRecursiveAction extends RecursiveAction {
 
     @Override
     protected void compute() {
-        getLinks(baseLink);
+        getLinks(baseLink, t);
     }
 
-    private void getLinks(String url) {
+    private void getLinks(String url, String t) {
         try {
             Elements links = null;
             try {
@@ -63,7 +65,7 @@ public class LinkRecursiveAction extends RecursiveAction {
             if (links.isEmpty()) {
                 return;
             }
-            StringBuffer tab = new StringBuffer();
+            StringBuffer tab = new StringBuffer(t);
             for (int i = 0; i < url.split("/").length - 2; i++) {
                 try {
                     tab.append("\t");
@@ -82,7 +84,7 @@ public class LinkRecursiveAction extends RecursiveAction {
                     Thread.sleep(100);
                     System.out.println(tab + href);
                     queue.add(tab + href);
-                    LinkRecursiveAction action = new LinkRecursiveAction(href);
+                    LinkRecursiveAction action = new LinkRecursiveAction(href, tab.toString());
                     try {
                         action.fork();
                     } catch (Exception e) {

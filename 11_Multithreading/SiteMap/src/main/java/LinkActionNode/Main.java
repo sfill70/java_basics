@@ -19,6 +19,7 @@ public class Main {
             new ForkJoinPool().invoke(new LinkRecursiveActionNode(baseLink, nd));
             System.out.println("Ссылки собраны");
             LinkRecursiveActionNode.getTreeNode().writeTreeNode(nd, "\t");
+            LinkRecursiveActionNode.getTreeNode().writeAllArrays(nd);
             System.out.println("Конец");
         } catch (Exception ex) {
             ex.printStackTrace();

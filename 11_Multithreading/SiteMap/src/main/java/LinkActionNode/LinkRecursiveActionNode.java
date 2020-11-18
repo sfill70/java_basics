@@ -55,7 +55,7 @@ public class LinkRecursiveActionNode extends RecursiveAction {
         getLinks(baseLink, parent);
     }
 
-    private void getLinks(String url,Node parent) {
+    private void getLinks(String url, Node parent) {
         try {
             Elements links = getElements(url);
 
@@ -66,8 +66,8 @@ public class LinkRecursiveActionNode extends RecursiveAction {
 //            System.out.println(url);
             for (Element link : links) {
                 String href = link.attr("abs:href");
-                if (href.contains(baseUrl) &&href.contains(url) && !uniqueURL.contains(href) && !href.contains("#") && !href.contains("?")
-                        && !href.contains("@") && !href.endsWith("pdf") && !href.contains("201")&& !href.contains("200")) {
+                if (href.contains(baseUrl) && href.contains(url) && !uniqueURL.contains(href) && !href.contains("#") /*&& !href.contains("?")*/
+                        && !href.contains("@") && !href.endsWith("pdf")&& !href.contains("news") && !href.contains("comments")  /*&& !href.contains("201")*/ /*&& !href.contains("200")*/) {
                     uniqueURL.add(href);
                     Node child = new Node(href, false);
                     parent.addChild(child);
@@ -85,34 +85,34 @@ public class LinkRecursiveActionNode extends RecursiveAction {
                 }
             }
 
-                try {
-                    for (LinkRecursiveActionNode action : actionList)
-                        try {
-                            action.join();
-                        } catch (Exception e) {
-                            LOGGER.error(action + " join - " + e + Arrays.toString(e.getStackTrace()));
-                            LOGGER.error(VIEW_FILEPATH_MARKER, action);
-                            e.printStackTrace();
-                        }
-                } catch (Exception e) {
-                    LOGGER.error(VIEW_FILEPATH_MARKER, actionList);
-                }
-            } catch(Exception e){
-                e.printStackTrace();
-            }
-        }
-
-        private static Elements getElements (String link) throws IOException {
-            Document doc = null;
             try {
-                doc = Jsoup.connect(link).
-                        userAgent(USER_AGENT).
-                        referrer(REFERRER).get();
+                for (LinkRecursiveActionNode action : actionList)
+                    try {
+                        action.join();
+                    } catch (Exception e) {
+                        LOGGER.error(action + " join - " + e + Arrays.toString(e.getStackTrace()));
+                        LOGGER.error(VIEW_FILEPATH_MARKER, action);
+                        e.printStackTrace();
+                    }
             } catch (Exception e) {
-                e.printStackTrace();
-                return new Elements(0);
+                LOGGER.error(VIEW_FILEPATH_MARKER, actionList);
             }
-            return doc.select("a[href]");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
+
+    private static Elements getElements(String link) throws IOException {
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(link).
+                    userAgent(USER_AGENT).
+                    referrer(REFERRER).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Elements(0);
+        }
+        return doc.select("a[href]");
+    }
+
+}

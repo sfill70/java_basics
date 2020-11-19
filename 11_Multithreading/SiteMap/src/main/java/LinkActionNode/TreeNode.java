@@ -36,6 +36,16 @@ public class TreeNode {
         return null;
     }
 
+    public Node getParent() {
+        return parent;
+    }
+
+    public void setParent(Node parent) {
+        this.allNode = new CopyOnWriteArrayList<Node>();
+        this.parent = parent;
+        allNode.add(parent);
+    }
+
     public boolean contains(Node node) {
         return allNode.contains(node);
     }
@@ -64,7 +74,7 @@ public class TreeNode {
 
     public void writeTreeNode(Node parent, String tab) {
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(PATH)))) {
-            System.out.println(parent.getData());
+//            System.out.println(parent.getData());
             out.println(parent.getData());
             writeNodes(parent, tab, out);
         } catch (Exception e) {
@@ -75,7 +85,7 @@ public class TreeNode {
     private void writeNodes(Node parent, String tab, PrintWriter out) {
         for (Node n : parent.getListChild()
         ) {
-            System.out.println(tab + n.getData());
+//            System.out.println(tab + n.getData());
             out.println(tab + n.getData());
             if (n.isParent()) {
                 writeNodes(n, "\t" + tab, out);

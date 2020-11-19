@@ -24,11 +24,11 @@ public class MainNodeOneThread {
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
             "(KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36";
     private static final String REFERRER = "https://www.google.com/";
-    private static TreeNode treeNode = new TreeNode(new Node(baseLink, true));
+    private static TreeNode treeNode = new TreeNode(new Node(baseLink));
 
     public static void main(String[] args) {
         queue.add(baseLink);
-        Node nd = new Node(baseLink, true);
+        Node nd = new Node(baseLink);
         try {
 
             getLinks(baseLink,"", nd);
@@ -63,7 +63,6 @@ public class MainNodeOneThread {
                 }
             }
             uniqueURL.add(url);
-            parent.setIsParent(true);
 //            System.out.println(url);
             out.println(tab + url);
             tab.append("\t");
@@ -72,7 +71,7 @@ public class MainNodeOneThread {
                 if (href.contains(url) && !href.contains("#") && !href.contains("?")
                         && !uniqueURL.contains(href) && !href.contains("@")) {
                     uniqueURL.add(href);
-                    Node child = new Node(href, false);
+                    Node child = new Node(href);
                     treeNode.add(child);
                     parent.addChild(child);
                     out.println(tab + href);

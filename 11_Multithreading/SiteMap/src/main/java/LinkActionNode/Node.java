@@ -1,17 +1,13 @@
 package LinkActionNode;
-
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Node {
     public int key;
     public String data;
-    boolean isParent;
-    Node parent;
     private CopyOnWriteArrayList<Node> listChild;
 
-    public Node(String data, boolean isParent) {
+    public Node(String data) {
         this.data = data;
-        this.isParent = isParent;
         listChild = new CopyOnWriteArrayList<Node>();
     }
 
@@ -27,20 +23,8 @@ public class Node {
         return listChild;
     }
 
-    public Node getParent() {
-        return parent;
-    }
-
-    public void setParent(Node parent) {
-        this.parent = parent;
-    }
-
     public boolean isParent() {
-        return isParent;
-    }
-
-    public void setIsParent(boolean parent) {
-        isParent = parent;
+        return !listChild.isEmpty();
     }
 
     @Override
@@ -50,7 +34,6 @@ public class Node {
 
         Node node = (Node) o;
 
-        if (isParent != node.isParent) return false;
         if (data != null ? !data.equals(node.data) : node.data != null) return false;
         return listChild != null ? listChild.equals(node.listChild) : node.listChild == null;
     }
@@ -58,7 +41,6 @@ public class Node {
     @Override
     public int hashCode() {
         int result = data != null ? data.hashCode() : 0;
-        result = 31 * result + (isParent ? 1 : 0);
         result = 31 * result + (listChild != null ? listChild.hashCode() : 0);
         return result;
     }

@@ -9,9 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -22,12 +20,12 @@ import java.util.concurrent.RecursiveAction;
 public class LinkRecursiveActionNode extends RecursiveAction {
     private String baseLink;
     private Node parent;
-    static String baseUrl = "https://lenta.ru/";
-//        static String baseUrl = "https://skillbox.ru/";
 
-    private static Set<String> uniqueURL = new ConcurrentSkipListSet<>(Collections.singletonList(baseUrl));
+    private static String baseUrl;
+    private static Set<String> uniqueURL = new ConcurrentSkipListSet<>();
     private List<LinkRecursiveActionNode> actionList = new CopyOnWriteArrayList<>();
-    private static TreeNode treeNode = new TreeNode(new Node(baseUrl, true));
+    private static TreeNode treeNode = new TreeNode();
+    private static String[] filterArray;
 
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
             "(KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36";
@@ -37,10 +35,21 @@ public class LinkRecursiveActionNode extends RecursiveAction {
     private static final Marker INVALID_LINE_MARKER = MarkerManager.getMarker("VIEW_INVALID");
     private static final Marker VIEW_FILEPATH_MARKER = MarkerManager.getMarker("VIEW_FILEPATH");
 
+
     public LinkRecursiveActionNode(String baseLink, Node parent) {
         this.baseLink = baseLink;
         this.parent = parent;
     }
+
+    public LinkRecursiveActionNode(String baseLink, Node parent, String... filter) {
+        this.baseLink = baseLink;
+        this.parent = parent;
+        baseUrl = baseLink;
+        uniqueURL.add(baseLink);
+        treeNode.setParent(parent);
+        filterArray = filter;
+    }
+
 
     public static TreeNode getTreeNode() {
         return treeNode;
@@ -62,47 +71,46 @@ public class LinkRecursiveActionNode extends RecursiveAction {
             if (links.isEmpty()) {
                 return;
             }
-            parent.setIsParent(true);
-//            System.out.println(url);
             for (Element link : links) {
                 String href = link.attr("abs:href");
-                if (href.contains(baseUrl) && href.contains(url) && !uniqueURL.contains(href) && !href.contains("#") /*&& !href.contains("?")*/
-                        && !href.contains("@") && !href.endsWith("pdf")&& !href.contains("news") && !href.contains("comments")  /*&& !href.contains("201")*/ /*&& !href.contains("200")*/) {
+                if (href.contains(baseUrl) /*&& href.contains(url)*/ && !uniqueURL.contains(href) && filter(href)) {
                     uniqueURL.add(href);
-                    Node child = new Node(href, false);
+                    Node child = new Node(href);
                     parent.addChild(child);
                     Thread.sleep(100);
-                    System.out.println(href);
+                    System.out.println(href /*+ " - " + Thread.currentThread().getName()*/);
                     LinkRecursiveActionNode action = new LinkRecursiveActionNode(href, child);
-                    try {
-                        action.fork();
-                    } catch (Exception e) {
-                        LOGGER.error(action + " fork - " + e + Arrays.toString(e.getStackTrace()));
-                        LOGGER.error(INVALID_LINE_MARKER, action);
-                        e.printStackTrace();
-                    }
+                    action.fork();
                     actionList.add(action);
                 }
             }
-
-            try {
-                for (LinkRecursiveActionNode action : actionList)
-                    try {
-                        action.join();
-                    } catch (Exception e) {
-                        LOGGER.error(action + " join - " + e + Arrays.toString(e.getStackTrace()));
-                        LOGGER.error(VIEW_FILEPATH_MARKER, action);
-                        e.printStackTrace();
-                    }
-            } catch (Exception e) {
-                LOGGER.error(VIEW_FILEPATH_MARKER, actionList);
-            }
         } catch (Exception e) {
+            LOGGER.error(" fork - " + e + Arrays.toString(e.getStackTrace()));
             e.printStackTrace();
         }
+        for (LinkRecursiveActionNode action : actionList)
+            try {
+                action.join();
+            } catch (Exception e) {
+                LOGGER.error(action + " join - " + e + Arrays.toString(e.getStackTrace()));
+                LOGGER.error(VIEW_FILEPATH_MARKER, action);
+                e.printStackTrace();
+            }
+
+
     }
 
-    private static Elements getElements(String link) throws IOException {
+    private boolean filter(String href) {
+        for (String st : filterArray
+        ) {
+            if (href.contains(st)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private Elements getElements(String link) {
         Document doc = null;
         try {
             doc = Jsoup.connect(link).

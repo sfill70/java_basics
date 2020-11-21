@@ -61,10 +61,10 @@ public class LinkRecursiveActionNode extends RecursiveAction {
 
     @Override
     protected void compute() {
-        getLinks(baseLink, parent);
+        parseLink(baseLink, parent);
     }
 
-    private void getLinks(String url, Node parent) {
+    private void parseLink(String url, Node parent) {
         try {
             Elements links = getElements(url);
 
@@ -78,7 +78,7 @@ public class LinkRecursiveActionNode extends RecursiveAction {
                     Node child = new Node(href);
                     parent.addChild(child);
                     Thread.sleep(100);
-                    System.out.println(href /*+ " - " + Thread.currentThread().getName()*/);
+//                    System.out.println(href /*+ " - " + Thread.currentThread().getName()*/);
                     LinkRecursiveActionNode action = new LinkRecursiveActionNode(href, child);
                     action.fork();
                     actionList.add(action);

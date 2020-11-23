@@ -1,3 +1,5 @@
+package LinkRecursiveAction;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
@@ -30,7 +32,7 @@ public class LinkRecursiveAction extends RecursiveAction {
     private static final String REFERRER = "https://www.google.com/";
 
 
-    private static final Logger LOGGER = LogManager.getLogger(LinkAction.class);
+    private static final Logger LOGGER = LogManager.getLogger(LinkRecursiveAction.class);
     private static final Marker INVALID_LINE_MARKER = MarkerManager.getMarker("VIEW_INVALID");
     private static final Marker VIEW_FILEPATH_MARKER = MarkerManager.getMarker("VIEW_FILEPATH");
 
@@ -50,10 +52,10 @@ public class LinkRecursiveAction extends RecursiveAction {
 
     @Override
     protected void compute() {
-        getLinks(baseLink, t);
+        parseLink(baseLink, t);
     }
 
-    private void getLinks(String url, String t) {
+    private void parseLink(String url, String t) {
         try {
             Elements links = null;
             try {

@@ -1,3 +1,5 @@
+package LinkRecursiveAction;
+
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
@@ -22,6 +24,7 @@ public class MainOneThread {
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
             "(KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36";
     private static final String REFERRER = "https://www.google.com/";
+    private static TreeNode treeNode = new TreeNode();
 
     public static void main(String[] args) {
         queue.add(baseLink);
@@ -56,6 +59,7 @@ public class MainOneThread {
             uniqueURL.add(url);
             System.out.println(url);
             out.println(tab + url);
+            Node node = new Node(tab + url, true);
             tab.append("\t");
             for (Element link : links) {
                 String href = link.attr("abs:href");

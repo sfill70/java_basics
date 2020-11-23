@@ -15,12 +15,14 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class LinkRecursiveActionNode extends RecursiveAction {
     private String baseLink;
     private Node parent;
 
+    private static volatile AtomicInteger count = new AtomicInteger(0);
     private static String baseUrl;
     private static Set<String> uniqueURL = new ConcurrentSkipListSet<>();
     private List<LinkRecursiveActionNode> actionList = new CopyOnWriteArrayList<>();
@@ -59,12 +61,17 @@ public class LinkRecursiveActionNode extends RecursiveAction {
         return uniqueURL;
     }
 
+    public static AtomicInteger getCount() {
+        return count;
+    }
+
     @Override
     protected void compute() {
         parseLink(baseLink, parent);
     }
 
     private void parseLink(String url, Node parent) {
+
         try {
             Elements links = getElements(url);
 
@@ -73,15 +80,17 @@ public class LinkRecursiveActionNode extends RecursiveAction {
             }
             for (Element link : links) {
                 String href = link.attr("abs:href");
-                if (href.contains(baseUrl) /*&& href.contains(url)*/ && !uniqueURL.contains(href) && filter(href)) {
+                if (href.contains(baseUrl)/* && href.contains(url)*/ && !uniqueURL.contains(href) && filter(href)) {
                     uniqueURL.add(href);
+                    count.incrementAndGet();
                     Node child = new Node(href);
                     parent.addChild(child);
                     Thread.sleep(100);
-//                    System.out.println(href /*+ " - " + Thread.currentThread().getName()*/);
+//                        System.out.println(href /*+ " - " + Thread.currentThread().getName()*/);
                     LinkRecursiveActionNode action = new LinkRecursiveActionNode(href, child);
                     action.fork();
                     actionList.add(action);
+
                 }
             }
         } catch (Exception e) {
@@ -96,9 +105,8 @@ public class LinkRecursiveActionNode extends RecursiveAction {
                 LOGGER.error(VIEW_FILEPATH_MARKER, action);
                 e.printStackTrace();
             }
-
-
     }
+
 
     private boolean filter(String href) {
         for (String st : filterArray
@@ -122,5 +130,13 @@ public class LinkRecursiveActionNode extends RecursiveAction {
         }
         return doc.select("a[href]");
     }
+
+   /* public void stopParsersPool() {
+//      this.cancel(true);
+        for (LinkRecursiveActionNode act : actionList
+        ) {
+            act.cancel(false);
+        }
+    }*/
 
 }

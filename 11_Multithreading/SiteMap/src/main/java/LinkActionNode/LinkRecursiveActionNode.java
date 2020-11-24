@@ -67,42 +67,46 @@ public class LinkRecursiveActionNode extends RecursiveAction {
 
     @Override
     protected void compute() {
-        parseLink(baseLink, parent);
+        try {
+            parseLink(baseLink, parent);
+        } catch (InterruptedException e) {
+            System.out.printf("--> %s %s %n", Thread.currentThread().getName(), "Поток завершился принудительно");
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
-    private void parseLink(String url, Node parent) {
-
-        try {
-            Elements links = getElements(url);
-
-            if (links.isEmpty()) {
-                return;
+    private void parseLink(String url, Node parent) throws InterruptedException {
+        Elements links = getElements(url);
+        if (links.isEmpty()) {
+            return;
+        }
+        for (Element link : links) {
+            if (Thread.interrupted()) {
+                throw new InterruptedException();
             }
-            for (Element link : links) {
-                String href = link.attr("abs:href");
-                if (href.contains(baseUrl)/* && href.contains(url)*/ && !uniqueURL.contains(href) && filter(href)) {
-                    uniqueURL.add(href);
-                    count.incrementAndGet();
-                    Node child = new Node(href);
-                    parent.addChild(child);
-                    Thread.sleep(100);
-//                        System.out.println(href /*+ " - " + Thread.currentThread().getName()*/);
-                    LinkRecursiveActionNode action = new LinkRecursiveActionNode(href, child);
-                    action.fork();
-                    actionList.add(action);
-
-                }
+            String href = link.attr("abs:href");
+            if (href.contains(baseUrl) /*&& href.contains(url)*/ && !uniqueURL.contains(href) && filter(href)) {
+                uniqueURL.add(href);
+                count.incrementAndGet();
+                Node child = new Node(href);
+                parent.addChild(child);
+                Thread.sleep(100);
+//                  System.out.println(href /*+ " - " + Thread.currentThread().getName()*/);
+                LinkRecursiveActionNode action = null;
+                action = new LinkRecursiveActionNode(href, child);
+                action.fork();
+                actionList.add(action);
             }
-        } catch (Exception e) {
-            LOGGER.error(" fork - " + e + Arrays.toString(e.getStackTrace()));
-            e.printStackTrace();
         }
         for (LinkRecursiveActionNode action : actionList)
             try {
                 action.join();
             } catch (Exception e) {
+                System.out.printf("--> %s %s %n", Thread.currentThread().getName(), "Поток завершился принудительно");
                 LOGGER.error(action + " join - " + e + Arrays.toString(e.getStackTrace()));
-                LOGGER.error(VIEW_FILEPATH_MARKER, action);
+                LOGGER.error(VIEW_FILEPATH_MARKER, Thread.currentThread().getName() + " - Поток завершился принудительно");
                 e.printStackTrace();
             }
     }
@@ -131,11 +135,13 @@ public class LinkRecursiveActionNode extends RecursiveAction {
         return doc.select("a[href]");
     }
 
-   /* public void stopParsersPool() {
+    /*public void stopParsersPool() {
 //      this.cancel(true);
         for (LinkRecursiveActionNode act : actionList
         ) {
+            System.out.println(act.isCancelled());
             act.cancel(false);
+            System.out.println(act.isCancelled());
         }
     }*/
 

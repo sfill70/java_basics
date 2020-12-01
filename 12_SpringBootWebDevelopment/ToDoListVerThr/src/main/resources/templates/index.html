@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>TodoTask</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <!-- See configuration in WebMvConfig.java -->
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script th:src="@{/jquery/jquery.min.js}"></script>
+    <script th:src="@{/popper/popper.min.js}"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+
+<div class="container">
+    <div class="container-fluidr mt-4" style="background: beige">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Добавить задачу
+        </button>
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Добавить задачу</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form th:action="@{/}" th:object="${todoTask}" method="post">
+                        <div class="modal-body">
+                            <ul class="list-group">
+                                <li class="list-group-item" style="background: beige">
+                                    <p>Title: <input type="text" th:field="*{title}"/></p>
+                                <li class="list-group-item" style="background: beige">
+                                    <p>Содержание: <textarea name="description" cols="40" rows="3"
+                                                             th:field="*{description}"></textarea></p>
+                                </li>
+                                <li class="list-group-item" style="background: beige">
+                                    <p>Срок: <input type="datetime-local" th:field="*{deadline}"/></p>
+                                </li>
+                                <li class="list-group-item" style="background: beige">
+                                    <p>Priority: <select type="text" th:field="*{priority}"/></p>
+                                    <option>HIGH</option>
+                                    <option>MEDIUM</option>
+                                    <option>LOW</option>
+                                    </select>
+                                </li>
+                                <li class="list-group-item" style="background: beige">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" value="Submit" class="btn btn-primary">Save changes</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <br><br>
+
+        <!--количество задач-->
+        <h6>В списке (<span th:text="${tasksCount}">0</span> tasks) задач</h6>
+
+        <b th:text="${message}"></b>
+        <!--цикл задач-->
+        <h5 class="mt-4 ml-3">Список задач</h5>
+        <div id="task-list">
+            <div th:each="task : ${tasks}">
+                <ul class="list-group">
+                    <li class="list-group-item" style="background: beige">
+                        <b>Срок исполнения</b>
+                        <b th:text="${task.deadline}"></b>
+                        <b>  Приоритет </b>
+                        <b th:text="${task.priority}"></b>
+                        <span class="float-right mr-3"><b>Название: </b><a th:href="@{/{todoId}(todoId=${task.id})}"  th:attr="data-id=${task.id}" th:text="${task.title}"></a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--цикл задач-->
+
+    </div>
+</div>
+</body>
+</html>

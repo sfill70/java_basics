@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -52,6 +54,13 @@ public class TodoTask {
         this.deadline = deadline;
     }
 
+    public TodoTask(int id, @NotNull @Size(min = 2, max = 100) String title, @NotNull @Size(min = 2, max = 1000) String description, @NotNull Priority priority) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+    }
+
     public int getId() {
         return id;
     }
@@ -92,6 +101,10 @@ public class TodoTask {
         this.deadline = deadline;
     }
 
+    public static List<String> getValues(){
+        return Arrays.asList("id", "title", "description", "priority", "deadline");
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -114,5 +127,16 @@ public class TodoTask {
         result = 31 * result + (priority != null ? priority.hashCode() : 0);
         result = 31 * result + (deadline != null ? deadline.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TodoTask{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", priority=" + priority +
+                ", deadline=" + deadline +
+                '}';
     }
 }

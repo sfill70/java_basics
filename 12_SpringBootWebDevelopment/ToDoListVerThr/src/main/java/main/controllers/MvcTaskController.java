@@ -90,7 +90,7 @@ public class MvcTaskController {
         }
         todoTask.setId(id);
         todoTaskRepository.save(todoTask);
-        return "redirect:/";
+        return "redirect:/{id}";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)

@@ -1,6 +1,8 @@
 package main.controllers;
 
 
+import main.exception.EntityNotFoundException;
+import main.exception.MyRequestException;
 import main.model.TodoTask;
 import main.model.TodoTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,86 +10,91 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
+@RequestMapping("/tasks")
 public class RestTaskController {
 
     @Autowired
     private TodoTaskRepository todoTaskRepository;
 
-    @GetMapping("/tasks")
+    @GetMapping("")
     public List<TodoTask> list() {
         Iterable<TodoTask> todoTasks = todoTaskRepository.findAll();
         return new ArrayList<TodoTask>((Collection<? extends TodoTask>) todoTasks);
     }
 
 
-    @DeleteMapping("/tasks")
+    @DeleteMapping("")
     public List<TodoTask> clearTask() {
         todoTaskRepository.deleteAll();
         Iterable<TodoTask> todoTask = todoTaskRepository.findAll();
         return new ArrayList<TodoTask>((Collection<? extends TodoTask>) todoTask);
     }
 
-    @PostMapping("/tasks")
-    public ResponseEntity<?> add(@Valid @RequestBody TodoTask task, BindingResult bindingResult) {
+    @PostMapping("")
+    public ResponseEntity<TodoTask> add(@Valid @RequestBody TodoTask task, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(task);
+            throw new MyRequestException(task);
+//            return ResponseEntity.badRequest().body(task);
         }
         TodoTask newTodoTask = todoTaskRepository.save(task);
         return ResponseEntity.ok(newTodoTask);
     }
 
-    @GetMapping("/tasks/{id}")
+    @GetMapping("/{id}")
     public TodoTask get(@PathVariable int id) {
         Optional<TodoTask> todoTask = todoTaskRepository.findById(id);
         if (todoTask.isPresent()) {
             return todoTask.get();
         } else {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "entity not found"
-            );
+            throw new EntityNotFoundException();
         }
     }
 
-    @PutMapping("/tasks/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> putTask(@Valid @RequestBody TodoTask task, @PathVariable int id, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(task);
+            throw new MyRequestException(task);
         }
         task.setId(id);
         TodoTask newTodoTask = todoTaskRepository.save(task);
         return ResponseEntity.ok(newTodoTask);
     }
 
-    @DeleteMapping("/tasks/{id}")
+    @DeleteMapping("/{id}")
     public List<TodoTask> deleteTask(@PathVariable int id) {
         todoTaskRepository.deleteById(id);
         Iterable<TodoTask> optionalTodoTask = todoTaskRepository.findAll();
         return new ArrayList<TodoTask>((Collection<? extends TodoTask>) optionalTodoTask);
     }
 
-    @GetMapping("/tasks/filter")
+//    Форматы
+//    tasks/search?deadline=2020-12-01T22:42 список дат after,  tasks/search?deadline=2020-12-01T22:42&date=before дат список before
+//    tasks/search?deadline=2020-12-01T22:42&date=before&priority=HIGH&title=keyWorld - фильтр по дате о поиск по указанным полям (без полей весь список дел)
+
+    @GetMapping("/search")
     @ResponseBody
     public List<TodoTask> filterLst(@RequestParam Map<String, String> allParams) {
         Iterable<TodoTask> optionalTodoTask = todoTaskRepository.findAll();
         List<TodoTask> todoTasks = new ArrayList<TodoTask>((Collection<? extends TodoTask>) optionalTodoTask);
-        if (allParams.containsKey(TodoTask.getValues().get(4)) && allParams.get(TodoTask.getValues().get(4)) != null) {
+        if (allParams.containsKey(TodoTask.getValues().get(4)) && !allParams.get(TodoTask.getValues().get(4)).isEmpty()) {
             LocalDateTime dateTime = null;
-            try {
+            dateTime = LocalDateTime.parse(allParams.get(TodoTask.getValues().get(4)).strip());
+
+//            возникающая ошибка DateTimeParseException обрабатывается в ControllerExceptionHandler try/catch не нужен
+            /*try {
                 dateTime = LocalDateTime.parse(allParams.get(TodoTask.getValues().get(4)).strip());
             } catch (Exception e) {
                 throw new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "invalid query format Deadline, you must enter - 2020-12-01T22:42"
                 );
-            }
+            }*/
             boolean isAfter = false;
             if (allParams.containsKey("date")) {
                 isAfter = allParams.get("date").strip().equalsIgnoreCase("before");

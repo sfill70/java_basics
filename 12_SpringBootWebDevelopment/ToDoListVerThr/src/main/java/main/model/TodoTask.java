@@ -54,12 +54,6 @@ public class TodoTask {
         this.deadline = deadline;
     }
 
-    public TodoTask(int id, @NotNull @Size(min = 2, max = 100) String title, @NotNull @Size(min = 2, max = 1000) String description, @NotNull Priority priority) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.priority = priority;
-    }
 
     public int getId() {
         return id;

@@ -117,14 +117,16 @@ public class RestTaskController {
     }
 
 
-    @GetMapping("/search_title")
+    @GetMapping("/tasks/search_title")
     @ResponseBody
     public List<TodoTask> filterLst(@RequestParam(required = false) String title, @RequestParam(required = false) String deadline) {
-
-        if (title != null) {
-            return todoTaskRepository.findByTitle(title);
+        if (title == null || title.isEmpty()) {
+            if (deadline == null || deadline.isEmpty()) {
+                return todoTaskRepository.findAll();
+            }
+            return todoTaskRepository.findAllWithDeadlineDateTimeBefore(LocalDateTime.parse(deadline));
         }
-        return todoTaskRepository.findAllWithDeadlineDateTimeBefore(LocalDateTime.parse(deadline));
+        return todoTaskRepository.findByTitle(title);
 
     }
 

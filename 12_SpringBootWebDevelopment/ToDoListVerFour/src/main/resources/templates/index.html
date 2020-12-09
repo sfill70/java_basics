@@ -79,9 +79,11 @@
                     <li class="list-group-item" style="background: beige">
                         <b>Срок исполнения</b>
                         <b th:text="${task.deadline}"></b>
-                        <b>  Приоритет </b>
+                        <b> Приоритет </b>
                         <b th:text="${task.priority}"></b>
-                        <span class="float-right mr-3"><b>Название: </b><a th:href="@{/{todoId}(todoId=${task.id})}"  th:attr="data-id=${task.id}" th:text="${task.title}"></a>
+                        <span class="float-right mr-3"><b>Название: </b><a th:href="@{/{todoId}(todoId=${task.id})}"
+                                                                           th:attr="data-id=${task.id}"
+                                                                           th:text="${task.title}"></a>
                         </span>
                     </li>
                 </ul>

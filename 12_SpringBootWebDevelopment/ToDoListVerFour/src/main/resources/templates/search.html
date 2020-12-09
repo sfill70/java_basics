@@ -18,16 +18,60 @@
 
 <div class="container">
     <div class="container-fluidr mt-4" style="background: beige">
+        <script>
+            $(document).ready(function () {
+                $(".btn-get-list").click(function() {
+                    $.ajax({  url: '/tasks',
+                        data: {
+                            format: 'json'
+                        },
+                        error: function() {
+                            $('#info').html('<p>An error has occurred</p>');
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+
+                            $('#info').empty();
+
+                            for (let elem of data) {
+                                var $title = $('<h1>').text(elem['title']);
+                                var $description = $('<p>').text(elem['description']);
+                                $('#info')
+                                    .append($title)
+                                    .append($description);
+                            }
+
+                        },
+                        type: 'GET'
+                    });
+                });
+            });
+        </script>
+
+        <button class="btn-get-list">Get List</button>
+        <div id="info">        </div>
+
+
+       <!-- <form method="get" action="search">
+            <input type="text" name="title"/>
+            <button class="btn-get-list" type="submit">Get List</button>
+        </form>
+        <div id="info">        </div>-->
+
+
+
         <div class="mt-4 ml-3">
-        <h6 >Поиск по title</h6>
+            <h6 >Поиск по title</h6>
             <form method="get" action="search">
-                <input type="text" name="title"/>
-                <input type="submit" value="Search"/>
+                <input class="btn-get-list" type="text" name="title"/>
+                <input class="btn-get-list" type="submit" value="Search"/>
+
             </form>
         </div>
-        <br><br>
 
-        <!--количество задач-->
+
+
+        количество задач
         <h6>В списке (<span th:text="${tasksCount}">0</span> tasks) задач</h6>
 
         <!--<b th:text="${message}"></b>-->

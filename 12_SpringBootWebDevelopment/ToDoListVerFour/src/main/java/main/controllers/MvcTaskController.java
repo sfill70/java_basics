@@ -31,15 +31,14 @@ public class MvcTaskController {
     }
 
     @GetMapping("/search")
+    /*@ResponseBody*/
     public String searchTaskAll(@RequestParam(required = false) String title, Model model /*@RequestParam(required = false) Map<String, String> allParams,*/) {
-        List<TodoTask> todoTasks = todoTaskRepository.findAll();
+
+        List<TodoTask> todoTasks;
         if (title != null) {
-            for (int i = 0; i < todoTasks.size(); i++) {
-                if (!todoTasks.get(i).getTitle().toLowerCase().contains(title.toLowerCase(Locale.ROOT))) {
-                    todoTasks.remove(todoTasks.get(i));
-                    i--;
-                }
-            }
+            todoTasks = todoTaskRepository.findByTitle(title);
+        } else {
+            todoTasks = todoTaskRepository.findAll();
         }
         model.addAttribute("tasks", todoTasks);
         model.addAttribute("tasksCount", todoTasks.size());

@@ -19,6 +19,8 @@
 <div class="container">
     <div class="container-fluidr mt-4" style="background: beige">
 
+
+        <br><br>
         <div class="mt-4 ml-3">
             <b class="mt-4 ml-3"> Title </b>
             <h5 class="lt=4"><span th:text="${title}"></span></h5>
@@ -70,19 +72,30 @@
                                                                     th:text="${task.title}"></a>
                         </span>
         </div>
-<!--        <script>
-            $.ajax({
-                url: "@{/put/{todoId}(todoId=${task.id})}",
-                dataType: 'text',
-                success: function(data) {
-                    alert(data);
-                    // todo:  add the html to the dom...
-                    <div "alert-message"><p><button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal" >Редактировать</button></p></div>
-                }
-            });</script>
 
-        <a class="btn btn-primary" data-toggle="modal" href="task_put.html" data-target="#MyModal">OPEN MODAL</a>
-        <div>
+        <!--<script>
+            $(document).ready(function () {
+                $(".btn-get-put").click(function () {
+                    $.ajax({
+                        url: "@{/put/{todoId}(todoId=${task.id})}",
+                        dataType: 'text',
+                        success: function (data) {
+                            alert(data);
+                            <div>    </div>
+                        }
+                    });
+                });
+            });
+        </script>
+        <div id="myModal">    </div>
+
+            <button type="button" class="btn-get-put">
+                Редактировать
+            </button>
+
+
+        <a class="btn btn-primary" data-toggle="modal" href="task_put.html" data-target="#MyModal">OPEN MODAL</a>-->
+        <!--<div>
             <script>
                 $.ajax({
                     url: "@{/put/{todoId}(todoId=${task.id})}",

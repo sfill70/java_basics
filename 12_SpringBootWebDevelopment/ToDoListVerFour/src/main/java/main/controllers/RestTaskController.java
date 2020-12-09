@@ -17,25 +17,25 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
-@RequestMapping("/tasks")
+//@RequestMapping("/tasks")
 public class RestTaskController {
 
     @Autowired
     private TodoTaskRepository todoTaskRepository;
 
-    @GetMapping("")
+    @GetMapping("/tasks")
     public List<TodoTask> list() {
         return todoTaskRepository.findAll();
     }
 
 
-    @DeleteMapping("")
+    @DeleteMapping("/tasks")
     public List<TodoTask> clearTask() {
         todoTaskRepository.deleteAll();
         return todoTaskRepository.findAll();
     }
 
-    @PostMapping("")
+    @PostMapping("/tasks")
     public ResponseEntity<TodoTask> add(@Valid @RequestBody TodoTask task, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new MyRequestException(task);
@@ -44,13 +44,13 @@ public class RestTaskController {
         return ResponseEntity.ok(newTodoTask);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/tasks/{id}")
     public TodoTask get(@PathVariable int id) {
         return todoTaskRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/tasks/{id}")
     public ResponseEntity<?> putTask(@Valid @RequestBody TodoTask task, @PathVariable int id, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new MyRequestException(task);
@@ -60,16 +60,17 @@ public class RestTaskController {
         return ResponseEntity.ok(newTodoTask);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/tasks/{id}")
     public List<TodoTask> deleteTask(@PathVariable int id) {
         todoTaskRepository.deleteById(id);
         Iterable<TodoTask> optionalTodoTask = todoTaskRepository.findAll();
         return new ArrayList<TodoTask>((Collection<? extends TodoTask>) optionalTodoTask);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/tasks/search")
     @ResponseBody
     public List<TodoTask> filterLst(@RequestParam Map<String, String> allParams) {
+        System.out.println(allParams + "!!!!!!");
         Iterable<TodoTask> optionalTodoTask = todoTaskRepository.findAll();
         List<TodoTask> todoTasks = new ArrayList<TodoTask>((Collection<? extends TodoTask>) optionalTodoTask);
         if (allParams.containsKey(TodoTask.getValues().get(4)) && !allParams.get(TodoTask.getValues().get(4)).isEmpty()) {
@@ -113,6 +114,18 @@ public class RestTaskController {
             value = todoTasks.get(i).getPriority().toString();
         }
         return value;
+    }
+
+
+    @GetMapping("/search_title")
+    @ResponseBody
+    public List<TodoTask> filterLst(@RequestParam(required = false) String title, @RequestParam(required = false) String deadline) {
+
+        if (title != null) {
+            return todoTaskRepository.findByTitle(title);
+        }
+        return todoTaskRepository.findAllWithDeadlineDateTimeBefore(LocalDateTime.parse(deadline));
+
     }
 
     @GetMapping("/hello")

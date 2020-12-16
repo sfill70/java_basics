@@ -2,6 +2,7 @@ import com.google.gson.Gson;
 import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
 import model.Book;
+import model.Student;
 import org.bson.BsonDocument;
 import org.bson.Document;
 import util.CreateMongoClient;
@@ -26,7 +27,7 @@ public class Main {
         books.drop();
         fillingDBaseBooks(bookList, gson, books);
         printAllCollection(books);
-        printBooksQuery(books);
+        printBooksQuery(books, gson);
 
         MongoCollection<Document> students = CreateMongoClient.getDatabase().getCollection("students");
         students.drop();
@@ -49,13 +50,13 @@ public class Main {
         }
     }
 
-    private static void printBooksQuery(MongoCollection<Document> books) {
+    private static void printBooksQuery(MongoCollection<Document> books, Gson gson) {
         System.out.println("Самая старая книга: " +
                 Objects.requireNonNull(books.find().sort(BsonDocument.parse("{year: 1}")).first()));
 
         books.find(new Document("name", new Document("$regex", "Пелевин")))
                 .forEach((Consumer<Document>) document -> {
-            System.out.println("Книги любимого автора" + document);
+            System.out.println("Книги любимого автора - " + gson.fromJson(document.toJson(), Book.class));
         });
 
         books.find(BsonDocument.parse("{name: {$eq: \"Хайнлайн Р.Э.\"}}")).forEach((Consumer<Document>) document -> {
@@ -85,6 +86,7 @@ public class Main {
     }
 
     private static void printDocumentQuery(MongoCollection<Document> collection) {
+        Gson gson1 = new Gson();
         //Общее число студентов
         System.out.println("Студентов: " +
                 collection.countDocuments());
@@ -97,6 +99,10 @@ public class Main {
         //Список курсов самого старого студента
         System.out.println("Курсы самого старого студента: " +
                 Objects.requireNonNull(collection.find().sort(BsonDocument.parse("{age: -1}")).first()).get("courses"));
+        Document doc =  Objects.requireNonNull(collection.find().sort(BsonDocument.parse("{age: -1}")).first());
+        Student student =gson1.fromJson(doc.toJson(), Student.class);
+        System.out.println(student);
+        System.out.println(student.getClass().getName());
     }
 
     private static void printAllCollection(MongoCollection<Document> collection) {

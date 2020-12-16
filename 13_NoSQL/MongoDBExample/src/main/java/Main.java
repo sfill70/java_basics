@@ -58,9 +58,9 @@ public class Main {
             System.out.println("Книги любимого автора" + document);
         });
 
-        /*books.find(Document.parse("{name: {$eq: Имя автора}}")).forEach((Consumer<Document>) document -> {
+        books.find(BsonDocument.parse("{name: {$eq: \"Хайнлайн Р.Э.\"}}")).forEach((Consumer<Document>) document -> {
             System.out.println("Книги любимого автора" + document);
-        });*/
+        });
     }
 
     private static void fillingDBaseStudents(MongoCollection<Document> students, List<String[]> listArray) {

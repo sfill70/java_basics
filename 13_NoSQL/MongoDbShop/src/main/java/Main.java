@@ -57,7 +57,7 @@ public class Main {
                 System.out.println("Неверная команда");
             }
         } else if (command.matches(REG_STATISTICS_PRODUCT)) {
-            Actions.actionStatisticsProduct("Показать статистику");
+            Actions.actionStatisticsProduct();
         } else {
             System.out.println("Неверная команда");
         }

@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
@@ -9,7 +10,6 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import util.CreateMongoClient;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -81,8 +81,14 @@ public class Actions {
         }
     }
 
-    protected static void actionStatisticsProduct(String data) {
-        System.out.println(data);
+    protected static void actionStatisticsProduct() {
+        printReport("Основная информация", getBasicInfo());
+        printReport("Средняя цена товаров: ", getAverageProductInEachShop());
+        printReport("Количество товаров дешевле 100 руб.: ", getLowTargetPrice(100));
+
+    }
+
+    private static AggregateIterable<Document> getBasicInfo() {
         Bson unwind = Aggregates.unwind("$products");
         Bson sort = Aggregates.sort(Sorts.ascending("products.price"));
         Bson group = Aggregates.group(
@@ -91,21 +97,26 @@ public class Actions {
                 Accumulators.first("Min price product", "$products"),
                 Accumulators.last("Max price product", "$products"));
         Bson sortById = Aggregates.sort(Sorts.ascending("_id"));
-        shops.aggregate(Arrays.asList(unwind, sort, group, sortById))
-                .into(new ArrayList<>()).forEach((Consumer<Document>) System.out::println);
+        return shops.aggregate(Arrays.asList(unwind, sort, group, sortById));
+    }
 
-        System.out.println("Средняя цена товаров: ");
-        shops.aggregate(Arrays.asList(Aggregates.lookup("products", "products", "name", "productsList"),
+    private static AggregateIterable<Document> getAverageProductInEachShop() {
+        return shops.aggregate(Arrays.asList(Aggregates.lookup("products", "products", "name", "productsList"),
                 Aggregates.unwind("$productsList"),
-                Aggregates.group("$name", Accumulators.avg("avgPrice", "$productsList.price"))))
-                .forEach((Consumer<Document>) System.out::println);
+                Aggregates.group("$name", Accumulators.avg("avgPrice", "$productsList.price"))));
+    }
 
-        System.out.println("Количество товаров дешевле 100 руб.: ");
-        shops.aggregate(Arrays.asList(Aggregates.lookup("products", "products", "name", "productsList"),
+    private static AggregateIterable<Document> getLowTargetPrice(int target) {
+        return shops.aggregate(Arrays.asList(Aggregates.lookup("products", "products", "name", "productsList"),
                 Aggregates.unwind("$productsList"),
-                Aggregates.match(lt("productsList.price", 100)),
-                Aggregates.group("$name", Accumulators.sum("productsList", 1L))))
-                .forEach((Consumer<Document>) System.out::println);
+                Aggregates.match(lt("productsList.price", target)),
+                Aggregates.group("$name", Accumulators.sum("productsList", 1L))));
+    }
+
+
+    private static void printReport(String title, AggregateIterable<Document> data) {
+        System.out.println(title);
+        data.forEach((Consumer<Document>) System.out::println);
     }
 
     private static Document getShop(String name) {

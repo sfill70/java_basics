@@ -4,19 +4,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
-
-    private static final int NUMBER_CORES = Runtime.getRuntime().availableProcessors();
+    private static final int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
     private static final int REGION_NUMBER = 100;
     private static final String RESULT_PATH = String.join(File.separator, System.getProperty("user.dir"), "res", "");
 
-    public static void main(String[] args){
-
+    public static void main(String[] args) {
         System.out.println(RESULT_PATH);
-        long start = 0;
+        long start = System.currentTimeMillis();
         try {
-            start = System.currentTimeMillis();
-
-            ExecutorService taskExecutor = Executors.newFixedThreadPool(NUMBER_CORES);
+            ExecutorService taskExecutor = Executors.newFixedThreadPool(NUMBER_OF_CORES);
 
             for (int i = 1; i <= REGION_NUMBER; i++) {
                 taskExecutor.execute(new RunNumberGenerator(RESULT_PATH, i));
@@ -30,7 +26,6 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         System.out.println((System.currentTimeMillis() - start) + " ms");
     }
 }

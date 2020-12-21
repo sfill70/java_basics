@@ -4,19 +4,21 @@ public class RunNumberGenerator implements Runnable {
     public static final int NUMBERS = 1000;
     private String fileName;
     private int regionCode;
+    private StringBuilder region;
 
     public RunNumberGenerator(String fileName, int regionCode) {
         this.fileName = fileName + regionCode + ".txt";
         this.regionCode = regionCode;
+        region = padNumber(regionCode, 2);
     }
-
 
     @Override
     public void run() {
         try (FileOutputStream fileOutputStream = new FileOutputStream(fileName);
-             PrintWriter printWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(fileOutputStream)));) {
+             PrintWriter printWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(fileOutputStream)))) {
             char[] letters = {'У', 'К', 'Е', 'Н', 'Х', 'В', 'А', 'Р', 'О', 'С', 'М', 'Т'};
             StringBuilder sb;
+
             for (int number = 1; number < NUMBERS; number++) {
                 sb = new StringBuilder();
                 for (char firstLetter : letters) {
@@ -26,14 +28,14 @@ public class RunNumberGenerator implements Runnable {
                                     .append(padNumber(number, 3))
                                     .append(secondLetter)
                                     .append(thirdLetter)
-                                    .append(padNumber(regionCode, 2))
+                                    .append(region)
                                     .append('\n');
                         }
                     }
                 }
                 printWriter.write(sb.toString());
             }
-//            fileOutputStream.getChannel().force(true);
+//            printWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

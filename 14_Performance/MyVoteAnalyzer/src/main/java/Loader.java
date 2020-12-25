@@ -2,11 +2,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -39,7 +39,20 @@ public class Loader {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser = factory.newSAXParser();
         SAXHandler handler = new SAXHandler();
-        parser.parse(new File(fileName), handler);
+        File file = new File(fileName);
+        try(InputStream inputStream= new FileInputStream(file);
+            //InputStream inputStream= new BufferedInputStream(new FileInputStream(file));
+            Reader reader = new BufferedReader(new InputStreamReader(inputStream,"UTF-8"))
+            ) {
+            InputSource is = new InputSource(reader);
+            is.setEncoding("UTF-8");
+//        parser.parse(new File(fileName), handler);
+            parser.parse(is, handler);
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return handler;
     }
 

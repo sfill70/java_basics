@@ -14,6 +14,7 @@ public class SAXHandler extends DefaultHandler {
     private WorkTime workTime;
     private HashMap<Voter, Byte> voterCounts;
     private HashMap<Short, WorkTime> voteStationWorkTimes;
+    private static byte val = 1;
 
     public SAXHandler() {
         this.voterCounts = new HashMap<>();
@@ -30,13 +31,12 @@ public class SAXHandler extends DefaultHandler {
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        byte val = 1;
         try {
             if (qName.equals("voter")) {
                 voter = new Voter(attributes.getValue("name"),
                         attributes.getValue("birthDay"));
             } else if (qName.equals("visit") && voter != null) {
-                voterCounts.merge(voter, val, (oldVal, newVal) -> (byte)(oldVal + newVal));
+                voterCounts.merge(voter, val, (oldVal, newVal) -> (byte) (oldVal + newVal));
                 String stStation = attributes.getValue("station");
                 String stTime = attributes.getValue("time");
                 fillingVoteStationWorkTimes(stStation, stTime);

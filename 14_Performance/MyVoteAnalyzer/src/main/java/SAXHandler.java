@@ -30,12 +30,13 @@ public class SAXHandler extends DefaultHandler {
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+        byte val = 1;
         try {
             if (qName.equals("voter")) {
                 voter = new Voter(attributes.getValue("name"),
                         attributes.getValue("birthDay"));
             } else if (qName.equals("visit") && voter != null) {
-                voterCounts.merge(voter, (byte)1, (oldVal, newVal) -> (byte)(oldVal + newVal));
+                voterCounts.merge(voter, val, (oldVal, newVal) -> (byte)(oldVal + newVal));
                 String stStation = attributes.getValue("station");
                 String stTime = attributes.getValue("time");
                 fillingVoteStationWorkTimes(stStation, stTime);
@@ -82,7 +83,7 @@ public class SAXHandler extends DefaultHandler {
     public void printVoterCounts() {
         System.out.println("Duplicated voters: ");
         for (Voter voter : voterCounts.keySet()) {
-            int count = voterCounts.get(voter);
+            short count = voterCounts.get(voter);
             if (count > 1) {
                 System.out.println(voter.toString() + "-" + count);
             }

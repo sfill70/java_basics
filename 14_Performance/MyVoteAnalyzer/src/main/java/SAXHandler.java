@@ -12,19 +12,19 @@ public class SAXHandler extends DefaultHandler {
     private SimpleDateFormat visitDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
     private Voter voter;
     private WorkTime workTime;
-    private HashMap<Voter, Integer> voterCounts;
-    private HashMap<Integer, WorkTime> voteStationWorkTimes;
+    private HashMap<Voter, Byte> voterCounts;
+    private HashMap<Short, WorkTime> voteStationWorkTimes;
 
     public SAXHandler() {
         this.voterCounts = new HashMap<>();
         this.voteStationWorkTimes = new HashMap<>();
     }
 
-    public HashMap<Voter, Integer> getVoterCounts() {
+    public HashMap<Voter, Byte> getVoterCounts() {
         return voterCounts;
     }
 
-    public HashMap<Integer, WorkTime> getVoteStationWorkTimes() {
+    public HashMap<Short, WorkTime> getVoteStationWorkTimes() {
         return voteStationWorkTimes;
     }
 
@@ -33,9 +33,9 @@ public class SAXHandler extends DefaultHandler {
         try {
             if (qName.equals("voter")) {
                 voter = new Voter(attributes.getValue("name"),
-                        birthDayFormat.parse(attributes.getValue("birthDay")));
+                        attributes.getValue("birthDay"));
             } else if (qName.equals("visit") && voter != null) {
-                voterCounts.merge(voter, +1, Integer::sum);
+                voterCounts.merge(voter, (byte)1, (oldVal, newVal) -> (byte)(oldVal + newVal));
                 String stStation = attributes.getValue("station");
                 String stTime = attributes.getValue("time");
                 fillingVoteStationWorkTimes(stStation, stTime);
@@ -46,7 +46,7 @@ public class SAXHandler extends DefaultHandler {
     }
 
     private void fillingVoteStationWorkTimes(String stStation, String stTime) {
-        Integer station = Integer.parseInt(stStation);
+        Short station = Short.parseShort(stStation);
         Date time = null;
         try {
             time = visitDateFormat.parse(stTime);
@@ -73,7 +73,7 @@ public class SAXHandler extends DefaultHandler {
 
     public void printVoteStationWorkTimes() {
         System.out.println("Voting station work times: ");
-        for (Integer votingStation : voteStationWorkTimes.keySet()) {
+        for (Short votingStation : voteStationWorkTimes.keySet()) {
             WorkTime workTime = voteStationWorkTimes.get(votingStation);
             System.out.println("\t" + votingStation + " - " + workTime);
         }

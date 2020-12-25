@@ -90,7 +90,7 @@ public class Loader {
             NamedNodeMap attributes = node.getAttributes();
 
             String name = attributes.getNamedItem("name").getNodeValue();
-            Date birthDay = birthDayFormat.parse(attributes.getNamedItem("birthDay").getNodeValue());
+            String birthDay = attributes.getNamedItem("birthDay").getNodeValue();
 
             Voter voter = new Voter(name, birthDay);
             Integer count = voterCounts.get(voter);

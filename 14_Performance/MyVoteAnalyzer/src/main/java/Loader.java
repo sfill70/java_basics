@@ -27,26 +27,28 @@ public class Loader {
 //        printVotingStationWorkTimes();
 //        printDuplicatedVoters();
         long start = System.currentTimeMillis();
-        SAXHandler handler = getSaxHandler(fileName);
+        XMLHandler handler = getSaxHandler(fileName);
         System.out.println(System.currentTimeMillis() - start + " ms - Результат SAX парсера");
+        long memory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        System.out.println("Memory Mgb Sax парсер = " + memory / 1048576);
         System.out.println("Печать результатов");
         handler.printVoteStationWorkTimes();
         handler.printVoterCounts();
 
     }
 
-    private static SAXHandler getSaxHandler(String fileName) throws ParserConfigurationException, SAXException, IOException {
+    private static XMLHandler getSaxHandler(String fileName) throws ParserConfigurationException, SAXException, IOException {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser = factory.newSAXParser();
-        SAXHandler handler = new SAXHandler();
+        XMLHandler handler = new XMLHandler();
         File file = new File(fileName);
-        try(InputStream inputStream= new FileInputStream(file);
-            //InputStream inputStream= new BufferedInputStream(new FileInputStream(file));
-            Reader reader = new BufferedReader(new InputStreamReader(inputStream,"UTF-8"))
-            ) {
+        try (InputStream inputStream = new FileInputStream(file);
+             //InputStream inputStream= new BufferedInputStream(new FileInputStream(file));
+             Reader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"))
+        ) {
             InputSource is = new InputSource(reader);
             is.setEncoding("UTF-8");
-//        parser.parse(new File(fileName), handler);
+            parser.parse(new File(fileName), handler);
             parser.parse(is, handler);
         } catch (SAXException e) {
             e.printStackTrace();

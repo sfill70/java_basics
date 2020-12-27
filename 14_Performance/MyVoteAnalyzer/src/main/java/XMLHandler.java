@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-public class SAXHandler extends DefaultHandler {
+public class XMLHandler extends DefaultHandler {
     private static SimpleDateFormat birthDayFormat = new SimpleDateFormat("yyyy.MM.dd");
     private SimpleDateFormat visitDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
     private Voter voter;
@@ -16,7 +16,7 @@ public class SAXHandler extends DefaultHandler {
     private HashMap<Short, WorkTime> voteStationWorkTimes;
     private static byte val = 1;
 
-    public SAXHandler() {
+    public XMLHandler() {
         this.voterCounts = new HashMap<>();
         this.voteStationWorkTimes = new HashMap<>();
     }

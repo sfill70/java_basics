@@ -22,9 +22,9 @@ public class Loader {
         System.out.println(DBConnection.getInsertQueue().size() + " - size List");
         DBConnection dbConnection1 = new DBConnection();
         long memory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        dbConnection1.printVoterCounts();
         System.out.println("Печать результатов");
         System.out.println("Memory Mgb Sax парсер = " + memory / 1048576);
-        dbConnection1.printVoterCounts();
         System.out.println(System.currentTimeMillis() - start + " ms - Результат SAX парсера");
         //не работает
         dbConnection1.updateDB();
@@ -34,8 +34,8 @@ public class Loader {
     private static void runMultiTread() throws InterruptedException {
         List<Thread> threadList = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_CORES; i++) {
-            DBConnection dbConnection = new DBConnection();
-            Thread thread = new Thread(dbConnection);
+            InsertToDBRunnable insertToDBRunnable = new InsertToDBRunnable();
+            Thread thread = new Thread(insertToDBRunnable);
             thread.start();
             threadList.add(thread);
             Thread.sleep(10);

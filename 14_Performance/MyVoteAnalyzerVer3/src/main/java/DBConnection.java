@@ -5,11 +5,10 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class DBConnection implements Runnable {
+public class DBConnection {
     private Connection connection;
     private StringBuilder insertQuery = new StringBuilder();
     private List<String> insertList = new ArrayList<>();
-    //    private static ConcurrentLinkedQueue<String> insertQueue = new ConcurrentLinkedQueue<>();
     private static ConcurrentLinkedQueue<String> insertQueue = new ConcurrentLinkedQueue<>();
     private String dbName = "learn";
     private static String dbUser = "root";
@@ -39,8 +38,7 @@ public class DBConnection implements Runnable {
                     "name TINYTEXT NOT NULL, " +
                     "birthDate DATE NOT NULL, " +
                     "count INT NOT NULL, " +
-                    "PRIMARY KEY(id)/*, " +
-                    "UNIQUE KEY name_date(name(50), birthDate)*/)");
+                    "PRIMARY KEY(id))");
             connection.createStatement().execute("SET GLOBAL max_allowed_packet=16777216");
             connection.createStatement().execute("SET innodb_lock_wait_timeout=100");
         } catch (SQLException e) {
@@ -63,8 +61,12 @@ public class DBConnection implements Runnable {
     public void executeMultiInsert() throws SQLException, InterruptedException {
 
         String sql = "INSERT INTO voter_count(name, birthDate, count)" +
-                "VALUES" + insertList.toString().substring(1,insertList.toString().length()-1);
+                "VALUES" + insertList();
         getConnection().createStatement().execute(sql);
+    }
+
+    private String insertList() {
+        return insertList.toString().substring(1, insertList.toString().length() - 1);
     }
 
     public void insertToBD() throws SQLException, InterruptedException {
@@ -107,27 +109,8 @@ public class DBConnection implements Runnable {
         getConnection().createStatement().execute(query);
     }
 
-    /*public void printVoterCounts() throws SQLException {
-        String sql = "SELECT name, birthDate, `count` FROM voter_count WHERE count > 1";
-        ResultSet rs = getConnection().createStatement().executeQuery(sql);
-        while (rs.next()) {
-            System.out.println("\t" + rs.getString("name") + " (" +
-                    rs.getString("birthDate") + ") - " + rs.getInt("count"));
-        }
-    }*/
-
     public void closeConnection() throws SQLException {
         connection.close();
         connection = null;
-    }
-
-    @Override
-    public void run() {
-        try {
-            insertToBD();
-        } catch (SQLException | InterruptedException throwables) {
-            throwables.printStackTrace();
-        }
-
     }
 }

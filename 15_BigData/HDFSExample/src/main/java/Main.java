@@ -10,6 +10,7 @@ import java.net.URI;
 public class Main
 {
     private static String symbols = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static String HOST_NAME = "2b3eb249ae8a";
 
     public static void main(String[] args) throws Exception
     {
@@ -18,9 +19,9 @@ public class Main
         System.setProperty("HADOOP_USER_NAME", "root");
 
         FileSystem hdfs = FileSystem.get(
-            new URI("hdfs://HOST_NAME:8020"), configuration
+            new URI("hdfs://2b3eb249ae8a:8020"), configuration
         );
-        Path file = new Path("hdfs://HOST_NAME:8020/test/file.txt");
+        Path file = new Path("hdfs://2b3eb249ae8a:8020/test/file.txt");
 
         if (hdfs.exists(file)) {
             hdfs.delete(file, true);

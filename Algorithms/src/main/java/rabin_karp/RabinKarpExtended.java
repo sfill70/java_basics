@@ -27,7 +27,7 @@ public class RabinKarpExtended {
                     pos = 0;
                     count = 0;
                 }
-                if (entry.getValue() == pattern[count]) {
+                if (entry.getValue() == pattern[count] && count > 0) {
                     count++;
                 } else {
                     pos = 0;

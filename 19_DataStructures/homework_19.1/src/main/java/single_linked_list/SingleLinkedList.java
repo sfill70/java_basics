@@ -1,5 +1,6 @@
 package single_linked_list;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class SingleLinkedList {
@@ -26,10 +27,53 @@ public class SingleLinkedList {
             top = top.getNext();
         }
     }
+//IndexOutOfBoundsException
+//NoSuchElementException
+/*
+    public void removeLast() {
+        ListItem previous;
+        ListItem item;
+        if(top == null)
+        {
+            throw new NoSuchElementException("Empty list.");
+        }
+        else if(top.getNext() == null)
+        {
+            top = null;
+        }
+        else
+        {
+            previous = top;
+            item = top.getNext();
+
+            while(item.getNext() != null)
+            {
+                previous = item;
+                item = item.getNext();
+            }
+            previous.setNext(null);
+        }
+    }
+*/
 
     public void removeLast() {
-        // TODO: remove last element
+        if (top != null) {
+            if (top.getNext() != null) {
+                ListItem previous = top;
+                ListItem item = top.getNext();
+                while (item.getNext() != null) {
+                    previous = item;
+                    item = item.getNext();
+                }
+                previous.setNext(null);
+            } else {
+                top = null;
+            }
+        } else {
+            throw new NoSuchElementException("Empty list.");
+        }
     }
+
 
     @Override
     public boolean equals(Object o) {

@@ -1,5 +1,6 @@
 package double_linked_list;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class DoubleLinkedList<T> {
@@ -16,29 +17,94 @@ public class DoubleLinkedList<T> {
     }
 
     public ListItem<T> popHeadElement() {
-        // TODO
-        return null;
+        if (head != null) {
+            if (head.getNext() == null) {
+                ListItem<T> listItem = new ListItem<>(head.getData());
+                head = null;
+                tail = null;
+                size--;
+                return listItem;
+            } else {
+                ListItem<T> listItem = head;
+                head = listItem.getNext();
+                head.setPrev(null);
+                size--;
+                return listItem;
+            }
+        } else {
+            throw new NoSuchElementException("Empty list.");
+        }
     }
 
     public ListItem<T> popTailElement() {
-        // TODO
-        return null;
+        if (tail == null || tail.getPrev() == null) {
+            return popHeadElement();
+        } else {
+            ListItem<T> listItem = tail;
+            tail = listItem.getPrev();
+            tail.setNext(null);
+            size--;
+            return listItem;
+        }
     }
 
     public void removeHeadElement() {
-        // TODO
+        if (head != null) {
+            if (head.getNext() == null) {
+                head = null;
+                tail = null;
+                size--;
+            } else {
+                head = head.getNext();
+                head.setPrev(null);
+                size--;
+            }
+        } else {
+            throw new NoSuchElementException("Empty list.");
+        }
     }
 
     public void removeTailElement() {
-        // TODO
+        if (tail == null || tail.getPrev() == null) {
+            removeHeadElement();
+        } else {
+            tail = tail.getPrev();
+            tail.setNext(null);
+            size--;
+        }
     }
 
     public void addToHead(T data) {
-        // TODO
+        if (data != null) {
+            if (head == null) {
+                head = new ListItem<T>(data);
+                tail = head;
+            } else {
+                ListItem<T> listItem = new ListItem<>(data);
+                head.setPrev(listItem);
+                listItem.setNext(head);
+                head = listItem;
+            }
+            size++;
+        } else {
+            throw new NullPointerException("data can't be null ");
+        }
     }
 
     public void addToTail(T data) {
-        // TODO
+        if (data != null) {
+            if (head == null) {
+                addToHead(data);
+            } else {
+                ListItem<T> listItem = new ListItem<>(data);
+                listItem.setPrev(tail);
+                tail.setNext(listItem);
+                tail = listItem;
+                size++;
+            }
+        } else {
+            throw new NullPointerException("data can't be null ");
+        }
     }
 
     public int getSize() {
@@ -58,20 +124,25 @@ public class DoubleLinkedList<T> {
         return Objects.hash(head, tail);
     }
 
+
     @Override
     public String toString() {
 
-        StringBuilder stringBuilder = new StringBuilder(head.toString());
-        ListItem<T> item = head;
-        while (item.next != null) {
-            if (item.next.prev == item) {
-                stringBuilder.append("<-");
+        if (head == null) {
+            return "DoubleLinkedList is empty size = " + size;
+        } else {
+            StringBuilder stringBuilder = new StringBuilder(head.toString());
+            ListItem<T> item = head;
+            while (item.next != null) {
+                if (item.next.prev == item) {
+                    stringBuilder.append("<-");
+                }
+
+                stringBuilder.append(" -> ").append(item.next);
+                item = item.next;
             }
 
-            stringBuilder.append(" -> ").append(item.next);
-            item = item.next;
+            return "DoubleLinkedList{size=" + size + "\n" + stringBuilder.toString() + "}";
         }
-
-        return "DoubleLinkedList{size=" + size + "\n" + stringBuilder.toString() + "}";
     }
 }

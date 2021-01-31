@@ -21,11 +21,7 @@ public class DoubleLinkedList<T> {
     public ListItem<T> popHeadElement() {
         if (head != null) {
             if (head.getNext() == null) {
-                ListItem<T> listItem = new ListItem<>(head.getData());
-                head = null;
-                tail = null;
-                size--;
-                return listItem;
+                return returnExtremeItem();
             } else {
                 ListItem<T> listItem = head;
                 head = listItem.getNext();
@@ -38,9 +34,10 @@ public class DoubleLinkedList<T> {
         }
     }
 
+
     public ListItem<T> popTailElement() {
-        if (tail == null || tail.getPrev() == null) {
-            return popHeadElement();
+        if (tail.getPrev() == null) {
+            return returnExtremeItem();
         } else {
             ListItem<T> listItem = tail;
             tail = listItem.getPrev();
@@ -53,9 +50,7 @@ public class DoubleLinkedList<T> {
     public void removeHeadElement() {
         if (head != null) {
             if (head.getNext() == null) {
-                head = null;
-                tail = null;
-                size--;
+                removeExtremeItem();
             } else {
                 head = head.getNext();
                 head.setPrev(null);
@@ -67,7 +62,7 @@ public class DoubleLinkedList<T> {
     }
 
     public void removeTailElement() {
-        if (tail == null || tail.getPrev() == null) {
+        if (tail.getPrev() == null) {
             removeHeadElement();
         } else {
             tail = tail.getPrev();
@@ -113,23 +108,17 @@ public class DoubleLinkedList<T> {
         return size;
     }
 
-   /* @Override
-    public boolean equals(Object o) {
+    private ListItem<T> returnExtremeItem() {
+        ListItem<T> listItem = new ListItem<>(head.getData());
+        removeExtremeItem();
+        return listItem;
+    }
 
-        if (o == this)
-            return true;
-        if (!(o instanceof List))
-            return false;
-        ListIterator<T> e1 = ((List<T>) this).listIterator();
-        ListIterator<?> e2 = ((List<?>) o).listIterator();
-        while (e1.hasNext() && e2.hasNext()) {
-            T o1 = e1.next();
-            Object o2 = e2.next();
-            if (!(o1==null ? o2==null : o1.equals(o2)))
-                return false;
-        }
-        return !(e1.hasNext() || e2.hasNext());
-    }*/
+    private void removeExtremeItem() {
+        head = null;
+        tail = null;
+        size--;
+    }
 
     @Override
     public boolean equals(Object o) {

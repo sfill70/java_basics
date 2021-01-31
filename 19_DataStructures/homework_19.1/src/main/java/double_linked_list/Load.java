@@ -37,6 +37,8 @@ public class Load {
         doubleLinkedList5.addToTail("second");
         doubleLinkedList5.addToTail("third");
 
+        System.out.println(doubleLinkedList5.toString());
+
         DoubleLinkedList <String>doubleLinkedList6 = new DoubleLinkedList<>();
         doubleLinkedList6.addToTail("first");
         doubleLinkedList6.addToTail("second");

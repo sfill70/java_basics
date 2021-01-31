@@ -65,7 +65,7 @@ public class ListItem<T> {
 
     @Override
     public String toString() {
-        return "ListItem{data='" + data + "'}" + ", perv = " + (prev != null ? prev.data : 0) + ", next = " + (next != null ? next.data : 0);
+        return "ListItem{data='" + data + "'}" + ", perv = " + (prev != null ? prev.data : null) + ", next = " + (next != null ? next.data : null);
     }
 
 

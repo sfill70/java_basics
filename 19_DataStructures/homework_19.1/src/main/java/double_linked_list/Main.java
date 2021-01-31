@@ -74,17 +74,18 @@ public class Main {
 
         System.out.println(doubleLinkedList1);
         System.out.println(doubleLinkedList2.toString().equals(doubleLinkedList1.toString()));
-//        System.out.println(doubleLinkedList1.equals(doubleLinkedList2));
+        System.out.println(doubleLinkedList1.equals(doubleLinkedList2));
 
-        DoubleLinkedList<String> doubleLinkedList4 = new DoubleLinkedList<>();
-        doubleLinkedList4.addToTail("first");
-        doubleLinkedList4.addToTail("second");
-        doubleLinkedList4.addToTail("third");
-        doubleLinkedList4.removeTailElement();
-        System.out.println(doubleLinkedList4.getTailElement().getData());
-        System.out.println(doubleLinkedList4);
-        System.out.println(doubleLinkedList4.getHeadElement());
-        System.out.println(doubleLinkedList4.getTailElement());
+      ListItem<Integer>listItem = new ListItem<>(5);
+      ListItem<Integer>listItem1 = new ListItem<>(5);
+
+        System.out.println(doubleLinkedList1.getHeadElement().equals(doubleLinkedList2.getHeadElement()));
+        ListItem listItem2 = doubleLinkedList1.getHeadElement();
+        ListItem listItem3 = doubleLinkedList2.getHeadElement();
+        System.out.println(listItem3.hashCode());
+        System.out.println(listItem2.hashCode());
+        System.out.println(listItem2.equals(listItem3));
+        System.out.println(listItem1.equals(listItem));
 
     }
 }

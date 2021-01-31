@@ -1,5 +1,7 @@
 package double_linked_list;
 
+import java.util.List;
+import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -111,6 +113,24 @@ public class DoubleLinkedList<T> {
         return size;
     }
 
+   /* @Override
+    public boolean equals(Object o) {
+
+        if (o == this)
+            return true;
+        if (!(o instanceof List))
+            return false;
+        ListIterator<T> e1 = ((List<T>) this).listIterator();
+        ListIterator<?> e2 = ((List<?>) o).listIterator();
+        while (e1.hasNext() && e2.hasNext()) {
+            T o1 = e1.next();
+            Object o2 = e2.next();
+            if (!(o1==null ? o2==null : o1.equals(o2)))
+                return false;
+        }
+        return !(e1.hasNext() || e2.hasNext());
+    }*/
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -127,22 +147,18 @@ public class DoubleLinkedList<T> {
 
     @Override
     public String toString() {
-
         if (head == null) {
             return "DoubleLinkedList is empty size = " + size;
-        } else {
-            StringBuilder stringBuilder = new StringBuilder(head.toString());
-            ListItem<T> item = head;
-            while (item.next != null) {
-                if (item.next.prev == item) {
-                    stringBuilder.append("<-");
-                }
-
-                stringBuilder.append(" -> ").append(item.next);
-                item = item.next;
-            }
-
-            return "DoubleLinkedList{size=" + size + "\n" + stringBuilder.toString() + "}";
         }
+        StringBuilder stringBuilder = new StringBuilder(head.toString());
+        ListItem<T> item = head;
+        while (item.next != null) {
+            if (item.next.prev == item) {
+                stringBuilder.append("<-");
+            }
+            stringBuilder.append(" -> ").append(item.next);
+            item = item.next;
+        }
+        return "DoubleLinkedList{size=" + size + "\n" + stringBuilder.toString() + "}";
     }
 }

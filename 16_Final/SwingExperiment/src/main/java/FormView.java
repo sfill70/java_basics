@@ -71,7 +71,7 @@ public class FormView {
 
     private void splitText() {
         String[] name = formOneFields.getFullNameField().getText().split(" ");
-        formThreeFields.getSurNameField().setText(name[0]);
+        formThreeFields.getFirstNameField().setText(name[0]);
         formThreeFields.getSurNameField().setText(name[1]);
         formThreeFields.getMidNameField().setText(name.length == 3 ? name[2] : "");
     }

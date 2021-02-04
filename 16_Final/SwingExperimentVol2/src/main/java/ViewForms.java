@@ -1,14 +1,10 @@
-import javax.swing.*;
-
 public class ViewForms {
     private static MainFrame mainFrame;
-    private static MainForm formThreeFields = new FormThreeFields();
-    private static MainForm formOneFields = new FormOneFields();
+    private static final MainForm formThreeFields = new FormThreeFields();
+    private static final MainForm formOneFields = new FormOneFields();
 
     public ViewForms() {
         mainFrame = MainFrame.getInstance();
-        formThreeFields = new FormThreeFields();
-        formOneFields = new FormOneFields();
     }
 
     public static MainFrame getMainFrame() {

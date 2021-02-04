@@ -4,9 +4,15 @@ import java.awt.event.ActionListener;
 
 public class ExpandListener implements ActionListener {
 
-    MainForm formOneFields = ViewForms.getFormOneFields();
-    MainForm formThreeFields = ViewForms.getFormThreeFields();
-    MainFrame mainFrame = ViewForms.getMainFrame();
+    MainFrame mainFrame;
+    MainForm formOneFields;
+    MainForm formThreeFields;
+
+    public ExpandListener(MainFrame mainFrame, MainForm formOneFields, MainForm formThreeFields) {
+        this.mainFrame = mainFrame;
+        this.formOneFields = formOneFields;
+        this.formThreeFields = formThreeFields;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

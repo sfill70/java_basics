@@ -1,28 +1,19 @@
 public class ViewForms {
-    private static MainFrame mainFrame;
-    private static final MainForm formThreeFields = new FormThreeFields();
-    private static final MainForm formOneFields = new FormOneFields();
+    private final MainFrame mainFrame;
+    private final MainForm formThreeFields;
+    private final MainForm formOneFields;
 
     public ViewForms() {
-        mainFrame = MainFrame.getInstance();
+        this.mainFrame = MainFrame.getInstance();
+        this.formThreeFields = new FormThreeFields();
+        this.formOneFields = new FormOneFields();
     }
 
-    public static MainFrame getMainFrame() {
-        return mainFrame;
-    }
-
-    public static MainForm getFormThreeFields() {
-        return formThreeFields;
-    }
-
-    public static MainForm getFormOneFields() {
-        return formOneFields;
-    }
 
     public void run() {
         mainFrame.initialization();
-        formThreeFields.getButton().addActionListener(new CollapseListener());
-        formOneFields.getButton().addActionListener(new ExpandListener());
+        formThreeFields.getButton().addActionListener(new CollapseListener(mainFrame,formOneFields,formThreeFields));
+        formOneFields.getButton().addActionListener(new ExpandListener(mainFrame,formOneFields,formThreeFields));
         viewFormThreeFields();
     }
 

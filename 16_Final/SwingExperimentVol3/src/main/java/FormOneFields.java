@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 
 public class FormOneFields implements MainForm {
-    private JPanel PanelFormFiled;
+    private JPanel panelFormFiled;
     private JTextField fullNameField;
     private JButton expandButton;
 
@@ -11,11 +11,7 @@ public class FormOneFields implements MainForm {
 
     @Override
     public JPanel getContent() {
-        return PanelFormFiled;
-    }
-
-    public JTextField getFullNameField() {
-        return fullNameField;
+        return panelFormFiled;
     }
 
     @Override

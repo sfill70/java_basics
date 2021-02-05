@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 
 public class FormThreeFields implements MainForm {
-    private JPanel PanelThreeFields;
+    private JPanel panelThreeFields;
     private JTextField firstNameField;
     private JTextField surNameField;
     private JTextField midNameField;
@@ -13,7 +13,7 @@ public class FormThreeFields implements MainForm {
 
     @Override
     public JPanel getContent() {
-        return PanelThreeFields;
+        return panelThreeFields;
     }
 
     @Override

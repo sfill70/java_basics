@@ -5,6 +5,8 @@ import java.util.List;
 
 public class SuffixTree
 {
+
+
     private String text;
     private ArrayList<Node> nodes;
     private Node root;
@@ -26,4 +28,7 @@ public class SuffixTree
         //TODO
         return positions;
     }
+
+
+
 }
